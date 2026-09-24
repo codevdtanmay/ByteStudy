@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
-import { GraduationCap, Award, Target, BookOpen, ArrowRight, Sparkles, Check } from 'lucide-react';
+import { GraduationCap, Target, BookOpen, ArrowRight, Sparkles, Check, Sun, Moon } from 'lucide-react';
 import { SYLLABUS } from '../data/syllabus';
 
 export default function OnboardingModal({
   isOpen,
   studentId,
   onComplete,
-  initialTargetCgpa = '8.50'
+  initialTargetCgpa = '8.50',
+  initialTheme = 'dark',
+  onThemePreview
 }) {
   const [name, setName] = useState('');
   const [target, setTarget] = useState(initialTargetCgpa);
   const [currentSemester, setCurrentSemester] = useState(1);
   const [branch, setBranch] = useState('CSE');
   const [completedSems, setCompletedSems] = useState(1);
+  const [theme, setTheme] = useState(initialTheme);
   const [semSgpas, setSemSgpas] = useState({
     1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
   });
+
+  const showPastResults = currentSemester > 2;
+  const maxCompletedSems = Math.max(1, currentSemester - 1);
+
+  React.useEffect(() => {
+    if (currentSemester <= 2) {
+      setCompletedSems(0);
+      setSemSgpas({ 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '' });
+    } else {
+      setCompletedSems(previous => Math.min(Math.max(previous, 1), maxCompletedSems));
+    }
+  }, [currentSemester, maxCompletedSems]);
 
   if (!isOpen) return null;
 
@@ -33,7 +48,8 @@ export default function OnboardingModal({
       targetCgpa: target || '8.50',
       pastSgpas: semSgpas,
       semester: currentSemester,
-      branch
+      branch,
+      theme
     });
   };
 
@@ -122,8 +138,25 @@ export default function OnboardingModal({
             </div>
           </div>
 
-          {/* 3. Number of Completed Semesters */}
-          <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-500/15 space-y-3">
+          {/* 3. Theme preference */}
+          <div>
+            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Choose your appearance</label>
+            <div className="grid grid-cols-2 gap-3">
+              {[['light', 'Light mode', Sun], ['dark', 'Dark mode', Moon]].map(([value, label, Icon]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => { setTheme(value); onThemePreview?.(value); }}
+                  className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-bold transition-all ${theme === value ? 'border-indigo-500 bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 ring-2 ring-indigo-500/20' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-indigo-300 dark:border-indigo-950/40 dark:bg-surface-700/40 dark:text-slate-300'}`}
+                >
+                  <Icon size={16} /> {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 4. Number of Completed Semesters */}
+          {showPastResults && <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-500/15 space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
                 <BookOpen size={14} className="text-indigo-500" />
@@ -135,7 +168,7 @@ export default function OnboardingModal({
             </div>
 
             <div className="flex gap-1.5 flex-wrap">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+              {Array.from({ length: maxCompletedSems }, (_, index) => index + 1).map(sem => (
                 <button
                   key={sem}
                   type="button"
@@ -150,10 +183,10 @@ export default function OnboardingModal({
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
 
-          {/* 4. Semester-Wise SGPA Inputs */}
-          <div className="space-y-3">
+          {/* 5. Semester-Wise SGPA Inputs */}
+          {showPastResults && <div className="space-y-3">
             <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">
               Enter SGPA for Completed Semesters:
             </label>
@@ -177,7 +210,7 @@ export default function OnboardingModal({
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
 
           {/* Submit Action */}
           <div className="pt-3 shrink-0">

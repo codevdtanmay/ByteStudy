@@ -68,7 +68,7 @@ export function useAcademicStore() {
   const [branch, setBranch] = useState(() => initialProfile?.branch || '');
   const [selectedSemester, setSelectedSemester] = useState(() => initialProfile?.semester || 1);
 
-  const saveOnboardingProfile = ({ name, targetCgpa: target, pastSgpas: sgpas, semester, branch: selectedBranch }) => {
+  const saveOnboardingProfile = ({ name, targetCgpa: target, pastSgpas: sgpas, semester, branch: selectedBranch, theme: selectedTheme }) => {
     try {
       const profile = {
         name: name?.trim() || studentName || `Scholar (${studentId})`,
@@ -76,6 +76,7 @@ export function useAcademicStore() {
         pastSgpas: sgpas || EMPTY_SGPAS,
         semester: Number(semester) || 1,
         branch: selectedBranch || 'CSE',
+        theme: selectedTheme || theme,
         isOnboarded: true,
       };
       saveStudentProfile(studentId, profile);
@@ -84,6 +85,7 @@ export function useAcademicStore() {
       setPastSgpas(profile.pastSgpas);
       setSelectedSemester(profile.semester);
       setBranch(profile.branch);
+      setTheme(profile.theme);
       setIsOnboarded(true);
       // Persist the onboarding flag on the authenticated account as well as
       // localStorage, so it survives a new browser session or device.
@@ -276,6 +278,7 @@ export function useAcademicStore() {
       setPastSgpas(profile?.pastSgpas || EMPTY_SGPAS);
       setSelectedSemester(profile?.semester || 1);
       setBranch(profile?.branch || '');
+      if (profile?.theme || account?.theme) setTheme(profile?.theme || account?.theme);
       setIsOnboarded(Boolean(profile?.isOnboarded || account?.isOnboarded));
     }
   }, []);

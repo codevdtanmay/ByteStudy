@@ -218,6 +218,8 @@ export default function App() {
         isOpen={!!store.studentId && !store.isOnboarded}
         studentId={store.studentId}
         initialTargetCgpa={store.targetCgpa}
+        initialTheme={store.theme}
+        onThemePreview={store.setTheme}
         onComplete={store.saveOnboardingProfile}
       />
     </div>
