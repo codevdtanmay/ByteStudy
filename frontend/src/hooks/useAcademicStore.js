@@ -21,6 +21,15 @@ const setStorageItem = (key, value) => {
   }
 };
 
+const getSavedActiveTab = (loginId) => {
+  if (!loginId) return 'dashboard';
+  try {
+    return localStorage.getItem(`bytestudy.activeTab.${loginId}`) || 'dashboard';
+  } catch {
+    return 'dashboard';
+  }
+};
+
 const PROFILE_STORE_KEY = 'bytestudy.studentProfiles.v1';
 const EMPTY_SGPAS = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '' };
 
@@ -108,7 +117,16 @@ export function useAcademicStore() {
     }
   });
 
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => getSavedActiveTab(studentId));
+
+  useEffect(() => {
+    if (!studentId) return;
+    try {
+      localStorage.setItem(`bytestudy.activeTab.${studentId}`, activeTab);
+    } catch {
+      // Private browsing or storage restrictions should not block navigation.
+    }
+  }, [studentId, activeTab]);
 
   // ---- Grade logs (SGPAs earned in prior semesters) ----
   const [pastSgpas, setPastSgpas] = useState(() => {
@@ -272,6 +290,7 @@ export function useAcademicStore() {
       const profile = getStudentProfile(cleanLoginId);
       setStudentId(cleanLoginId);
       setUserRole(role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
+      setActiveTab(getSavedActiveTab(cleanLoginId));
       localStorage.setItem('activeUserRole', role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
       setStudentName(profile?.name || name?.trim() || '');
       setTargetCgpa(profile?.targetCgpa || account?.targetCgpa || '8.50');

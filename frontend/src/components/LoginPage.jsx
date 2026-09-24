@@ -86,12 +86,11 @@ export default function LoginPage({ onLoginSuccess }) {
     <StudySignal />
     <div className="auth-layout">
       <section className="auth-intro">
-        <BrandLogo showName />
+        <BrandLogo showName className="auth-intro-brand" />
         <h1>Make your<br /><em>next move</em> count.</h1>
         <p>One calm space for the deadlines, grades and decisions that shape your degree.</p>
       </section>
       <section className="auth-card">
-      <div className="auth-card-brand"><BrandLogo showName /></div>
       <div className="space-y-1"><h2>{mode === 'signin' ? 'Welcome back' : 'Start your journey'}</h2><p>{mode === 'signin' ? 'Pick up where your progress left off.' : 'Build a smarter study rhythm from day one.'}</p></div>
       <form onSubmit={submit} className="space-y-4 pt-2">
         {mode === 'signup' && <div className="flex items-center gap-3 px-4 py-3.5 neu-inset"><User size={18} className="text-slate-400"/><input required placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-transparent text-xs focus:outline-none"/></div>}
