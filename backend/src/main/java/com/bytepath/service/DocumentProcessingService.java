@@ -59,14 +59,15 @@ public class DocumentProcessingService {
             var image = new PDFRenderer(doc).renderImageWithDPI(pageIndex, 150);
             Graphics2D graphics = image.createGraphics();
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics.setColor(new Color(120, 120, 120, 85));
-            graphics.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+            // Keep the watermark traceable but subtle enough that it does not
+            // interfere with reading questions or diagrams.
+            graphics.setColor(new Color(100, 100, 100, 42));
+            graphics.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 18));
             graphics.rotate(Math.toRadians(-32), image.getWidth() / 2.0, image.getHeight() / 2.0);
-            for (int y = -image.getHeight(); y < image.getHeight() * 2; y += 150) {
-                for (int x = -image.getWidth(); x < image.getWidth() * 2; x += 420) {
-                    graphics.drawString(watermark, x, y);
-                }
-            }
+            int textWidth = graphics.getFontMetrics().stringWidth(watermark);
+            graphics.drawString(watermark,
+                (image.getWidth() - textWidth) / 2,
+                image.getHeight() / 2);
             graphics.dispose();
             ImageIO.write(image, "png", out);
             return out.toByteArray();
