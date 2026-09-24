@@ -65,8 +65,8 @@ export default function Dashboard({
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <section className="flex flex-col justify-between gap-5 border-b border-stone-200 pb-7 dark:border-stone-700 lg:flex-row lg:items-end">
+    <div className="dashboard-page page-stack animate-fade-in">
+      <section className="dashboard-hero flex flex-col justify-between gap-5 rounded-[var(--radius-panel)] border p-5 sm:p-7 lg:flex-row lg:items-end">
         <div>
 
           <h2 className="mt-2 max-w-2xl font-serif text-3xl leading-tight tracking-[-0.04em] text-stone-900 dark:text-stone-100 sm:text-4xl">Stay close to the numbers that shape your degree.</h2>
@@ -78,7 +78,7 @@ export default function Dashboard({
         </div>
       </section>
 
-      <section className="grid grid-cols-2 border-y border-stone-200 dark:border-stone-700 sm:grid-cols-4">
+      <section className="dashboard-metrics grid grid-cols-2 sm:grid-cols-4">
         <Metric label="Current CGPA" value={currentCgpa || '—'} note={`Across ${earnedCredits} completed credits`} icon={Award} onClick={() => setActiveTab('semesters')} accent />
         <Metric label="Target CGPA" value={targetCgpa || '8.50'} note="Your current academic aim" icon={Target} onClick={() => setActiveTab('predictor')} />
         <Metric label="Credits earned" value={`${earnedCredits} / ${TOTAL_PROGRAM_CREDITS}`} note={`${remainingCredits} credits remaining`} icon={BookOpen} onClick={() => setActiveTab('semesters')} />
@@ -86,7 +86,7 @@ export default function Dashboard({
       </section>
 
       <section className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.65fr)_minmax(280px,0.75fr)]">
-        <div className="editorial-panel p-5 sm:p-7">
+        <div className="dashboard-panel editorial-panel p-5 sm:p-7">
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-stone-200 pb-5 dark:border-stone-700">
             <div>
               <p className="eyebrow">Performance history</p>
@@ -128,7 +128,7 @@ export default function Dashboard({
           )}
         </div>
 
-        <aside className="editorial-panel p-5 sm:p-7">
+        <aside className="dashboard-panel editorial-panel p-5 sm:p-7">
           <p className="eyebrow">Degree progress</p>
           <div className="mt-5 flex items-end justify-between gap-3">
             <span className="font-serif text-5xl tracking-[-0.06em] text-stone-900 dark:text-stone-100">{creditsPct.toFixed(0)}<small className="ml-1 text-2xl">%</small></span>
@@ -151,7 +151,7 @@ export default function Dashboard({
       </section>
 
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
-        <div>
+        <div className="dashboard-actions">
           <div className="mb-4 flex items-end justify-between gap-4"><div><p className="eyebrow">Next actions</p><h3 className="mt-2 font-serif text-2xl text-stone-900 dark:text-stone-100">Keep your record current</h3></div></div>
           <div className="divide-y divide-stone-200 border-y border-stone-200 dark:divide-stone-700 dark:border-stone-700">
             {academicActions.map(({ label, description, tab, icon: Icon }) => <button type="button" key={tab} onClick={() => setActiveTab(tab)} className="group flex w-full items-center gap-4 py-4 text-left transition-colors hover:bg-[#f4eee9] dark:hover:bg-[#34302b]"><span className="flex h-9 w-9 items-center justify-center border border-stone-300 text-[#a65337] dark:border-stone-600 dark:text-[#d99579]"><Icon size={16} /></span><span className="min-w-0 flex-1"><strong className="block text-sm font-semibold text-stone-800 dark:text-stone-100">{label}</strong><small className="mt-1 block text-xs text-stone-500">{description}</small></span><ArrowUpRight size={15} className="text-stone-400 transition-transform group-hover:translate-x-0.5 group-hover:text-[#a65337]" /></button>)}

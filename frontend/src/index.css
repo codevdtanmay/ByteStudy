@@ -176,8 +176,33 @@ html.dark .byteai-input-bar { border-color: #30254e; background: #111221; }
 .grade-selector-control { min-width: 0; }
 @media (max-width: 639px) {
   .grade-selector-control { width: 100%; align-items: stretch; }
-  .grade-selector-control select { width: 100%; min-width: 0; max-width: 100%; }
+.grade-selector-control select { width: 100%; min-width: 0; max-width: 100%; }
 }
+
+/* Overview page: use the same calm product surfaces as the secondary pages. */
+.dashboard-hero {
+  border-color: var(--glass-border);
+  background: linear-gradient(135deg, var(--glass-bg), color-mix(in srgb, var(--brand-primary) 7%, var(--glass-bg)));
+  box-shadow: var(--glass-shadow);
+}
+.dashboard-page .dashboard-hero h2,
+.dashboard-page .dashboard-panel h3,
+.dashboard-page .dashboard-actions h3 {
+  color: var(--text-primary);
+}
+.dashboard-metrics {
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-panel);
+  background: var(--glass-bg);
+  box-shadow: var(--glass-shadow);
+}
+.dashboard-metrics .academic-metric { border-color: var(--glass-border); }
+.dashboard-metrics .academic-metric:hover { background: color-mix(in srgb, var(--brand-primary) 7%, var(--glass-bg)); }
+.dashboard-panel { background: var(--glass-bg); }
+.dashboard-actions > div > div { border-color: var(--glass-border); }
+.dashboard-actions button:hover { background: color-mix(in srgb, var(--brand-primary) 7%, var(--glass-bg)); }
+html.dark .dashboard-hero { background: linear-gradient(135deg, #17171f, #1c1930); }
 
 button,
 input,

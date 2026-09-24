@@ -24,7 +24,16 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
-  const [isByteAiOpen, setIsByteAiOpen] = useState(false);
+  const [byteAiReturnTab, setByteAiReturnTab] = useState('dashboard');
+
+  const toggleByteAi = () => {
+    if (store.activeTab === 'advisor') {
+      store.setActiveTab(byteAiReturnTab || 'dashboard');
+    } else {
+      setByteAiReturnTab(store.activeTab);
+      store.setActiveTab('advisor');
+    }
+  };
 
   // Restore a previously authenticated account, including after a browser refresh.
   useEffect(() => {
@@ -92,8 +101,8 @@ export default function App() {
           handleLogout={store.handleLogout}
           onOpenSidebar={() => setSidebarOpen(true)}
           onOpenSearch={() => setIsSearchOpen(true)}
-          isByteAiOpen={isByteAiOpen}
-          onToggleByteAi={() => setIsByteAiOpen(open => !open)}
+          isByteAiOpen={store.activeTab === 'advisor'}
+          onToggleByteAi={toggleByteAi}
         />
 
         {/* Dynamic Workspace Container */}
@@ -206,20 +215,6 @@ export default function App() {
           <p>Orchestrated & Managed with ❤️ by TANMAY</p>
         </footer>
       </div>
-
-      {isByteAiOpen && (
-        <>
-          <button type="button" onClick={() => setIsByteAiOpen(false)} className="fixed inset-0 z-40 bg-slate-950/45 backdrop-blur-[2px]" aria-label="Close ByteAI assistant" />
-          <aside className="fixed inset-x-3 bottom-3 top-[88px] z-50 sm:left-auto sm:right-6 sm:w-[min(680px,calc(100vw-3rem))]" aria-label="ByteAI assistant">
-            <AdvisorPanel
-              advisorChat={store.advisorChat}
-              addUserChat={store.addUserChat}
-              clearChatLogs={store.clearChatLogs}
-              compact
-            />
-          </aside>
-        </>
-      )}
 
       {/* Global Search Modal (Ctrl+K) */}
       <SearchModal
