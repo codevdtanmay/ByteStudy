@@ -10,7 +10,6 @@ import {
   Sliders,
   Shield,
   FileText,
-  Brain,
   Sun,
   Moon,
   LogOut,
@@ -37,7 +36,6 @@ const NAV_SECTIONS = [
     items: [
       { id: 'predictor', label: 'Target Estimator', icon: TrendingUp },
       { id: 'gradesim', label: 'Grade Simulator', icon: Sliders },
-      { id: 'advisor', label: 'ByteAI Advisor', icon: Brain },
       { id: 'focus', label: 'Focus Zone', icon: Clock },
       { id: 'deadlines', label: 'Deadline Planner', icon: Calendar },
       { id: 'expenses', label: 'Pocket Budget', icon: DollarSign },

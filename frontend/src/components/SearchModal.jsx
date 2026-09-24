@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, BookOpen, Clock, Calendar, DollarSign, Sliders, Brain, Briefcase, TrendingUp, FileText, ArrowRight } from 'lucide-react';
+import { Search, X, BookOpen, Clock, Calendar, DollarSign, Sliders, Briefcase, TrendingUp, FileText, ArrowRight } from 'lucide-react';
 import { SYLLABUS } from '../data/syllabus';
 
 const QUICK_TOOLS = [
   { id: 'dashboard', title: 'Dashboard & SGPA Timeline', category: 'Academic', icon: BookOpen },
-  { id: 'advisor', title: 'ByteAI Study Advisor 🤖', category: 'AI Assistant', icon: Brain },
   { id: 'semesters', title: 'Semesters & Course Attendance', category: 'Academic', icon: BookOpen },
   { id: 'predictor', title: 'Target CGPA Estimator', category: 'Planner', icon: TrendingUp },
   { id: 'pyqs', title: 'Syllabus & Past Exam PYQs', category: 'Resources', icon: FileText },

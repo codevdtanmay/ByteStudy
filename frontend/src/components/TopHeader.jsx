@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Sun, Moon, LogOut, Search } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, Search, Brain, Sparkles } from 'lucide-react';
 
 const TAB_TITLES = {
   dashboard: { title: 'Overview' },
@@ -15,7 +15,7 @@ const TAB_TITLES = {
   admin: { title: 'Admin Console' }
 };
 
-export default function TopHeader({ activeTab, studentId, currentCgpa, theme, setTheme, handleLogout, onOpenSidebar, onOpenSearch }) {
+export default function TopHeader({ activeTab, studentId, currentCgpa, theme, setTheme, handleLogout, onOpenSidebar, onOpenSearch, isByteAiOpen, onToggleByteAi }) {
   const tabInfo = TAB_TITLES[activeTab] || TAB_TITLES.dashboard;
 
   return (
@@ -35,6 +35,16 @@ export default function TopHeader({ activeTab, studentId, currentCgpa, theme, se
             <Search size={15} />
             <span>Search</span>
             <kbd>⌘K</kbd>
+          </button>
+          <button
+            type="button"
+            onClick={onToggleByteAi}
+            className={`byteai-navbar-button ${isByteAiOpen ? 'byteai-navbar-button-open' : ''}`}
+            aria-expanded={isByteAiOpen}
+            aria-label={isByteAiOpen ? 'Close ByteAI assistant' : 'Open ByteAI assistant'}
+          >
+            {isByteAiOpen ? <Brain size={15} /> : <Sparkles size={15} />}
+            <span>{isByteAiOpen ? 'RestAI' : 'ByteAI'}</span>
           </button>
           <div className="hidden border-l border-stone-200 pl-3 text-right dark:border-stone-700 lg:block">
             <p className="eyebrow">Student ID</p>

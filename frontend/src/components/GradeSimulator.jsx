@@ -110,7 +110,7 @@ export default function GradeSimulator({
                   </div>
 
                   {/* Selector options */}
-                  <div className="flex w-full min-w-0 flex-col items-stretch gap-1.5 sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:self-center">
+                  <div className="grade-selector-control flex w-full min-w-0 flex-col items-stretch gap-1.5 sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:self-center">
                     <span className="text-[10px] font-bold text-slate-455 uppercase tracking-wider">Predict Grade:</span>
                     <select
                       value={selectedGrade}

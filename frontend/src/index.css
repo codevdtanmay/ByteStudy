@@ -122,6 +122,63 @@ body {
   line-height: 1;
 }
 
+.byteai-navbar-button {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem .8rem;
+  border: 1px solid #a78bfa;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b);
+  color: white;
+  box-shadow: 0 5px 18px rgba(139, 92, 246, .3);
+  cursor: pointer;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.byteai-navbar-button:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 8px 24px rgba(236, 72, 153, .35); filter: saturate(1.15); }
+.byteai-navbar-button-open { background: linear-gradient(135deg, #334155, #1e293b); border-color: #94a3b8; box-shadow: 0 5px 18px rgba(15, 23, 42, .28); }
+
+.byteai-surface { border: 1px solid #d9c9ff; background: #fffaff; box-shadow: 0 24px 70px rgba(76, 29, 149, .18); }
+.byteai-header { color: #20153d; border-bottom: 1px solid #eadfff; background: linear-gradient(115deg, #f5edff, #fff4fb 58%, #fff8e8); }
+.byteai-avatar { background: linear-gradient(135deg, #6d28d9, #db2777 58%, #f59e0b); box-shadow: 0 6px 18px rgba(124, 58, 237, .3); }
+.byteai-status { color: #059669; }
+.byteai-clear { color: #7c3aed; }
+.byteai-clear:hover { background: #f1e8ff; color: #e11d48; }
+.byteai-messages { background: linear-gradient(180deg, #fffaff, #fbf8ff); }
+.byteai-message-avatar { color: #7c3aed; border: 1px solid #d8c4ff; background: #f1e8ff; }
+.byteai-bubble-ai { color: #24183d; border: 1px solid #eadfff; background: #ffffff; }
+.byteai-bubble-user { background: linear-gradient(135deg, #6d28d9, #db2777); }
+.byteai-typing { border: 1px solid #eadfff; background: #ffffff; }
+.byteai-actions { border-top: 1px solid #eadfff; background: #fff8fd; }
+.byteai-actions-label { color: #8b5cf6; }
+.byteai-quick-action { border-color: #d8c4ff; color: #5b21b6; background: linear-gradient(135deg, #f5edff, #fff0f7); }
+.byteai-quick-action:hover { color: #fff; border-color: transparent; background: linear-gradient(135deg, #6d28d9, #db2777); transform: translateY(-1px); }
+.byteai-input-bar { border-top: 1px solid #eadfff; background: #fffaff; }
+
+html.dark .byteai-surface { border-color: #49377a; background: #111221; box-shadow: 0 24px 70px rgba(0, 0, 0, .55); }
+html.dark .byteai-header { color: #f8f4ff; border-color: #30254e; background: linear-gradient(115deg, #1b1530, #211526 58%, #2a2114); }
+html.dark .byteai-status { color: #6ee7b7; }
+html.dark .byteai-clear { color: #c4b5fd; }
+html.dark .byteai-clear:hover { background: #2a2146; color: #fda4af; }
+html.dark .byteai-messages { background: linear-gradient(180deg, #111221, #0c0d18); }
+html.dark .byteai-message-avatar { color: #c4b5fd; border-color: #49377a; background: #251b42; }
+html.dark .byteai-bubble-ai { color: #f5f3ff; border-color: #30254e; background: #191a2a; }
+html.dark .byteai-typing { border-color: #30254e; background: #191a2a; }
+html.dark .byteai-actions { border-color: #30254e; background: #151525; }
+html.dark .byteai-actions-label { color: #c4b5fd; }
+html.dark .byteai-quick-action { border-color: #49377a; color: #ddd6fe; background: linear-gradient(135deg, #211942, #311b2d); }
+html.dark .byteai-quick-action:hover { color: #fff; border-color: transparent; }
+html.dark .byteai-input-bar { border-color: #30254e; background: #111221; }
+
+.grade-selector-control { min-width: 0; }
+@media (max-width: 639px) {
+  .grade-selector-control { width: 100%; align-items: stretch; }
+  .grade-selector-control select { width: 100%; min-width: 0; max-width: 100%; }
+}
+
 button,
 input,
 select,
