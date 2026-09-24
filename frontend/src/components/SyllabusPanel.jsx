@@ -1,11 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { SYLLABUS } from '../data/syllabus';
 import { Download, Youtube, ExternalLink, FileText, Library, Lock, Sparkles, CheckCircle2, ShieldAlert, Eye, X } from 'lucide-react';
 import EndSemSubscriptionModal from './EndSemSubscriptionModal';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
-import { getProtectedStudyFile, getStudyResources } from '../services/resourceApi';
+import { getProtectedStudyPage, getProtectedStudyPageCount, getStudyResources } from '../services/resourceApi';
+
+function ProtectedDocumentPage({ url, pageNumber }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const image = new Image();
+    image.onload = () => {
+      if (cancelled || !canvasRef.current) return;
+      const canvas = canvasRef.current;
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      canvas.getContext('2d').drawImage(image, 0, 0);
+    };
+    image.src = url;
+    return () => { cancelled = true; image.src = ''; };
+  }, [url]);
+
+  return <canvas ref={canvasRef} aria-label={`Protected document page ${pageNumber}`} className="max-w-full h-auto rounded-lg shadow-lg select-none" onContextMenu={event => event.preventDefault()} />;
+}
 
 export default function SyllabusPanel({
   uploadedPyqs = [],
@@ -41,12 +61,21 @@ export default function SyllabusPanel({
   const openProtectedResource = async (resource) => {
     setViewer({ title: resource.title, loading: true });
     try {
-      const blob = await getProtectedStudyFile(resource.id);
-      setViewer({ title: resource.title, url: URL.createObjectURL(blob), loading: false });
+      const pageCount = await getProtectedStudyPageCount(resource.id);
+      const pageUrls = await Promise.all(Array.from({ length: pageCount }, async (_, page) => {
+        const blob = await getProtectedStudyPage(resource.id, page);
+        return URL.createObjectURL(blob);
+      }));
+      setViewer({ title: resource.title, pages: pageUrls, loading: false });
     } catch (error) {
       setViewer(null);
-      alert(error.message || 'This resource is not available yet.');
+      alert(error.message || 'This protected document is not available yet.');
     }
+  };
+
+  const closeViewer = () => {
+    (viewer?.pages || []).forEach(url => URL.revokeObjectURL(url));
+    setViewer(null);
   };
 
   const resourceYear = (resource) => resource.examYear || Number((resource.title || '').match(/20\d{2}/)?.[0]) || null;
@@ -357,14 +386,18 @@ export default function SyllabusPanel({
               <div className="flex items-center justify-between text-white mb-2">
                 <h3 className="font-bold truncate">{viewer.title}</h3>
                 <button
-                  onClick={() => { URL.revokeObjectURL(viewer.url); setViewer(null); }}
+                  onClick={closeViewer}
                   className="p-2 hover:bg-white/10 rounded-lg"
                   aria-label="Close document viewer"
                 >
                   <X size={20} />
                 </button>
               </div>
-              <iframe title={viewer.title} src={viewer.url} className="flex-1 w-full rounded-xl bg-white" />
+              <div className="flex-1 overflow-y-auto rounded-xl bg-slate-200 p-3 sm:p-6" onContextMenu={event => event.preventDefault()}>
+                <div className="mx-auto flex max-w-4xl flex-col items-center gap-5">
+                  {viewer.pages.map((url, index) => <ProtectedDocumentPage key={url} url={url} pageNumber={index + 1} />)}
+                </div>
+              </div>
             </>
           )}
         </div>,

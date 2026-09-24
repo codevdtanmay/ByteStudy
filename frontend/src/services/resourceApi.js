@@ -63,6 +63,25 @@ export async function getProtectedStudyFile(resourceId) {
   return response.blob();
 }
 
+async function protectedBinaryRequest(path) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    headers: getAuthToken() ? { Authorization: `Bearer ${getAuthToken()}` } : {},
+    cache: 'no-store',
+  });
+  if (!response.ok) throw new Error('The protected document page could not be opened.');
+  return response;
+}
+
+export async function getProtectedStudyPageCount(resourceId) {
+  const response = await protectedBinaryRequest(`/pyqs/${resourceId}/pages`);
+  return (await response.json()).pages;
+}
+
+export async function getProtectedStudyPage(resourceId, page) {
+  const response = await protectedBinaryRequest(`/pyqs/${resourceId}/pages/${page}`);
+  return response.blob();
+}
+
 export function getStudyResources(semesterNumber) {
   return jsonRequest(semesterNumber ? `/pyqs/semester/${semesterNumber}` : '/pyqs');
 }

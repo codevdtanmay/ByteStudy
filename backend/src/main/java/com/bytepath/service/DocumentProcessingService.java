@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 @Service
 public class DocumentProcessingService {
@@ -36,6 +40,41 @@ public class DocumentProcessingService {
             }
             doc.save(out); return out.toByteArray();
         } catch (Exception ex) { throw new IllegalStateException("Could not watermark this PDF.", ex); }
+    }
+
+    public int pageCount(byte[] input) {
+        try (PDDocument doc = Loader.loadPDF(input)) {
+            return doc.getNumberOfPages();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Could not read this PDF.", ex);
+        }
+    }
+
+    /** Render one watermarked page so the browser never receives the source PDF. */
+    public byte[] renderWatermarkedPage(byte[] input, int pageIndex, String watermark) {
+        try (PDDocument doc = Loader.loadPDF(input); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            if (pageIndex < 0 || pageIndex >= doc.getNumberOfPages()) {
+                throw new IllegalArgumentException("Requested page does not exist.");
+            }
+            var image = new PDFRenderer(doc).renderImageWithDPI(pageIndex, 150);
+            Graphics2D graphics = image.createGraphics();
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setColor(new Color(120, 120, 120, 85));
+            graphics.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+            graphics.rotate(Math.toRadians(-32), image.getWidth() / 2.0, image.getHeight() / 2.0);
+            for (int y = -image.getHeight(); y < image.getHeight() * 2; y += 150) {
+                for (int x = -image.getWidth(); x < image.getWidth() * 2; x += 420) {
+                    graphics.drawString(watermark, x, y);
+                }
+            }
+            graphics.dispose();
+            ImageIO.write(image, "png", out);
+            return out.toByteArray();
+        } catch (IllegalArgumentException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new IllegalStateException("Could not render this PDF page.", ex);
+        }
     }
 
     public String extractTextOrOcr(byte[] input) {

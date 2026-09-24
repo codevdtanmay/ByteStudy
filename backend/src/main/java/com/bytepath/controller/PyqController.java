@@ -99,6 +99,31 @@ public class PyqController {
             request.getRemoteAddr(), request.getHeader("User-Agent")));
     }
 
+    @GetMapping("/{id}/pages")
+    public ResponseEntity<java.util.Map<String, Integer>> pageCount(
+            @AuthenticationPrincipal User user, @PathVariable Long id, HttpServletRequest request) {
+        dataService.createPyqAccess(user, id, request.getRemoteAddr(), request.getHeader("User-Agent"));
+        var resource = dataService.findPyq(id);
+        if (!"application/pdf".equalsIgnoreCase(resource.getMimeType())) {
+            throw new IllegalArgumentException("Only PDF resources support protected page viewing.");
+        }
+        return ResponseEntity.ok(java.util.Map.of("pages", documents.pageCount(storage.getObjectBytes(resource.getObjectKey()))));
+    }
+
+    @GetMapping("/{id}/pages/{page}")
+    public ResponseEntity<ByteArrayResource> page(
+            @AuthenticationPrincipal User user, @PathVariable Long id, @PathVariable int page,
+            HttpServletRequest request) {
+        dataService.createPyqAccess(user, id, request.getRemoteAddr(), request.getHeader("User-Agent"));
+        var resource = dataService.findPyq(id);
+        byte[] rendered = documents.renderWatermarkedPage(storage.getObjectBytes(resource.getObjectKey()), page,
+            user.getLoginId() + " | " + user.getEmail());
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CACHE_CONTROL, "no-store, no-cache, must-revalidate")
+            .contentType(MediaType.IMAGE_PNG)
+            .body(new ByteArrayResource(rendered));
+    }
+
     @Operation(summary = "Delete a PYQ resource (ADMIN only)")
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/{id}")
