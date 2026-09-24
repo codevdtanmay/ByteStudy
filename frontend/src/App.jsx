@@ -196,8 +196,8 @@ export default function App() {
 
         {/* Global Footer */}
         <footer className="border-t border-stone-200 dark:border-stone-700 py-6 text-center text-[10px] uppercase tracking-[0.14em] text-stone-400 relative z-10 shrink-0 mt-auto">
-          <p>Built with &hearts by ANUJ</p>
-          <p>Orchestreted & Managed with &hearts by TANMAY</p>
+          <p>Built with ❤️ by ANUJ</p>
+          <p>Orchestrated & Managed with ❤️ by TANMAY</p>
         </footer>
       </div>
 
