@@ -1,11 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { SYLLABUS } from '../data/syllabus';
-import { Download, Youtube, ExternalLink, FileText, Library, Lock, Sparkles, CheckCircle2, ShieldAlert, Eye, X } from 'lucide-react';
+import { Download, Youtube, Play, FileText, Library, Lock, Sparkles, CheckCircle2, ShieldAlert, Eye, X } from 'lucide-react';
 import EndSemSubscriptionModal from './EndSemSubscriptionModal';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
 import { getProtectedStudyPage, getProtectedStudyPageCount, getPublicSyllabusFile, getPublicSyllabusPage, getPublicSyllabusPageCount, getStudyResources } from '../services/resourceApi';
+import { addStudentVideo, deleteStudentVideo, getStudentVideos } from '../services/studentVideoApi';
+
+function getYouTubeEmbedUrl(value) {
+  try {
+    const url = new URL(value);
+    let videoId = url.searchParams.get('v');
+    if (!videoId && (url.hostname === 'youtu.be' || url.hostname.endsWith('youtube.com'))) {
+      const parts = url.pathname.split('/').filter(Boolean);
+      videoId = parts[0] === 'shorts' || parts[0] === 'embed' || parts[0] === 'live' ? parts[1] : parts[0];
+    }
+    return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0` : null;
+  } catch {
+    return null;
+  }
+}
 
 function ProtectedDocumentPage({ url, pageNumber }) {
   const canvasRef = useRef(null);
@@ -40,6 +55,10 @@ export default function SyllabusPanel({
   const [remoteResources, setRemoteResources] = useState([]);
   const [examPicker, setExamPicker] = useState(null);
   const [viewer, setViewer] = useState(null);
+  const [videoPlayer, setVideoPlayer] = useState(null);
+  const [studentVideos, setStudentVideos] = useState([]);
+  const [videoInput, setVideoInput] = useState({});
+  const [savingVideoFor, setSavingVideoFor] = useState('');
   const isAdmin = isAdminAccount({ role: userRole });
   const hasPremiumAccess = isAdmin || hasEndSemSubscription;
 
@@ -52,11 +71,52 @@ export default function SyllabusPanel({
   }, [selectedSem]);
 
   useEffect(() => {
-    if (!viewer) return undefined;
+    let cancelled = false;
+    getStudentVideos(selectedSem)
+      .then(videos => { if (!cancelled) setStudentVideos(videos || []); })
+      .catch(() => { if (!cancelled) setStudentVideos([]); });
+    return () => { cancelled = true; };
+  }, [selectedSem]);
+
+  useEffect(() => {
+    if (!viewer && !videoPlayer) return undefined;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = previousOverflow; };
-  }, [viewer]);
+  }, [viewer, videoPlayer]);
+
+  const openVideo = (video) => {
+    const embedUrl = getYouTubeEmbedUrl(video.fileData || video.url || '');
+    if (!embedUrl) {
+      alert('This YouTube link is not valid or cannot be embedded.');
+      return;
+    }
+    setVideoPlayer({ title: video.title, embedUrl });
+  };
+
+  const saveStudentVideo = async (courseCode) => {
+    const url = (videoInput[courseCode] || '').trim();
+    if (!url) return;
+    setSavingVideoFor(courseCode);
+    try {
+      const video = await addStudentVideo({ semesterNumber: selectedSem, courseCode, url });
+      setStudentVideos(previous => [video, ...previous]);
+      setVideoInput(previous => ({ ...previous, [courseCode]: '' }));
+    } catch (error) {
+      alert(error.message || 'The video link could not be saved.');
+    } finally {
+      setSavingVideoFor('');
+    }
+  };
+
+  const removeStudentVideo = async (id) => {
+    try {
+      await deleteStudentVideo(id);
+      setStudentVideos(previous => previous.filter(video => video.id !== id));
+    } catch (error) {
+      alert(error.message || 'The video link could not be removed.');
+    }
+  };
 
   const openProtectedResource = async (resource) => {
     setViewer({ title: resource.title, loading: true });
@@ -259,6 +319,7 @@ export default function SyllabusPanel({
             ...uploadedPyqs.filter(r => r.courseCode === course.code && !r.objectKey)
           ];
           const youtubeLinks = customResources.filter(r => r.type === 'YouTube Link');
+          const myVideos = studentVideos.filter(video => video.courseCode === course.code);
           const dynamicYtQuery = `https://www.youtube.com/results?search_query=${encodeURIComponent(course.title + ' B.Tech CS IT One Shot Lecture')}`;
 
           return (
@@ -300,22 +361,50 @@ export default function SyllabusPanel({
                     <div className="pt-2 border-t border-dashed border-slate-200 dark:border-indigo-950/20 space-y-1.5">
                       <p className="text-[10px] font-bold text-indigo-650 dark:text-indigo-400 uppercase tracking-wider">Recommended Videos</p>
                       {youtubeLinks.map(vid => (
-                        <a 
+                        <button
                           key={vid.id}
-                          href={vid.fileData}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          type="button"
+                          onClick={() => openVideo(vid)}
                           className="flex items-center justify-between bg-white dark:bg-surface-800 hover:bg-rose-50/20 dark:hover:bg-rose-950/10 p-2 rounded-lg border border-slate-100 dark:border-indigo-950/10 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 transition-colors text-[11px] font-semibold"
                         >
                           <span className="truncate mr-2 flex items-center gap-1">
-                            <ExternalLink size={10} className="shrink-0" />
+                            <Play size={10} className="shrink-0 fill-current" />
                             {vid.title}
                           </span>
                           <span className="text-[9px] bg-rose-100 dark:bg-rose-950/20 px-1.5 py-0.5 rounded text-rose-600 dark:text-rose-400 font-bold shrink-0">Watch</span>
-                        </a>
+                        </button>
                       ))}
                     </div>
                   )}
+
+                  <div className="pt-2 border-t border-dashed border-slate-200 dark:border-indigo-950/20 space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-[10px] font-bold text-indigo-650 dark:text-indigo-400 uppercase tracking-wider">My Tutorial Playlist</p>
+                      <span className="text-[10px] text-slate-400">{myVideos.length} saved</span>
+                    </div>
+                    {myVideos.map(video => (
+                      <div key={video.id} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 dark:border-indigo-950/10 dark:bg-surface-800">
+                        <button type="button" onClick={() => openVideo(video)} className="flex min-w-0 flex-1 items-center gap-1.5 text-left text-[11px] font-semibold text-slate-700 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-indigo-300">
+                          <Play size={10} className="shrink-0 fill-current" />
+                          <span className="truncate">{video.title}</span>
+                        </button>
+                        <button type="button" onClick={() => removeStudentVideo(video.id)} className="shrink-0 rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-950/20" aria-label={`Remove ${video.title}`}><X size={12} /></button>
+                      </div>
+                    ))}
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={videoInput[course.code] || ''}
+                        onChange={event => setVideoInput(previous => ({ ...previous, [course.code]: event.target.value }))}
+                        onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); saveStudentVideo(course.code); } }}
+                        placeholder="Paste a YouTube link to save"
+                        className="app-input min-w-0 flex-1 px-2.5 py-1.5 text-[11px]"
+                      />
+                      <button type="button" onClick={() => saveStudentVideo(course.code)} disabled={savingVideoFor === course.code || !(videoInput[course.code] || '').trim()} className="rounded-lg bg-indigo-600 px-2.5 text-[10px] font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">
+                        {savingVideoFor === course.code ? 'Saving...' : 'Save'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Exam Prep Materials */}
@@ -438,6 +527,27 @@ export default function SyllabusPanel({
               )}
             </>
           )}
+        </div>,
+        document.body
+      )}
+
+      {videoPlayer && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/90 p-3 sm:p-8" onClick={() => setVideoPlayer(null)}>
+          <div className="w-full max-w-5xl overflow-hidden rounded-2xl bg-slate-900 shadow-2xl" onClick={event => event.stopPropagation()}>
+            <div className="flex items-center justify-between gap-3 px-4 py-3 text-white">
+              <h3 className="truncate text-sm font-bold">{videoPlayer.title}</h3>
+              <button type="button" onClick={() => setVideoPlayer(null)} className="rounded-lg p-2 hover:bg-white/10" aria-label="Close video"><X size={20} /></button>
+            </div>
+            <div className="aspect-video w-full bg-black">
+              <iframe
+                title={videoPlayer.title}
+                src={videoPlayer.embedUrl}
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>,
         document.body
       )}
