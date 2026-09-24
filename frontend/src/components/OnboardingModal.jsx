@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Target, BookOpen, ArrowRight, Sparkles, Check, Sun, Moon } from 'lucide-react';
+import { GraduationCap, Target, BookOpen, ArrowRight, Sparkles, Check, Sun, Moon, Info, X } from 'lucide-react';
 import { SYLLABUS } from '../data/syllabus';
 
 export default function OnboardingModal({
@@ -14,6 +14,7 @@ export default function OnboardingModal({
   const [target, setTarget] = useState(initialTargetCgpa);
   const [currentSemester, setCurrentSemester] = useState(1);
   const [branch, setBranch] = useState('CSE');
+  const [showBranchNotice, setShowBranchNotice] = useState(false);
   const [completedSems, setCompletedSems] = useState(1);
   const [theme, setTheme] = useState(initialTheme);
   const [semSgpas, setSemSgpas] = useState({
@@ -132,7 +133,7 @@ export default function OnboardingModal({
               <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
                 Branch
               </label>
-              <select value={branch} onChange={(e) => setBranch(e.target.value)} className="app-input text-sm font-semibold">
+              <select value={branch} onChange={(e) => { const selectedBranch = e.target.value; setBranch(selectedBranch); if (['ECE', 'ME', 'IE'].includes(selectedBranch)) setShowBranchNotice(true); }} className="app-input text-sm font-semibold">
                 {['CSE', 'IT', 'ECE', 'ME', 'IE'].map((option) => <option key={option} value={option}>{option}</option>)}
               </select>
             </div>
@@ -227,6 +228,29 @@ export default function OnboardingModal({
         </form>
 
       </div>
+
+      {showBranchNotice && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/60 p-4">
+          <div className="relative w-full max-w-md rounded-2xl border border-indigo-200 bg-white p-6 shadow-2xl dark:border-indigo-900/50 dark:bg-[#172033]">
+            <button type="button" onClick={() => setShowBranchNotice(false)} className="absolute right-4 top-4 text-slate-400 hover:text-slate-700 dark:hover:text-white" aria-label="Close branch notice">
+              <X size={18} />
+            </button>
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-500">
+              <Info size={22} />
+            </div>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white">A note about your branch</h3>
+            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+              ByteStudy currently syncs with the CSE/IT syllabus. Branch-specific content for ECE, ME, and IE will be added later.
+            </p>
+            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
+              For now, first-year subjects are shared across branches. The semester order is flipped, so find your semester’s subjects and start flipping through the syllabus.
+            </p>
+            <button type="button" onClick={() => setShowBranchNotice(false)} className="mt-5 w-full rounded-xl bg-indigo-500 px-4 py-3 text-sm font-bold text-white transition hover:bg-indigo-600">
+              Got it, continue
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
