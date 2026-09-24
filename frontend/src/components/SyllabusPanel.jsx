@@ -96,14 +96,14 @@ export default function SyllabusPanel({
     resource.courseCode === courseCode && resource.status === 'READY' && resourceExamType(resource) === examType
   ).sort((a, b) => (resourceYear(b) || 0) - (resourceYear(a) || 0));
 
-  const chooseExamFile = (resource) => {
+  const chooseExamFile = (resource, selectedExamType) => {
     setExamPicker(null);
-    if (resourceExamType(resource) === 'END_SEM' && !hasPremiumAccess) {
+    if (selectedExamType === 'END_SEM' && !hasPremiumAccess) {
       setPendingDownload({ resource });
       setIsSubModalOpen(true);
       return;
     }
-    if (resourceExamType(resource) === 'SYLLABUS') {
+    if (selectedExamType === 'SYLLABUS') {
       openPublicSyllabus(resource);
     } else {
       openProtectedResource(resource);
@@ -373,7 +373,7 @@ export default function SyllabusPanel({
             </div>
             <div className="grid grid-cols-2 gap-3">
               {examPicker.choices.map(resource => (
-                <button key={resource.id} onClick={() => chooseExamFile(resource)} className="rounded-2xl border border-indigo-200 dark:border-indigo-900/50 p-4 text-left hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors">
+                <button key={resource.id} onClick={() => chooseExamFile(resource, examPicker.examType)} className="rounded-2xl border border-indigo-200 dark:border-indigo-900/50 p-4 text-left hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors">
                   <span className="block text-xl font-black text-indigo-600 dark:text-indigo-300">{examPicker.examType === 'SYLLABUS' ? 'Syllabus' : (resourceYear(resource) || 'Year N/A')}</span>
                   <span className="block mt-1 text-[11px] text-slate-500 truncate">{resource.originalFilename || resource.title}</span>
                   <span className="inline-flex items-center gap-1 mt-3 text-[10px] font-bold text-indigo-600"><Eye size={12} /> Open PDF</span>

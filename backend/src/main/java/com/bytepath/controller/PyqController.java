@@ -51,7 +51,11 @@ public class PyqController {
     @GetMapping("/{id}/public-view")
     public ResponseEntity<ByteArrayResource> publicView(@PathVariable Long id) {
         var resource = dataService.findPyq(id);
-        if (!"SYLLABUS".equalsIgnoreCase(resource.getExamType())) {
+        String title = resource.getTitle() == null ? "" : resource.getTitle();
+        boolean looksLikeExamPaper = title.matches("(?i).*\\b(mid|internal|end|final)\\b.*")
+            || "MID_SEM".equalsIgnoreCase(resource.getExamType())
+            || "END_SEM".equalsIgnoreCase(resource.getExamType());
+        if (!"SYLLABUS".equalsIgnoreCase(resource.getExamType()) || looksLikeExamPaper) {
             throw new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.FORBIDDEN, "Only syllabus documents can be viewed publicly.");
         }

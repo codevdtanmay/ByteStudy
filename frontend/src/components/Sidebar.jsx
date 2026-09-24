@@ -17,7 +17,8 @@ import {
   X,
   Award,
   Target,
-  CheckCircle2
+  CheckCircle2,
+  MessageSquare
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
@@ -64,7 +65,8 @@ export default function Sidebar({
   activeTab,
   setActiveTab,
   isOpen,
-  setIsOpen
+  setIsOpen,
+  onOpenFeedback
 }) {
   const isAdmin = isAdminAccount({ role: userRole });
   const goTo = (id) => {
@@ -147,6 +149,15 @@ export default function Sidebar({
               );
             })}
           </nav>
+
+          <button
+            type="button"
+            onClick={onOpenFeedback}
+            className="mt-7 flex w-full items-center gap-2 rounded-xl border border-indigo-200/70 bg-indigo-50/70 px-3 py-2.5 text-left text-xs font-bold text-indigo-700 transition-colors hover:border-indigo-300 hover:bg-indigo-100 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
+          >
+            <MessageSquare size={16} />
+            <span>Give feedback</span>
+          </button>
         </div>
 
         <div className="border-t border-stone-200 dark:border-stone-700 p-4">

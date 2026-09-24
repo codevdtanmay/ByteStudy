@@ -16,12 +16,14 @@ import AdvisorPanel from './components/AdvisorPanel';
 import OnboardingModal from './components/OnboardingModal';
 import LoginPage from './components/LoginPage';
 import SearchModal from './components/SearchModal';
+import FeedbackModal from './components/FeedbackModal';
 import { consumeOAuthSession, getActiveSession } from './services/authApi';
 
 export default function App() {
   const store = useAcademicStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   // Restore a previously authenticated account, including after a browser refresh.
   useEffect(() => {
@@ -74,6 +76,7 @@ export default function App() {
         setActiveTab={store.setActiveTab}
         isOpen={sidebarOpen}
         setIsOpen={setSidebarOpen}
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
       />
 
       {/* Main Right Content Workspace */}
@@ -207,6 +210,8 @@ export default function App() {
         onClose={() => setIsSearchOpen(false)}
         setActiveTab={store.setActiveTab}
       />
+
+      <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
 
       {/* First-Time Login Onboarding Modal */}
       <OnboardingModal

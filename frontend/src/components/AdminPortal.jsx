@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { SYLLABUS } from '../data/syllabus';
-import { Shield, Plus, Trash2, Video, File, Check } from 'lucide-react';
+import { Shield, Plus, Trash2, Video, File, Check, MessageSquare } from 'lucide-react';
 import { isAdminAccount } from '../services/authApi';
 import { deleteStudyResource, getStudyResources, uploadStudyFile } from '../services/resourceApi';
+import { getFeedback } from '../services/feedbackApi';
 
 export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, userRole }) {
   const isAdmin = isAdminAccount({ role: userRole });
@@ -17,6 +18,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
   const [adminFileName, setAdminFileName] = useState('');
   const [adminYoutubeUrl, setAdminYoutubeUrl] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [feedbackItems, setFeedbackItems] = useState([]);
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -39,6 +41,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
         });
       })
       .catch(() => {});
+    getFeedback().then(setFeedbackItems).catch(() => {});
   }, [isAdmin, setUploadedPyqs]);
 
   // Update selected course code when target semester changes
@@ -147,6 +150,27 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
+      <div className="glass-card p-6 border border-slate-200 dark:border-indigo-950/20">
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg"><MessageSquare size={20} className="text-white" /></div>
+            <div><h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Student feedback</h2><p className="text-xs text-slate-500">Testing-phase suggestions and issue reports</p></div>
+          </div>
+          <span className="rounded-full bg-indigo-100 px-2.5 py-1 text-[10px] font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">{feedbackItems.length} total</span>
+        </div>
+        {feedbackItems.length ? (
+          <div className="space-y-3">
+            {feedbackItems.map(item => (
+              <article key={item.id} className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-surface-600/30 dark:bg-surface-700/30">
+                <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-300">{item.type.replaceAll('_', ' ')}</span><time className="text-[10px] text-slate-400">{new Date(item.createdAt).toLocaleString()}</time></div>
+                <p className="mt-2 whitespace-pre-wrap text-xs leading-relaxed text-slate-700 dark:text-slate-200">{item.message}</p>
+                <p className="mt-2 text-[10px] text-slate-400">{item.studentName} · {item.studentLoginId} · {item.studentEmail}</p>
+              </article>
+            ))}
+          </div>
+        ) : <p className="text-xs text-slate-500">No feedback submitted yet.</p>}
+      </div>
+
       <div className="glass-card p-6 border border-slate-200 dark:border-indigo-950/20">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
