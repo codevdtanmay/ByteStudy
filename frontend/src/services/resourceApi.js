@@ -71,6 +71,18 @@ export async function getPublicSyllabusFile(resourceId) {
   return response.blob();
 }
 
+export async function getPublicSyllabusPageCount(resourceId) {
+  const response = await fetch(`${API_BASE_URL}/pyqs/${resourceId}/public-pages`, { cache: 'no-store' });
+  if (!response.ok) throw new Error('The syllabus pages could not be opened.');
+  return (await response.json()).pages;
+}
+
+export async function getPublicSyllabusPage(resourceId, page) {
+  const response = await fetch(`${API_BASE_URL}/pyqs/${resourceId}/public-pages/${page}`, { cache: 'no-store' });
+  if (!response.ok) throw new Error('The syllabus page could not be opened.');
+  return response.blob();
+}
+
 async function protectedBinaryRequest(path) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: getAuthToken() ? { Authorization: `Bearer ${getAuthToken()}` } : {},

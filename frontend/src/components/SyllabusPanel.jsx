@@ -5,7 +5,7 @@ import { Download, Youtube, ExternalLink, FileText, Library, Lock, Sparkles, Che
 import EndSemSubscriptionModal from './EndSemSubscriptionModal';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
-import { getProtectedStudyPage, getProtectedStudyPageCount, getPublicSyllabusFile, getStudyResources } from '../services/resourceApi';
+import { getProtectedStudyPage, getProtectedStudyPageCount, getPublicSyllabusFile, getPublicSyllabusPage, getPublicSyllabusPageCount, getStudyResources } from '../services/resourceApi';
 
 function ProtectedDocumentPage({ url, pageNumber }) {
   const canvasRef = useRef(null);
@@ -74,8 +74,18 @@ export default function SyllabusPanel({
   };
 
   const openPublicSyllabus = async (resource) => {
-    setViewer({ title: resource.title, loading: true, publicPdf: true });
+    const useMobilePages = window.matchMedia('(max-width: 767px)').matches;
+    setViewer({ title: resource.title, loading: true, publicPdf: !useMobilePages });
     try {
+      if (useMobilePages) {
+        const pageCount = await getPublicSyllabusPageCount(resource.id);
+        const pageUrls = await Promise.all(Array.from({ length: pageCount }, async (_, page) => {
+          const blob = await getPublicSyllabusPage(resource.id, page);
+          return URL.createObjectURL(blob);
+        }));
+        setViewer({ title: resource.title, pages: pageUrls, loading: false, publicPdf: false });
+        return;
+      }
       const blob = await getPublicSyllabusFile(resource.id);
       setViewer({ title: resource.title, pdfUrl: URL.createObjectURL(blob), loading: false, publicPdf: true });
     } catch (error) {
@@ -167,6 +177,10 @@ export default function SyllabusPanel({
 
   return (
     <div className="page-stack syllabus-page animate-fade-in">
+      <div className="md:hidden flex items-start gap-3 rounded-2xl border border-amber-300/50 bg-amber-50/80 px-4 py-3 text-amber-900 dark:border-amber-500/20 dark:bg-amber-950/20 dark:text-amber-200">
+        <span className="text-base" aria-hidden="true">💻</span>
+        <p className="text-xs leading-relaxed"><strong>Best experience:</strong> Use a laptop or desktop for viewing PDFs. Mobile viewing is supported with an optimized page-by-page viewer.</p>
+      </div>
       
       {/* ── End-Sem VIP Pass Banner ─────────────────────────────────── */}
       <div className={`p-4 rounded-2xl glass-card border flex items-center justify-between flex-wrap gap-4 transition-all ${

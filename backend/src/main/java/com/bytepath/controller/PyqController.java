@@ -50,6 +50,32 @@ public class PyqController {
     /** Public inline PDF viewer for syllabus documents only. */
     @GetMapping("/{id}/public-view")
     public ResponseEntity<ByteArrayResource> publicView(@PathVariable Long id) {
+        var resource = publicSyllabusResource(id);
+        byte[] bytes = storage.getObjectBytes(resource.getObjectKey());
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"syllabus.pdf\"")
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(new ByteArrayResource(bytes));
+    }
+
+    @GetMapping("/{id}/public-pages")
+    public ResponseEntity<java.util.Map<String, Integer>> publicPageCount(@PathVariable Long id) {
+        var resource = publicSyllabusResource(id);
+        return ResponseEntity.ok(java.util.Map.of(
+            "pages", documents.pageCount(storage.getObjectBytes(resource.getObjectKey()))));
+    }
+
+    @GetMapping("/{id}/public-pages/{page}")
+    public ResponseEntity<ByteArrayResource> publicPage(@PathVariable Long id, @PathVariable int page) {
+        var resource = publicSyllabusResource(id);
+        byte[] rendered = documents.renderWatermarkedPage(storage.getObjectBytes(resource.getObjectKey()), page, "");
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CACHE_CONTROL, "public, max-age=3600")
+            .contentType(MediaType.IMAGE_PNG)
+            .body(new ByteArrayResource(rendered));
+    }
+
+    private PyqResource publicSyllabusResource(Long id) {
         var resource = dataService.findPyq(id);
         String title = resource.getTitle() == null ? "" : resource.getTitle();
         boolean looksLikeExamPaper = title.matches("(?i).*\\b(mid|internal|end|final)\\b.*")
@@ -63,11 +89,7 @@ public class PyqController {
             throw new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.BAD_REQUEST, "Only PDF syllabus documents can be viewed publicly.");
         }
-        byte[] bytes = storage.getObjectBytes(resource.getObjectKey());
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"syllabus.pdf\"")
-            .contentType(MediaType.APPLICATION_PDF)
-            .body(new ByteArrayResource(bytes));
+        return resource;
     }
 
     @Operation(summary = "Get all PYQ resources (public)")
