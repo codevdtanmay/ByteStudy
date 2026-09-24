@@ -16,7 +16,11 @@ const jsonRequest = async (path, options = {}, canRefresh = true) => {
     await refreshActiveSession();
     return jsonRequest(path, options, false);
   }
-  if (!response.ok) throw new Error(data.message || 'The resource request failed.');
+  if (!response.ok) {
+    const error = new Error(data.message || 'The resource request failed.');
+    error.status = response.status;
+    throw error;
+  }
   return data;
 };
 

@@ -23,7 +23,11 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
     getStudyResources()
       .then(remoteResources => {
         setUploadedPyqs(previous => {
-          const byId = new Map(previous.map(item => [String(item.id), item]));
+          // The backend is the source of truth for uploaded files. Keep only
+          // local YouTube entries; otherwise deleted database rows remain in
+          // localStorage and appear as undeletable 404 resources.
+          const localVideos = previous.filter(item => item.type === 'YouTube Link' && !item.objectKey);
+          const byId = new Map(localVideos.map(item => [String(item.id), item]));
           (remoteResources || []).forEach(resource => byId.set(String(resource.id), {
             ...resource,
             id: String(resource.id),
@@ -130,6 +134,12 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
         setUploadedPyqs(prev => prev.filter(item => String(item.id) !== String(id)));
         alert('Resource deleted successfully.');
       } catch (error) {
+        // Remove stale local rows when the database has already deleted them.
+        if (error.status === 404) {
+          setUploadedPyqs(prev => prev.filter(item => String(item.id) !== String(id)));
+          alert('This resource was already deleted. The registry has been refreshed.');
+          return;
+        }
         alert(error.message || 'The resource could not be deleted.');
       }
     }
