@@ -163,8 +163,7 @@ export default function Sidebar({
               <LogOut size={15} /> Sign out
             </button>
           </div>
-          <p className="mt-3 text-center text-[9px] uppercase tracking-[0.14em] text-stone-400">Scholar suite · 2026</p>
-        </div>
+      </div>
       </aside>
     </>
   );

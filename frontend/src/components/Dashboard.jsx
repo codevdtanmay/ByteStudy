@@ -68,7 +68,7 @@ export default function Dashboard({
     <div className="space-y-8 animate-fade-in">
       <section className="flex flex-col justify-between gap-5 border-b border-stone-200 pb-7 dark:border-stone-700 lg:flex-row lg:items-end">
         <div>
-          <p className="eyebrow text-[#a65337] dark:text-[#d99579]">Academic record / 2026</p>
+
           <h2 className="mt-2 max-w-2xl font-serif text-3xl leading-tight tracking-[-0.04em] text-stone-900 dark:text-stone-100 sm:text-4xl">Stay close to the numbers that shape your degree.</h2>
           <p className="mt-3 max-w-xl text-sm leading-6 text-stone-500 dark:text-stone-400">Track your semester standing, understand your remaining credits, and make the next academic decision with confidence.</p>
         </div>
@@ -158,13 +158,6 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="editorial-panel p-5 sm:p-7">
-          <h3 className="mt-2 font-serif text-2xl text-stone-900 dark:text-stone-100">Grade value scale</h3>
-          <p className="mt-3 text-xs leading-5 text-stone-500">Your SGPA and CGPA use the standard 10-point credit-weighted scale.</p>
-          <div className="mt-6 grid grid-cols-4 gap-px border border-stone-200 bg-stone-200 dark:border-stone-700 dark:bg-stone-700 sm:grid-cols-8">
-            {[['O', '10'], ['A+', '9'], ['A', '8'], ['B+', '7'], ['B', '6'], ['C', '5'], ['P', '4'], ['F', '0']].map(([grade, point]) => <div key={grade} className="bg-[#fffefa] p-2.5 text-center dark:bg-[#292d28]"><div className="text-sm font-semibold text-stone-800 dark:text-stone-100">{grade}</div><div className="mt-1 font-mono text-[10px] text-stone-500">{point} pts</div></div>)}
-          </div>
-        </div>
       </section>
     </div>
   );
