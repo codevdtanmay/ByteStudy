@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Check, CheckCircle2, Copy, Eye, EyeOff, Lock, Mail, Sparkles, User, X } from 'lucide-react';
+import { Check, CheckCircle2, Copy, Eye, EyeOff, Lock, Mail, Sparkles, User, X } from 'lucide-react';
 import { hasRemoteAuthApi, registerAccount, signIn, signInWithGoogleAccessToken, signInWithGoogleProfile } from '../services/authApi';
 import BrandLogo from './BrandLogo';
 
@@ -86,14 +86,12 @@ export default function LoginPage({ onLoginSuccess }) {
     <StudySignal />
     <div className="auth-layout">
       <section className="auth-intro">
-        <div className="auth-kicker"><span className="auth-kicker-line" /> student command center</div>
         <BrandLogo showName />
         <h1>Make your<br /><em>next move</em> count.</h1>
         <p>One calm space for the deadlines, grades and decisions that shape your degree.</p>
-        <div className="auth-intro-foot"><span>01</span><div><strong>Plan with signal.</strong><small>See what matters next, without the noise.</small></div><ArrowUpRight size={18} /></div>
       </section>
       <section className="auth-card">
-      <div className="auth-card-brand"><BrandLogo showName /><span className="auth-status"><i /> secure space</span></div>
+      <div className="auth-card-brand"><BrandLogo showName /></div>
       <div className="space-y-1"><h2>{mode === 'signin' ? 'Welcome back' : 'Start your journey'}</h2><p>{mode === 'signin' ? 'Pick up where your progress left off.' : 'Build a smarter study rhythm from day one.'}</p></div>
       <form onSubmit={submit} className="space-y-4 pt-2">
         {mode === 'signup' && <div className="flex items-center gap-3 px-4 py-3.5 neu-inset"><User size={18} className="text-slate-400"/><input required placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-transparent text-xs focus:outline-none"/></div>}
@@ -104,7 +102,7 @@ export default function LoginPage({ onLoginSuccess }) {
       </form>
       {issued && <div className="space-y-2 p-4 text-center neu-inset"><div className="flex justify-center gap-1 text-xs font-bold text-emerald-600"><CheckCircle2 size={16}/> Account Issued!</div><p className="text-[11px]">Your Unique ByteStudy ID:</p><div className="flex justify-center gap-2"><code className="font-mono text-xs">{issued.loginId}</code><button type="button" onClick={copyId}>{copied ? <Check size={14}/> : <Copy size={14}/>}</button></div><button type="button" onClick={() => onLoginSuccess(issued)} className="text-xs font-bold text-emerald-600">Continue to Portal</button></div>}
       <div className="space-y-4 pt-2"><div className="flex w-full items-center gap-3"><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/><span className="shrink-0 whitespace-nowrap text-center text-[10px] font-bold uppercase tracking-wider text-stone-400">OR CONTINUE WITH</span><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/></div><div className="flex justify-center"><button type="button" onClick={googleSignIn} className="flex h-12 w-12 items-center justify-center rounded-full neu-circle hover:scale-105 sm:h-14 sm:w-14" title="Sign in with Google"><GoogleIcon/></button></div></div>
-      <div className="pt-2 text-center text-xs text-slate-400">{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}<button type="button" onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(''); setIssued(null); }} className="font-bold text-slate-700 dark:text-slate-200">{mode === 'signin' ? 'Sign up' : 'Sign in'}</button></div>
+      <div className="auth-mode-toggle">{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}<button type="button" onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(''); setIssued(null); }}>{mode === 'signin' ? 'Sign up' : 'Sign in'}</button></div>
       <div className="auth-card-note">Your data stays yours <span>·</span> encrypted by default</div>
       </section>
     </div>
