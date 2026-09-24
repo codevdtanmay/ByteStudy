@@ -1,16 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Brain, Send, Trash2, ShieldAlert, Sparkles, MessageSquare, AlertCircle } from 'lucide-react';
-import { SYLLABUS } from '../data/syllabus';
+import { Brain, Send, Trash2 } from 'lucide-react';
 import MarkdownContent from './MarkdownContent';
 
 export default function AdvisorPanel({ 
   advisorChat, 
   addUserChat, 
-  clearChatLogs, 
-  currentSemester, 
-  currentCgpa, 
-  targetCgpa, 
-  calculatedAttendancePercent 
+  clearChatLogs
 }) {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -44,92 +39,9 @@ export default function AdvisorPanel({
     }, 550);
   };
 
-  // Find active subjects
-  const currentSemInfo = SYLLABUS.find(s => s.semester === currentSemester);
-  const courses = currentSemInfo ? currentSemInfo.courses : [];
-
-  // Generate localized audit highlights
-  const auditPoints = [];
-  const attVal = parseFloat(calculatedAttendancePercent);
-  
-  if (isNaN(attVal)) {
-    auditPoints.push({
-      type: 'info',
-      text: "No attendance data logged yet. Add daily classes in the Semesters panel."
-    });
-  } else if (attVal < 75) {
-    auditPoints.push({
-      type: 'warning',
-      text: `Critical attendance shortage (${attVal}%). Go to class to avoid examinations block!`
-    });
-  } else {
-    auditPoints.push({
-      type: 'success',
-      text: `Attendance is safe at ${attVal}%. Keep up the attendance streak!`
-    });
-  }
-
-  // Suggest key subjects to target based on credit counts
-  const highCreditCourses = courses.filter(c => c.credits >= 4);
-  if (highCreditCourses.length > 0) {
-    auditPoints.push({
-      type: 'tip',
-      text: `Focus on ${highCreditCourses.slice(0, 2).map(c => c.title).join(' and ')} - they have high credit weights (4cr) and impact your CGPA the most.`
-    });
-  }
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
-      
-      {/* Left: Dynamic Audit Status */}
-      <div className="glass-card p-6 border border-slate-200 dark:border-indigo-950/20 h-fit space-y-5">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-650 flex items-center justify-center text-white shadow-lg">
-            <Sparkles size={18} />
-          </div>
-          <div>
-            <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 uppercase tracking-wider">Dynamic Study Audit</h3>
-            <p className="text-[10px] text-slate-500">AI guidance grounded in your portfolio metrics</p>
-          </div>
-        </div>
-
-        {/* Audit elements list */}
-        <div className="space-y-3">
-          {auditPoints.map((pt, idx) => (
-            <div 
-              key={idx} 
-              className={`p-3.5 rounded-xl border text-xs leading-relaxed flex gap-2.5
-                ${pt.type === 'warning' 
-                  ? 'bg-rose-500/5 border-rose-500/20 text-rose-700 dark:text-rose-400' 
-                  : pt.type === 'success' 
-                  ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-700 dark:text-emerald-400' 
-                  : 'bg-indigo-500/5 border-indigo-500/20 text-indigo-700 dark:text-indigo-400'
-                }
-              `}
-            >
-              {pt.type === 'warning' ? (
-                <ShieldAlert size={15} className="shrink-0 mt-0.5" />
-              ) : (
-                <MessageSquare size={15} className="shrink-0 mt-0.5" />
-              )}
-              <span>{pt.text}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Informative tips */}
-        <div className="bg-slate-50 dark:bg-surface-750/30 border border-slate-200 dark:border-indigo-950/10 p-4 rounded-xl space-y-2 text-xs text-slate-500 leading-relaxed">
-          <p className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1">
-            <AlertCircle size={13} className="text-indigo-500" /> How does ByteAI work?
-          </p>
-          <p className="text-[11px]">
-            ByteAI uses your academic context to ground answers through the configured AI provider. If the remote service is unavailable, the local academic advisor keeps the panel usable.
-          </p>
-        </div>
-      </div>
-
-      {/* Middle & Right: Chat Interface Container */}
-      <div className="lg:col-span-2 glass-card border border-slate-200 dark:border-indigo-950/20 flex flex-col h-[520px] overflow-hidden">
+    <div className="w-full animate-fade-in">
+      <div className="glass-card border border-slate-200 dark:border-indigo-950/20 flex flex-col h-[calc(100vh-8.5rem)] min-h-[520px] overflow-hidden">
         
         {/* Chat Header */}
         <div className="px-5 py-4 border-b border-slate-150 dark:border-indigo-950/20 flex justify-between items-center bg-slate-50/50 dark:bg-surface-800/10">

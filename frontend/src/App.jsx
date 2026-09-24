@@ -91,7 +91,7 @@ export default function App() {
         />
 
         {/* Dynamic Workspace Container */}
-        <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6 flex-1 w-full space-y-5" tabIndex="-1">
+        <main id="main-content" className={`${store.activeTab === 'advisor' ? 'max-w-none px-4 sm:px-6' : 'max-w-7xl px-4 sm:px-6 lg:px-8'} mx-auto py-5 sm:py-6 flex-1 w-full space-y-5`} tabIndex="-1">
           {store.activeTab === 'dashboard' && (
             <Dashboard 
               chartData={store.chartData}
@@ -109,10 +109,6 @@ export default function App() {
               advisorChat={store.advisorChat}
               addUserChat={store.addUserChat}
               clearChatLogs={store.clearChatLogs}
-              currentSemester={store.currentSemester}
-              currentCgpa={store.currentCgpa}
-              targetCgpa={store.targetCgpa}
-              calculatedAttendancePercent={store.calculatedAttendancePercent}
             />
           )}
 
@@ -200,8 +196,8 @@ export default function App() {
 
         {/* Global Footer */}
         <footer className="border-t border-stone-200 dark:border-stone-700 py-6 text-center text-[10px] uppercase tracking-[0.14em] text-stone-400 relative z-10 shrink-0 mt-auto">
-          <p>Built with &heart by ANUJ</p>
-          <p>Orchestreted & Managed with &heart by TANMAY</p>
+          <p>Built with &hearts by ANUJ</p>
+          <p>Orchestreted & Managed with &hearts by TANMAY</p>
         </footer>
       </div>
 
