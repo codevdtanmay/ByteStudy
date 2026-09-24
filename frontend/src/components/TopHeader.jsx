@@ -20,8 +20,8 @@ export default function TopHeader({ activeTab, studentId, currentCgpa, theme, se
 
   return (
     <header className="product-header">
-      <div className="flex min-h-[82px] items-center justify-between gap-5 px-5 py-4 sm:px-8 lg:px-10">
-        <div className="flex min-w-0 items-center gap-3">
+      <div className="product-header-inner flex min-h-[82px] items-center justify-between gap-5 px-5 py-4 sm:px-8 lg:px-10">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
           <button type="button" onClick={onOpenSidebar} className="md:hidden icon-button" aria-label="Open navigation">
             <Menu size={18} />
           </button>

@@ -1059,6 +1059,16 @@ html.dark .icon-button {
   }
 }
 
+@media (max-width: 639px) {
+  .product-header { max-width: 100vw; overflow: hidden; }
+  .product-header-inner { gap: .5rem; padding: .7rem .75rem; }
+  .product-header-inner > div:first-child { gap: .5rem; }
+  .product-header-inner h1 { max-width: 34vw; font-size: 20px; }
+  .product-header-inner > div:last-child { gap: .25rem; }
+  .product-header-inner .byteai-navbar-button { padding: .48rem .58rem; font-size: .62rem; }
+  .product-header-inner .icon-button { width: 34px; height: 34px; padding: .45rem; }
+}
+
 /* Final consistency layer for legacy utility classes used by secondary pages. */
 [class~="rounded-3xl"],
 [class~="rounded-2xl"],

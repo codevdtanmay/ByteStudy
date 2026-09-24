@@ -24,6 +24,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const [byteAiReturnTab, setByteAiReturnTab] = useState('dashboard');
 
   const toggleByteAi = () => {
@@ -33,6 +34,12 @@ export default function App() {
       setByteAiReturnTab(store.activeTab);
       store.setActiveTab('advisor');
     }
+  };
+
+  const requestLogout = () => setIsLogoutConfirmOpen(true);
+  const confirmLogout = () => {
+    setIsLogoutConfirmOpen(false);
+    store.handleLogout();
   };
 
   // Restore a previously authenticated account, including after a browser refresh.
@@ -74,7 +81,7 @@ export default function App() {
         studentId={store.studentId}
         userRole={store.userRole}
         studentName={store.studentName}
-        handleLogout={store.handleLogout}
+        handleLogout={requestLogout}
         theme={store.theme}
         setTheme={store.setTheme}
         currentCgpa={store.currentCgpa}
@@ -98,7 +105,7 @@ export default function App() {
           currentCgpa={store.currentCgpa}
           theme={store.theme}
           setTheme={store.setTheme}
-          handleLogout={store.handleLogout}
+          handleLogout={requestLogout}
           onOpenSidebar={() => setSidebarOpen(true)}
           onOpenSearch={() => setIsSearchOpen(true)}
           isByteAiOpen={store.activeTab === 'advisor'}
@@ -224,6 +231,20 @@ export default function App() {
       />
 
       <FeedbackModal isOpen={isFeedbackOpen} onClose={() => setIsFeedbackOpen(false)} />
+
+      {isLogoutConfirmOpen && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="logout-confirm-title">
+          <div className="w-full max-w-sm rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-2xl dark:border-surface-600 dark:bg-surface-800">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-500/10 text-rose-500">↪</div>
+            <h2 id="logout-confirm-title" className="mt-4 text-lg font-bold text-slate-800 dark:text-white">You really wanna go??</h2>
+            <p className="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">Your saved profile and academic records will remain safe. You can sign in again anytime.</p>
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button type="button" onClick={() => setIsLogoutConfirmOpen(false)} className="secondary-button justify-center">No, stay</button>
+              <button type="button" onClick={confirmLogout} className="btn-primary justify-center bg-rose-600 hover:bg-rose-700">Yes, logout</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* First-Time Login Onboarding Modal */}
       <OnboardingModal
