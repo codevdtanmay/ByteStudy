@@ -115,6 +115,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.currency-symbol {
+  font-family: Arial, "Noto Sans", sans-serif;
+  font-weight: 700;
+  font-variant-numeric: normal;
+  line-height: 1;
+}
+
 button,
 input,
 select,

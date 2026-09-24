@@ -159,7 +159,7 @@ export default function EndSemSubscriptionModal({
             }`}
           >
             <div className="text-[10px] uppercase font-bold text-slate-400">Standard</div>
-            <div className="text-lg font-black mt-0.5">₹99 <span className="text-xs font-normal text-slate-400">/ Sem</span></div>
+            <div className="text-lg font-black mt-0.5"><span className="currency-symbol">₹</span>99 <span className="text-xs font-normal text-slate-400">/ Sem</span></div>
             <div className="text-[10px] text-slate-400 mt-1">Single Semester Access</div>
           </button>
 
@@ -175,7 +175,7 @@ export default function EndSemSubscriptionModal({
               Best Value
             </span>
             <div className="text-[10px] uppercase font-bold text-slate-400">Lifetime Pass</div>
-            <div className="text-lg font-black mt-0.5">₹199 <span className="text-xs font-normal text-slate-400">/ All Sems</span></div>
+            <div className="text-lg font-black mt-0.5"><span className="currency-symbol">₹</span>199 <span className="text-xs font-normal text-slate-400">/ All Sems</span></div>
             <div className="text-[10px] text-slate-400 mt-1">Unlimited B.Tech Degree</div>
           </button>
         </div>
@@ -187,7 +187,7 @@ export default function EndSemSubscriptionModal({
           className="w-full btn-primary py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm font-bold shadow-xl shadow-indigo-500/30 cursor-pointer disabled:opacity-50"
         >
           <CreditCard size={16} />
-          <span>{isProcessing ? 'Connecting Razorpay...' : `Pay ₹${selectedPlan.price} via Razorpay`}</span>
+          <span>{isProcessing ? 'Connecting Razorpay...' : <>Pay <span className="currency-symbol">₹</span>{selectedPlan.price} via Razorpay</>}</span>
           <ArrowRight size={16} />
         </button>
 

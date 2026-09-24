@@ -1,5 +1,11 @@
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID || '';
-const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI || `${window.location.origin}/focus`;
+// Production must register this exact URL in the Spotify developer dashboard.
+// Falling back to the current origin keeps mobile deployments from redirecting
+// back to localhost when the environment variable is omitted.
+const configuredRedirectUri = (import.meta.env.VITE_SPOTIFY_REDIRECT_URI || '').trim();
+const REDIRECT_URI = configuredRedirectUri && !(window.location.hostname !== 'localhost' && configuredRedirectUri.includes('localhost'))
+  ? configuredRedirectUri
+  : `${window.location.origin}/focus`;
 const TOKEN_KEY = 'bytepath.spotify.token.v1';
 const VERIFIER_KEY = 'bytepath.spotify.pkce.verifier.v1';
 const STATE_KEY = 'bytepath.spotify.pkce.state.v1';
@@ -33,6 +39,10 @@ export const spotifyLogin = async () => {
   const state = randomString(16);
   sessionStorage.setItem(VERIFIER_KEY, verifier);
   sessionStorage.setItem(STATE_KEY, state);
+  // Mobile OAuth flows can restore the page in a fresh browsing context.
+  // Keep a same-origin fallback so the callback can still verify the request.
+  localStorage.setItem(VERIFIER_KEY, verifier);
+  localStorage.setItem(STATE_KEY, state);
   const params = new URLSearchParams({ client_id: CLIENT_ID, response_type: 'code', redirect_uri: REDIRECT_URI, scope: 'streaming user-read-email user-read-private', code_challenge_method: 'S256', code_challenge: await sha256(verifier), state });
   window.location.assign(`https://accounts.spotify.com/authorize?${params}`);
 };
@@ -42,14 +52,15 @@ export const spotifyHandleCallback = async () => {
   const code = params.get('code');
   if (!code) return null;
   const state = params.get('state');
-  const expectedState = sessionStorage.getItem(STATE_KEY);
-  const verifier = sessionStorage.getItem(VERIFIER_KEY);
+  const expectedState = sessionStorage.getItem(STATE_KEY) || localStorage.getItem(STATE_KEY);
+  const verifier = sessionStorage.getItem(VERIFIER_KEY) || localStorage.getItem(VERIFIER_KEY);
   window.history.replaceState({}, document.title, window.location.pathname);
   if (!state || state !== expectedState || !verifier) throw new Error('Spotify sign-in could not be verified. Please try again.');
   const response = await fetch('https://accounts.spotify.com/api/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ client_id: CLIENT_ID, grant_type: 'authorization_code', code, redirect_uri: REDIRECT_URI, code_verifier: verifier }) });
   const data = await readResponse(response);
   if (!response.ok) throw new Error(data.error_description || 'Spotify sign-in failed.');
   sessionStorage.removeItem(VERIFIER_KEY); sessionStorage.removeItem(STATE_KEY);
+  localStorage.removeItem(VERIFIER_KEY); localStorage.removeItem(STATE_KEY);
   return writeToken(data);
 };
 

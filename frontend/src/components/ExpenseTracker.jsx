@@ -97,7 +97,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
           
           <form onSubmit={handleSaveBudget} className="flex gap-2">
             <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
+              <span className="currency-symbol absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">₹</span>
               <input 
                 type="number"
                 value={budgetVal}
@@ -131,7 +131,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
                 Cost Amount
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs">₹</span>
+                <span className="currency-symbol absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">₹</span>
                 <input 
                   type="number"
                   placeholder="e.g. 250"
@@ -209,7 +209,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-550 dark:text-slate-500">Monthly Pocket Allowance Health</span>
               <h3 className="font-extrabold text-2xl text-slate-800 dark:text-white mt-1">
-                ₹{totalSpentThisMonth} <span className="text-sm font-medium text-slate-500">spent of ₹{monthlyBudget}</span>
+                <span className="currency-symbol">₹</span>{totalSpentThisMonth} <span className="text-sm font-medium text-slate-500">spent of <span className="currency-symbol">₹</span>{monthlyBudget}</span>
               </h3>
             </div>
             <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border font-mono
@@ -254,7 +254,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
                 </p>
                 <p className="opacity-90 leading-relaxed mt-1">
                   {isOverBudget 
-                    ? `You have exceeded your set monthly allowance by ₹${totalSpentThisMonth - monthlyBudget}! Limit pocket spendings for academic health.` 
+                    ? `You have exceeded your set monthly allowance by INR ${totalSpentThisMonth - monthlyBudget}! Limit pocket spendings for academic health.` 
                     : `You have exhausted ${pctUsed.toFixed(0)}% of your pocket money allowance! Plan remaining stationery/mess costs carefully.`}
                 </p>
               </div>
@@ -269,7 +269,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
               return (
                 <div key={catKey} className={`rounded-xl p-3 border text-center ${cfg.color}`}>
                   <div className="text-[10px] font-bold uppercase tracking-wider opacity-75 truncate">{cfg.label}</div>
-                  <div className="text-base font-extrabold font-mono mt-1.5">₹{total}</div>
+                  <div className="text-base font-extrabold font-mono mt-1.5"><span className="currency-symbol">₹</span>{total}</div>
                 </div>
               );
             })}
@@ -312,7 +312,7 @@ export default function ExpenseTracker({ expenses, setExpenses, monthlyBudget, s
                         <td className="py-3 px-3 font-semibold text-slate-700 dark:text-slate-350 truncate max-w-[150px]" title={item.description}>
                           {item.description}
                         </td>
-                        <td className="py-3 px-3 text-center font-extrabold font-mono text-slate-800 dark:text-slate-200">₹{item.amount}</td>
+                        <td className="py-3 px-3 text-center font-extrabold font-mono text-slate-800 dark:text-slate-200"><span className="currency-symbol">₹</span>{item.amount}</td>
                         <td className="py-3 px-3 text-right">
                           <button
                             onClick={() => handleDeleteExpense(item.id)}

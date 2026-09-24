@@ -280,7 +280,7 @@ export default function SyllabusPanel({
             className="btn-primary text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 shadow-md cursor-pointer"
           >
             <Sparkles size={14} />
-            <span>Unlock End-Sem Files (₹99)</span>
+            <span>Unlock End-Sem Files (<span className="currency-symbol">₹</span>99)</span>
           </button>
         )}
       </div>

@@ -110,12 +110,12 @@ export default function GradeSimulator({
                   </div>
 
                   {/* Selector options */}
-                  <div className="flex items-center gap-3 shrink-0 self-end sm:self-center">
+                  <div className="flex w-full min-w-0 flex-col items-stretch gap-1.5 sm:w-auto sm:flex-row sm:items-center sm:gap-3 sm:self-center">
                     <span className="text-[10px] font-bold text-slate-455 uppercase tracking-wider">Predict Grade:</span>
                     <select
                       value={selectedGrade}
                       onChange={(e) => handleGradeChange(course.code, e.target.value)}
-                      className="p-2 border rounded-xl bg-white dark:bg-surface-700 border-slate-250 dark:border-surface-600/20 text-slate-800 dark:text-slate-200 font-bold font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm"
+                      className="w-full min-w-0 max-w-full p-2 border rounded-xl bg-white dark:bg-surface-700 border-slate-250 dark:border-surface-600/20 text-slate-800 dark:text-slate-200 font-bold font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer shadow-sm sm:w-auto"
                     >
                       {GRADE_OPTIONS.map(opt => (
                         <option key={opt.grade} value={opt.grade}>
