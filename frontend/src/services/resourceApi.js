@@ -63,6 +63,14 @@ export async function getProtectedStudyFile(resourceId) {
   return response.blob();
 }
 
+export async function getPublicSyllabusFile(resourceId) {
+  const response = await fetch(`${API_BASE_URL}/pyqs/${resourceId}/public-view`, {
+    cache: 'no-store',
+  });
+  if (!response.ok) throw new Error('The syllabus PDF could not be opened.');
+  return response.blob();
+}
+
 async function protectedBinaryRequest(path) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: getAuthToken() ? { Authorization: `Bearer ${getAuthToken()}` } : {},

@@ -5,7 +5,7 @@ import { Download, Youtube, ExternalLink, FileText, Library, Lock, Sparkles, Che
 import EndSemSubscriptionModal from './EndSemSubscriptionModal';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
-import { getProtectedStudyPage, getProtectedStudyPageCount, getStudyResources } from '../services/resourceApi';
+import { getProtectedStudyPage, getProtectedStudyPageCount, getPublicSyllabusFile, getStudyResources } from '../services/resourceApi';
 
 function ProtectedDocumentPage({ url, pageNumber }) {
   const canvasRef = useRef(null);
@@ -73,8 +73,20 @@ export default function SyllabusPanel({
     }
   };
 
+  const openPublicSyllabus = async (resource) => {
+    setViewer({ title: resource.title, loading: true, publicPdf: true });
+    try {
+      const blob = await getPublicSyllabusFile(resource.id);
+      setViewer({ title: resource.title, pdfUrl: URL.createObjectURL(blob), loading: false, publicPdf: true });
+    } catch (error) {
+      setViewer(null);
+      alert(error.message || 'This syllabus PDF is not available yet.');
+    }
+  };
+
   const closeViewer = () => {
     (viewer?.pages || []).forEach(url => URL.revokeObjectURL(url));
+    if (viewer?.pdfUrl) URL.revokeObjectURL(viewer.pdfUrl);
     setViewer(null);
   };
 
@@ -91,7 +103,11 @@ export default function SyllabusPanel({
       setIsSubModalOpen(true);
       return;
     }
-    openProtectedResource(resource);
+    if (resourceExamType(resource) === 'SYLLABUS') {
+      openPublicSyllabus(resource);
+    } else {
+      openProtectedResource(resource);
+    }
   };
 
   const openExamPicker = (course, examType) => {
@@ -393,11 +409,19 @@ export default function SyllabusPanel({
                   <X size={20} />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto rounded-xl bg-slate-200 p-3 sm:p-6" onContextMenu={event => event.preventDefault()}>
-                <div className="mx-auto flex max-w-4xl flex-col items-center gap-5">
-                  {viewer.pages.map((url, index) => <ProtectedDocumentPage key={url} url={url} pageNumber={index + 1} />)}
+              {viewer.publicPdf ? (
+                <iframe
+                  title={viewer.title}
+                  src={viewer.pdfUrl}
+                  className="flex-1 w-full rounded-xl bg-white"
+                />
+              ) : (
+                <div className="flex-1 overflow-y-auto rounded-xl bg-slate-200 p-3 sm:p-6" onContextMenu={event => event.preventDefault()}>
+                  <div className="mx-auto flex max-w-4xl flex-col items-center gap-5">
+                    {viewer.pages.map((url, index) => <ProtectedDocumentPage key={url} url={url} pageNumber={index + 1} />)}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>,

@@ -47,6 +47,25 @@ public class PyqController {
             .contentType(MediaType.parseMediaType(resource.getMimeType())).body(new ByteArrayResource(bytes));
     }
 
+    /** Public inline PDF viewer for syllabus documents only. */
+    @GetMapping("/{id}/public-view")
+    public ResponseEntity<ByteArrayResource> publicView(@PathVariable Long id) {
+        var resource = dataService.findPyq(id);
+        if (!"SYLLABUS".equalsIgnoreCase(resource.getExamType())) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.FORBIDDEN, "Only syllabus documents can be viewed publicly.");
+        }
+        if (!"application/pdf".equalsIgnoreCase(resource.getMimeType())) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.BAD_REQUEST, "Only PDF syllabus documents can be viewed publicly.");
+        }
+        byte[] bytes = storage.getObjectBytes(resource.getObjectKey());
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"syllabus.pdf\"")
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(new ByteArrayResource(bytes));
+    }
+
     @Operation(summary = "Get all PYQ resources (public)")
     @GetMapping
     public ResponseEntity<List<PyqResource>> getAll() {

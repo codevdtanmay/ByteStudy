@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/payments/razorpay/webhook").permitAll()
                 .requestMatchers("/api/syllabus/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/pyqs/*/public-view").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html",
                                  "/api-docs/**", "/v3/api-docs/**").permitAll()
                 // Admin-only write operations
