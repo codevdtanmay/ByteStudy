@@ -68,13 +68,15 @@ const hashPassword = async (password) => {
   return btoa(unescape(encodeURIComponent(`bytestudy-local-auth-v1:${password}`)));
 };
 
-const sessionFromUser = ({ token = '', refreshToken = '', loginId, name, email, role }) => ({
+const sessionFromUser = ({ token = '', refreshToken = '', loginId, name, email, role, isOnboarded = false, targetCgpa = 8.50 }) => ({
   token,
   refreshToken,
   loginId,
   name,
   email,
   role,
+  isOnboarded,
+  targetCgpa,
 });
 
 const saveSession = (user) => {
@@ -146,6 +148,22 @@ export const consumeOAuthSession = () => {
 };
 
 export const getAuthToken = () => getActiveSession()?.token || '';
+
+export async function updateAcademicProfile(profile) {
+  const token = getAuthToken();
+  if (!token) return null;
+  const response = await fetch(`${API_BASE_URL}/academic/profile`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(profile),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || 'Could not save your academic profile.');
+  return data;
+}
 
 export async function refreshActiveSession() {
   const current = getActiveSession();

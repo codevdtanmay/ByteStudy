@@ -17,4 +17,6 @@ public class AuthResponse {
     private String email;
     private String role;
     private String refreshToken;
+    private boolean isOnboarded;
+    private Double targetCgpa;
 }

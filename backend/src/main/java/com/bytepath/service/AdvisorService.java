@@ -23,15 +23,18 @@ public class AdvisorService {
     private final CgpaCalculatorService cgpaService;
     private final RagClient ragClient;
     private final OpenRouterClient openRouterClient;
+    private final DocumentSearchService documentSearch;
 
     public AdvisorService(ChatMessageRepository chatRepo,
                           CgpaCalculatorService cgpaService,
                           RagClient ragClient,
-                          OpenRouterClient openRouterClient) {
+                          OpenRouterClient openRouterClient,
+                          DocumentSearchService documentSearch) {
         this.chatRepo    = chatRepo;
         this.cgpaService = cgpaService;
         this.ragClient   = ragClient;
         this.openRouterClient = openRouterClient;
+        this.documentSearch = documentSearch;
     }
 
     // ── Public API ─────────────────────────────────────────────────────────────
@@ -103,6 +106,10 @@ public class AdvisorService {
         );
         String aiSystem = "You are ByteAI, a concise and supportive academic advisor for a B.Tech CS student. Ground every academic answer in the supplied BytePath context and syllabus. Prefer the student's current semester, but connect prerequisites and later subjects when useful. Be practical, honest about uncertainty, and format useful plans with Markdown. Do not invent grades, attendance, policies, or deadlines.";
         String groundedContext = academicContext + "\n\nFULL BYTEPATH SYLLABUS:\n" + SyllabusData.catalogSummary();
+        String documentContext = documentSearch.retrieve(userText, user, 5);
+        if (!documentContext.isBlank()) {
+            groundedContext += "\n\nRELEVANT UPLOADED DOCUMENT EXCERPTS:\n" + documentContext;
+        }
         String reply = openRouterClient.ask(aiSystem, groundedContext + "\n\nStudent question: " + userText.trim(), 1200)
             .or(() -> ragClient.ask(userText.trim(), academicContext))
             .orElseGet(() -> generateReply(userText.toLowerCase(), currentSem, currentCgpa, targetCgpa, remaining, predictor, attendancePct, activeSubjects));

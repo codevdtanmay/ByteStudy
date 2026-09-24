@@ -73,7 +73,7 @@ export default function OnboardingModal({
               <input
                 type="text"
                 required
-                placeholder="e.g. Anjali Maurya"
+                placeholder="e.g. Dhairya Pardhi"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="app-input text-sm font-semibold"

@@ -660,6 +660,14 @@ html.dark [class*="dark:border-indigo-"] {
 html.dark [class*="dark:bg-surface-"] {
   background-color: #2b302a !important;
 }
+
+/* Larger attendance controls for quick one-tap logging. */
+.attendance-action {
+  min-height: 2.7rem;
+  padding: .7rem .65rem;
+  gap: .35rem;
+  font-size: .78rem;
+}
 html.dark [class*="dark:bg-indigo-"],
 html.dark [class*="dark:bg-purple-"],
 html.dark [class*="dark:bg-violet-"] {

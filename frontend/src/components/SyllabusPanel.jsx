@@ -50,7 +50,7 @@ export default function SyllabusPanel({
   };
 
   const resourceYear = (resource) => resource.examYear || Number((resource.title || '').match(/20\d{2}/)?.[0]) || null;
-  const resourceExamType = (resource) => resource.examType || (/(syllabus|curriculum)/i.test(resource.title || '') ? 'SYLLABUS' : /(mid|internal)/i.test(resource.title || '') ? 'MID_SEM' : /(end|final)/i.test(resource.title || '') ? 'END_SEM' : 'GENERAL');
+  const resourceExamType = (resource) => resource.examType || (resource.type === 'NOTES' || /notes?/i.test(resource.title || '') ? 'NOTES' : /(syllabus|curriculum)/i.test(resource.title || '') ? 'SYLLABUS' : /(mid|internal)/i.test(resource.title || '') ? 'MID_SEM' : /(end|final)/i.test(resource.title || '') ? 'END_SEM' : 'GENERAL');
   const resourcesForExam = (courseCode, examType) => remoteResources.filter(resource =>
     resource.courseCode === courseCode && resource.status === 'READY' && resourceExamType(resource) === examType
   ).sort((a, b) => (resourceYear(b) || 0) - (resourceYear(a) || 0));
@@ -68,7 +68,7 @@ export default function SyllabusPanel({
   const openExamPicker = (course, examType) => {
     const choices = resourcesForExam(course.code, examType);
     if (!choices.length) {
-      const label = examType === 'MID_SEM' ? 'Mid-Sem PYQ' : examType === 'END_SEM' ? 'End-Sem PYQ' : 'syllabus';
+      const label = examType === 'MID_SEM' ? 'Mid-Sem PYQ' : examType === 'END_SEM' ? 'End-Sem PYQ' : examType === 'NOTES' ? 'notes' : 'syllabus';
       alert(`No ${label} has been uploaded for ${course.title} yet.`);
       return;
     }
@@ -262,7 +262,7 @@ export default function SyllabusPanel({
                 {/* Exam Prep Materials */}
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] text-slate-500 font-bold uppercase tracking-wider">Syllabus prep:</span>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap justify-end">
                     <button 
                       onClick={() => openExamPicker(course, 'MID_SEM')}
                       className="px-2.5 py-1 text-[10px] font-bold bg-slate-100 hover:bg-slate-200 dark:bg-surface-700 dark:text-slate-300 dark:hover:bg-surface-600 text-slate-700 rounded-lg border border-slate-200/50 dark:border-surface-600/10 transition-colors cursor-pointer flex items-center gap-1"
@@ -293,6 +293,14 @@ export default function SyllabusPanel({
                     >
                       <FileText size={11} />
                       <span>Syllabus</span>
+                    </button>
+
+                    <button
+                      onClick={() => openExamPicker(course, 'NOTES')}
+                      className="px-2.5 py-1 text-[10px] font-bold bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300 hover:bg-amber-500/25 rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
+                    >
+                      <FileText size={11} />
+                      <span>Notes</span>
                     </button>
                   </div>
                 </div>

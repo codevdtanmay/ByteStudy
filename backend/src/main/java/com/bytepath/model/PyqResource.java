@@ -78,6 +78,7 @@ public class PyqResource {
     @Builder.Default
     private String type = "pdf";
 
+    @JsonIgnore
     @Column(name = "ocr_text", columnDefinition = "TEXT")
     private String ocrText;
 

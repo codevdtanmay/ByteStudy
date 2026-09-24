@@ -29,7 +29,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
             id: String(resource.id),
             semester: resource.semesterNumber,
             fileName: resource.originalFilename,
-            type: resource.examType === 'END_SEM' ? 'End-Sem PYQ' : resource.examType === 'SYLLABUS' ? 'Syllabus' : 'Mid-Sem PYQ'
+            type: resource.examType === 'END_SEM' ? 'End-Sem PYQ' : resource.examType === 'SYLLABUS' ? 'Syllabus' : resource.examType === 'NOTES' ? 'Notes' : 'Mid-Sem PYQ'
           }));
           return Array.from(byId.values());
         });
@@ -99,7 +99,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
       } else {
         const resource = await uploadStudyFile({
           file: adminFileData, title: adminResName.trim(), semesterNumber: adminSem, courseCode: adminCourseCode,
-          examType: adminResType === 'Mid-Sem PYQ' ? 'MID_SEM' : adminResType === 'End-Sem PYQ' ? 'END_SEM' : 'SYLLABUS', examYear: adminResType === 'Syllabus' ? null : adminExamYear
+          examType: adminResType === 'Mid-Sem PYQ' ? 'MID_SEM' : adminResType === 'End-Sem PYQ' ? 'END_SEM' : adminResType === 'Notes' ? 'NOTES' : 'SYLLABUS', examYear: (adminResType === 'Syllabus' || adminResType === 'Notes') ? null : adminExamYear
         });
         setUploadedPyqs(prev => [...prev, {
           ...resource, id: String(resource.id), semester: resource.semesterNumber,
@@ -218,6 +218,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
                 <option value="Mid-Sem PYQ">Mid-Sem Prep Paper</option>
                 <option value="End-Sem PYQ">End-Sem Prep Paper</option>
                 <option value="Syllabus">Syllabus</option>
+                <option value="Notes">Notes</option>
                 <option value="YouTube Link">YouTube Video Recommendation</option>
               </select>
             </div>

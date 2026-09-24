@@ -43,7 +43,7 @@ function SemesterCard({ semInfo, sgpa, onUpdateSgpa, attendanceLogs, onLogAttend
               <div className="attendance-course" role="cell"><span className="course-code">{course.code}</span><strong className="course-title">{course.title}</strong><small>{course.credits} credit{course.credits === 1 ? '' : 's'}</small></div>
               <div role="cell"><CourseBadge type={course.type} /></div>
               <div className="attendance-cell" role="cell"><div className="attendance-value"><AttendanceState percentage={percentage} /><span>{total ? `${present}/${total} classes` : 'Awaiting first class'}</span></div><div className="attendance-progress"><span style={{ width: `${progress}%` }} /></div><small className="attendance-tip">{tip}</small></div>
-              <div className="attendance-actions" role="cell"><button type="button" className="attendance-action attendance-action-present" onClick={() => onLogAttendance(course.code, 'Present')}><Plus size={14} /> Present</button><button type="button" className="attendance-action attendance-action-absent" onClick={() => onLogAttendance(course.code, 'Absent')}><Minus size={14} /> Absent</button></div>
+              <div className="attendance-actions" role="cell"><button type="button" className="attendance-action attendance-action-present" onClick={() => onLogAttendance(course.code, 'Present')}><Plus size={16} /> Present</button><button type="button" className="attendance-action attendance-action-absent" onClick={() => onLogAttendance(course.code, 'Absent')}><Minus size={16} /> Absent</button></div>
             </div>;
           })}
         </div>

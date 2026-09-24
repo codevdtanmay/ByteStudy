@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { SYLLABUS, TOTAL_PROGRAM_CREDITS } from '../data/syllabus';
-import { clearActiveSession, hasRemoteAuthApi, getAuthToken } from '../services/authApi';
+import { clearActiveSession, hasRemoteAuthApi, getAuthToken, updateAcademicProfile } from '../services/authApi';
 import { askAdvisor } from '../services/advisorApi';
 
 // ---- Storage Helpers (Standard hooks to keep state persisted) ----
@@ -85,6 +85,13 @@ export function useAcademicStore() {
       setSelectedSemester(profile.semester);
       setBranch(profile.branch);
       setIsOnboarded(true);
+      // Persist the onboarding flag on the authenticated account as well as
+      // localStorage, so it survives a new browser session or device.
+      updateAcademicProfile({
+        name: profile.name,
+        targetCgpa: Number(profile.targetCgpa),
+        onboarded: true,
+      }).catch((error) => console.warn('Could not sync academic profile:', error));
     } catch (e) {
       console.error(e);
     }
@@ -265,11 +272,11 @@ export function useAcademicStore() {
       setUserRole(role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
       localStorage.setItem('activeUserRole', role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
       setStudentName(profile?.name || name?.trim() || '');
-      setTargetCgpa(profile?.targetCgpa || '8.50');
+      setTargetCgpa(profile?.targetCgpa || account?.targetCgpa || '8.50');
       setPastSgpas(profile?.pastSgpas || EMPTY_SGPAS);
       setSelectedSemester(profile?.semester || 1);
       setBranch(profile?.branch || '');
-      setIsOnboarded(Boolean(profile?.isOnboarded));
+      setIsOnboarded(Boolean(profile?.isOnboarded || account?.isOnboarded));
     }
   }, []);
 

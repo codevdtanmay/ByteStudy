@@ -354,6 +354,8 @@ public class AuthService {
             .email(user.getEmail())
             .role(user.getRole().name())
             .refreshToken(refresh)
+            .isOnboarded(user.isOnboarded())
+            .targetCgpa(user.getTargetCgpa())
             .build();
     }
 

@@ -159,7 +159,6 @@ export default function Dashboard({
         </div>
 
         <div className="editorial-panel p-5 sm:p-7">
-          <p className="eyebrow">Reference</p>
           <h3 className="mt-2 font-serif text-2xl text-stone-900 dark:text-stone-100">Grade value scale</h3>
           <p className="mt-3 text-xs leading-5 text-stone-500">Your SGPA and CGPA use the standard 10-point credit-weighted scale.</p>
           <div className="mt-6 grid grid-cols-4 gap-px border border-stone-200 bg-stone-200 dark:border-stone-700 dark:bg-stone-700 sm:grid-cols-8">

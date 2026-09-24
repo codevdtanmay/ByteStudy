@@ -29,6 +29,7 @@ public class StudentDataService {
     private final SubscriptionRepository   subscriptionRepo;
     private final ResourceAccessLogRepository accessLogRepo;
     private final DocumentProcessingService documentProcessing;
+    private final DocumentSearchService documentSearch;
 
     public StudentDataService(
             DeadlineRepository deadlineRepo,
@@ -39,7 +40,8 @@ public class StudentDataService {
             SupabaseStorageService storage,
             SubscriptionRepository subscriptionRepo,
             ResourceAccessLogRepository accessLogRepo,
-            DocumentProcessingService documentProcessing) {
+            DocumentProcessingService documentProcessing,
+            DocumentSearchService documentSearch) {
         this.deadlineRepo  = deadlineRepo;
         this.expenseRepo   = expenseRepo;
         this.focusRepo     = focusRepo;
@@ -49,6 +51,7 @@ public class StudentDataService {
         this.subscriptionRepo = subscriptionRepo;
         this.accessLogRepo = accessLogRepo;
         this.documentProcessing = documentProcessing;
+        this.documentSearch = documentSearch;
     }
 
     // ── Deadlines ──────────────────────────────────────────────────────────────
@@ -205,7 +208,7 @@ public class StudentDataService {
             .courseCode(request.courseCode().trim())
             .examType(request.examType() == null ? "GENERAL" : request.examType())
             .examYear(request.examYear())
-            .accessLevel("MID_SEM".equals(request.examType()) || "SYLLABUS".equals(request.examType()) ? "FREE" : "SUBSCRIPTION")
+            .accessLevel("MID_SEM".equals(request.examType()) || "SYLLABUS".equals(request.examType()) || "NOTES".equals(request.examType()) ? "FREE" : "SUBSCRIPTION")
             .originalFilename(request.originalFilename().trim())
             .mimeType(request.mimeType().toLowerCase())
             .sizeBytes(request.sizeBytes())
@@ -246,6 +249,7 @@ public class StudentDataService {
         resource.setSizeBytes(head.contentLength());
         if ("application/pdf".equalsIgnoreCase(resource.getMimeType())) {
             resource.setOcrText(documentProcessing.extractTextOrOcr(storage.getObjectBytes(resource.getObjectKey())));
+            documentSearch.index(resource, resource.getOcrText());
         }
         resource.setStatus("READY");
         return pyqRepo.save(resource);
