@@ -5,6 +5,7 @@ import com.bytepath.repository.*;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,9 @@ public class AccountEmailService {
         registration.setTokenHash(hash(raw)); registration.setExpiresAt(Instant.now().plusSeconds(3600)); pending.save(registration);
         JavaMailSender sender=mail.getIfAvailable(); if(sender==null) throw new IllegalStateException("Email delivery is not configured. Please try again later.");
         SimpleMailMessage msg=new SimpleMailMessage(); msg.setTo(registration.getEmail()); msg.setSubject("Verify your BytePath email");
-        msg.setText("Verify your BytePath account within one hour:\n\n"+frontendUrl+"/?verifyToken="+raw+"\n\nIf you did not request this, you can ignore this email."); sender.send(msg);
+        msg.setText("Verify your BytePath account within one hour:\n\n"+frontendUrl+"/?verifyToken="+raw+"\n\nIf you did not request this, you can ignore this email.");
+        try { sender.send(msg); }
+        catch (MailException exception) { throw new IllegalStateException("Verification email could not be sent. Check the backend SMTP configuration.", exception); }
     }
     @Transactional public PendingRegistration consumeRegistration(String raw) {
         PendingRegistration registration=pending.findByTokenHash(hash(raw)).orElseThrow(() -> new SecurityException("This verification link is invalid."));

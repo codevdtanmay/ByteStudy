@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.mail.MailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegal(IllegalArgumentException ex) {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** 503 — external service required to complete the request is unavailable */
+    @ExceptionHandler({IllegalStateException.class, MailException.class})
+    public ResponseEntity<Map<String, Object>> handleServiceUnavailable(RuntimeException ex) {
+        String message = ex.getMessage() == null ? "The service is temporarily unavailable." : ex.getMessage();
+        return error(HttpStatus.SERVICE_UNAVAILABLE, message);
     }
 
     /** 403 — Access denied */
