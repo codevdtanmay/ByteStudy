@@ -70,7 +70,7 @@ Required values include:
 
 - `PORT=8081`
 - `FRONTEND_URL=https://app.example.com`
-- `CORS_ALLOWED_ORIGINS=https://app.example.com`
+- `CORS_ALLOWED_ORIGINS=https://byte.college,https://www.byte.college`
 - `DB_URL=jdbc:postgresql://HOST:5432/DATABASE?sslmode=require`
 - `DB_USERNAME`, `DB_PASSWORD`, `DB_DRIVER=org.postgresql.Driver`
 - `DDL_AUTO=validate`, `FLYWAY_ENABLED=true`
@@ -99,7 +99,7 @@ Only `VITE_*` values are exposed to browser JavaScript. Never put database passw
 1. Create the production PostgreSQL database and confirm SSL connectivity.
 2. Deploy the backend with encrypted environment variables.
 3. Confirm startup logs show successful Flyway validation and the API is listening.
-4. Set `CORS_ALLOWED_ORIGINS` to the exact frontend origin, with no trailing slash.
+4. Set `CORS_ALLOWED_ORIGINS` to the exact frontend origin(s), comma-separated and with no trailing slash. For the current site use `https://byte.college,https://www.byte.college`, then redeploy the backend.
 5. Configure the private Supabase bucket and service-role key.
 6. Configure SMTP and verify the `MAIL_FROM` domain.
 7. Configure Razorpay Live Mode and webhook URL: `https://api.example.com/api/payments/razorpay/webhook`.

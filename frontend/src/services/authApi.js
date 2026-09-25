@@ -99,15 +99,20 @@ const getLocalUsers = () => {
 
 const request = async (path, payload, { session = true } = {}) => {
   const token = getAuthToken();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    credentials: 'include',
-    body: JSON.stringify(payload),
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error('Cannot reach the BytePath API. Check the backend URL and CORS settings, then try again.');
+  }
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
