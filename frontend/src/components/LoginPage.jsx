@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Check, CheckCircle2, Copy, Eye, EyeOff, Lock, Mail, Sparkles, User, X } from 'lucide-react';
-import { hasRemoteAuthApi, registerAccount, signIn, signInWithGoogleAccessToken, signInWithGoogleProfile } from '../services/authApi';
+import { CheckCircle2, Eye, EyeOff, Lock, Mail, Sparkles, User, X } from 'lucide-react';
+import { hasRemoteAuthApi, registerAccount, signIn, signInWithGoogleAccessToken, signInWithGoogleProfile, verifyEmail } from '../services/authApi';
 import BrandLogo from './BrandLogo';
 
 function GoogleIcon({ className = 'h-5 w-5' }) {
@@ -39,7 +39,6 @@ export default function LoginPage({ onLoginSuccess }) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [issued, setIssued] = useState(null);
-  const [copied, setCopied] = useState(false);
   const [googleModal, setGoogleModal] = useState(false);
   const [googleEmail, setGoogleEmail] = useState('');
   const [googleName, setGoogleName] = useState('');
@@ -63,6 +62,19 @@ export default function LoginPage({ onLoginSuccess }) {
     return () => { window.clearInterval(timer); window.removeEventListener('load', init); };
   }, [onLoginSuccess]);
 
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('verifyToken');
+    if (!token) return undefined;
+    let active = true;
+    setBusy(true); setError('Verifying your email...');
+    verifyEmail(token).then((session) => {
+      if (active) onLoginSuccess(session);
+    }).catch((err) => {
+      if (active) setError(err.message || 'This verification link is invalid or expired.');
+    }).finally(() => { if (active) setBusy(false); });
+    return () => { active = false; };
+  }, [onLoginSuccess]);
+
   const submit = async (event) => {
     event.preventDefault(); setError(''); setBusy(true);
     try { if (mode === 'signup') setIssued(await registerAccount({ name, email, password })); else onLoginSuccess(await signIn({ identity, password })); }
@@ -80,8 +92,6 @@ export default function LoginPage({ onLoginSuccess }) {
     catch (err) { setError(err.message || 'Google sign-in failed.'); }
     finally { setBusy(false); }
   };
-  const copyId = async () => { try { await navigator.clipboard.writeText(issued.loginId); setCopied(true); window.setTimeout(() => setCopied(false), 2000); } catch { setError('Copy your unique ID manually.'); } };
-
   return <main className="auth-shell">
     <StudySignal />
     <div className="auth-layout">
@@ -99,7 +109,7 @@ export default function LoginPage({ onLoginSuccess }) {
         {error && <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-center text-xs text-rose-600">{error}</div>}
         <button disabled={busy} className="mt-2 w-full py-3.5 text-xs font-bold neu-button">{busy ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Create Account'}</button>
       </form>
-      {issued && <div className="space-y-2 p-4 text-center neu-inset"><div className="flex justify-center gap-1 text-xs font-bold text-emerald-600"><CheckCircle2 size={16}/> Account Issued!</div><p className="text-[11px]">Your Unique ByteStudy ID:</p><div className="flex justify-center gap-2"><code className="font-mono text-xs">{issued.loginId}</code><button type="button" onClick={copyId}>{copied ? <Check size={14}/> : <Copy size={14}/>}</button></div><button type="button" onClick={() => onLoginSuccess(issued)} className="text-xs font-bold text-emerald-600">Continue to Portal</button></div>}
+      {issued && <div className="space-y-2 p-4 text-center neu-inset"><div className="flex justify-center gap-1 text-xs font-bold text-emerald-600"><CheckCircle2 size={16}/> Check your email</div><p className="text-[11px]">We sent a verification link to <strong>{issued.email}</strong>. Your account and BytePath ID will be created after you verify it.</p></div>}
       <div className="space-y-4 pt-2"><div className="flex w-full items-center gap-3"><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/><span className="shrink-0 whitespace-nowrap text-center text-[10px] font-bold uppercase tracking-wider text-stone-400">OR CONTINUE WITH</span><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/></div><div className="flex justify-center"><button type="button" onClick={googleSignIn} className="flex h-12 w-12 items-center justify-center rounded-full neu-circle hover:scale-105 sm:h-14 sm:w-14" title="Sign in with Google"><GoogleIcon/></button></div></div>
       <div className="auth-mode-toggle">{mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}<button type="button" onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(''); setIssued(null); }}>{mode === 'signin' ? 'Sign up' : 'Sign in'}</button></div>
       <div className="auth-card-note">Your data stays yours <span>·</span> encrypted by default</div>

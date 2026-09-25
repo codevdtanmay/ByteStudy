@@ -97,7 +97,7 @@ const getLocalUsers = () => {
   return migratedUsers;
 };
 
-const request = async (path, payload) => {
+const request = async (path, payload, { session = true } = {}) => {
   const token = getAuthToken();
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: 'POST',
@@ -114,6 +114,7 @@ const request = async (path, payload) => {
     throw new Error(data.message || 'We could not complete that request. Please try again.');
   }
 
+  if (!session) return data;
   if (!data.loginId || !data.name) {
     throw new Error('The authentication service returned an incomplete account response.');
   }
@@ -195,6 +196,13 @@ export const isValidLoginId = (value) => /^BTP-\d{4}-[A-Z0-9]{6}$/.test(normalis
 export const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normaliseEmail(value));
 export const hasRemoteAuthApi = () => Boolean(API_BASE_URL);
 
+export async function verifyEmail(token) {
+  if (!token) throw new Error('This verification link is missing its token.');
+  const session = await request('/auth/verify-email', { token });
+  saveSession(session);
+  return session;
+}
+
 export const startGithubSignIn = () => {
   window.location.assign(`${API_BASE_URL}/auth/github/start`);
 };
@@ -212,9 +220,7 @@ export async function registerAccount({ name, email, password }) {
   if (password.length < 8) throw new Error('Use a password with at least 8 characters.');
 
   if (hasRemoteAuthApi()) {
-    const session = await request('/auth/register', { name: cleanName, email: cleanEmail, password });
-    saveSession(session);
-    return session;
+    return request('/auth/register', { name: cleanName, email: cleanEmail, password }, { session: false });
   }
 
   const users = getLocalUsers();

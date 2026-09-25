@@ -3,8 +3,11 @@ package com.bytepath.service;
 import com.bytepath.dto.request.LoginRequest;
 import com.bytepath.dto.request.RegisterRequest;
 import com.bytepath.dto.response.AuthResponse;
+import com.bytepath.dto.response.SignupResponse;
 import com.bytepath.model.User;
+import com.bytepath.model.PendingRegistration;
 import com.bytepath.repository.UserRepository;
+import com.bytepath.repository.PendingRegistrationRepository;
 import com.bytepath.repository.RefreshTokenRepository;
 import com.bytepath.model.RefreshToken;
 import com.bytepath.security.JwtTokenProvider;
@@ -45,6 +48,7 @@ public class AuthService {
     private final JwtTokenProvider  jwtProvider;
     private final RefreshTokenRepository refreshTokens;
     private final AccountEmailService accountEmail;
+    private final PendingRegistrationRepository pendingRegistrations;
     private final String adminEmail;
     private final String adminPassword;
     private final String adminName;
@@ -59,6 +63,7 @@ public class AuthService {
                        JwtTokenProvider jwtProvider,
                        RefreshTokenRepository refreshTokens,
                        AccountEmailService accountEmail,
+                       PendingRegistrationRepository pendingRegistrations,
                        @Value("${admin.email}") String adminEmail,
                        @Value("${admin.password}") String adminPassword,
                        @Value("${admin.name}") String adminName,
@@ -72,6 +77,7 @@ public class AuthService {
         this.jwtProvider     = jwtProvider;
         this.refreshTokens = refreshTokens;
         this.accountEmail = accountEmail;
+        this.pendingRegistrations = pendingRegistrations;
         this.adminEmail      = adminEmail.trim().toLowerCase();
         this.adminPassword   = adminPassword;
         this.adminName       = adminName;
@@ -85,26 +91,33 @@ public class AuthService {
     // ── Register ───────────────────────────────────────────────────────────────
 
     @Transactional
-    public AuthResponse register(RegisterRequest req) {
+    public SignupResponse register(RegisterRequest req) {
         String email = req.getEmail().trim().toLowerCase();
         String name  = req.getName().trim().replaceAll("\\s+", " ");
 
-        if (userRepo.existsByEmail(email)) {
+        if (userRepo.existsByEmail(email) || pendingRegistrations.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException(
                 "An account already exists for that email. Please sign in instead.");
         }
 
-        User user = User.builder()
-            .loginId(generateLoginId())
+        PendingRegistration registration = PendingRegistration.builder()
             .name(name)
             .email(email)
             .passwordHash(passwordEncoder.encode(req.getPassword()))
-            .role(User.Role.STUDENT)
-            .emailVerified(!requireEmailVerification)
             .build();
+        accountEmail.issueRegistration(registration);
+        return new SignupResponse("Check your email to verify your BytePath account.", email);
+    }
 
-        userRepo.save(user);
-        if (requireEmailVerification) accountEmail.issueVerification(user);
+    @Transactional
+    public AuthResponse verifyRegistration(String token) {
+        PendingRegistration registration = accountEmail.consumeRegistration(token);
+        if (userRepo.existsByEmail(registration.getEmail())) {
+            throw new IllegalArgumentException("An account already exists for that email. Please sign in instead.");
+        }
+        User user = userRepo.save(User.builder().loginId(generateLoginId()).name(registration.getName())
+            .email(registration.getEmail()).passwordHash(registration.getPasswordHash())
+            .role(User.Role.STUDENT).emailVerified(true).build());
         return buildResponse(user);
     }
 

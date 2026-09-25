@@ -3,6 +3,7 @@ package com.bytepath.controller;
 import com.bytepath.dto.request.LoginRequest;
 import com.bytepath.dto.request.RegisterRequest;
 import com.bytepath.dto.response.AuthResponse;
+import com.bytepath.dto.response.SignupResponse;
 import com.bytepath.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,8 +40,13 @@ public class AuthController {
     /** POST /api/auth/register — create a new student account */
     @Operation(summary = "Register a new BytePath account")
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest req) {
+    public ResponseEntity<SignupResponse> register(@Valid @RequestBody RegisterRequest req) {
         return ResponseEntity.ok(authService.register(req));
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<AuthResponse> verifyEmail(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(authService.verifyRegistration(body.getOrDefault("token", "")));
     }
 
     /** POST /api/auth/login — sign in with loginId/email + password */
