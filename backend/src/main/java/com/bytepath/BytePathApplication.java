@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import com.bytepath.model.User;
 import com.bytepath.repository.UserRepository;
 
@@ -26,9 +25,7 @@ public class BytePathApplication {
     @Bean
     CommandLineRunner seedAdmin(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
             @Value("${admin.email}") String adminEmail,
-            @Value("${admin.password}") String adminPassword,
             @Value("${admin.name}") String adminName) {
         return args -> userRepository.findByEmail(adminEmail.trim().toLowerCase())
             .ifPresentOrElse(user -> {
@@ -40,7 +37,6 @@ public class BytePathApplication {
                 .loginId(adminEmail.trim().toLowerCase())
                 .name(adminName)
                 .email(adminEmail.trim().toLowerCase())
-                .passwordHash(passwordEncoder.encode(adminPassword))
                 .role(User.Role.ADMIN)
                 .build()));
     }

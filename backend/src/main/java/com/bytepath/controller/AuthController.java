@@ -1,13 +1,9 @@
 package com.bytepath.controller;
 
-import com.bytepath.dto.request.LoginRequest;
-import com.bytepath.dto.request.RegisterRequest;
 import com.bytepath.dto.response.AuthResponse;
-import com.bytepath.dto.response.SignupResponse;
 import com.bytepath.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,25 +31,6 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
-    }
-
-    /** POST /api/auth/register — create a new student account */
-    @Operation(summary = "Register a new BytePath account")
-    @PostMapping("/register")
-    public ResponseEntity<SignupResponse> register(@Valid @RequestBody RegisterRequest req) {
-        return ResponseEntity.ok(authService.register(req));
-    }
-
-    @PostMapping("/verify-email")
-    public ResponseEntity<AuthResponse> verifyEmail(@RequestBody Map<String, String> body) {
-        return ResponseEntity.ok(authService.verifyRegistration(body.getOrDefault("token", "")));
-    }
-
-    /** POST /api/auth/login — sign in with loginId/email + password */
-    @Operation(summary = "Login with BytePath ID or email")
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest req) {
-        return ResponseEntity.ok(authService.login(req));
     }
 
     @PostMapping("/refresh")

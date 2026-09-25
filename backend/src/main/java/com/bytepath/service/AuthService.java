@@ -1,17 +1,11 @@
 package com.bytepath.service;
 
-import com.bytepath.dto.request.LoginRequest;
-import com.bytepath.dto.request.RegisterRequest;
 import com.bytepath.dto.response.AuthResponse;
-import com.bytepath.dto.response.SignupResponse;
 import com.bytepath.model.User;
-import com.bytepath.model.PendingRegistration;
 import com.bytepath.repository.UserRepository;
-import com.bytepath.repository.PendingRegistrationRepository;
 import com.bytepath.repository.RefreshTokenRepository;
 import com.bytepath.model.RefreshToken;
 import com.bytepath.security.JwtTokenProvider;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +24,9 @@ import java.util.HexFormat;
 import java.security.MessageDigest;
 
 /**
- * Authentication service — handles registration, login, and Google OAuth.
+ * Authentication service — handles OAuth sign-in and session creation.
  * <p>
- * Ports the logic from {@code authApi.js} (registerAccount, signIn, signInWithGoogleProfile).
- * Key differences from the JS version:
- * - Passwords are hashed with BCrypt instead of SHA-256
- * - State is persisted in a database instead of localStorage
+ * Provider secrets stay on the backend; application sessions are persisted in the database.
  */
 @Service
 public class AuthService {
@@ -44,127 +35,27 @@ public class AuthService {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private final UserRepository    userRepo;
-    private final PasswordEncoder   passwordEncoder;
     private final JwtTokenProvider  jwtProvider;
     private final RefreshTokenRepository refreshTokens;
-    private final AccountEmailService accountEmail;
-    private final PendingRegistrationRepository pendingRegistrations;
-    private final String adminEmail;
-    private final String adminPassword;
-    private final String adminName;
     private final String googleClientId;
     private final String githubClientId;
     private final String githubClientSecret;
     private final String githubCallbackUrl;
-    private final boolean requireEmailVerification;
 
     public AuthService(UserRepository userRepo,
-                       PasswordEncoder passwordEncoder,
                        JwtTokenProvider jwtProvider,
                        RefreshTokenRepository refreshTokens,
-                       AccountEmailService accountEmail,
-                       PendingRegistrationRepository pendingRegistrations,
-                       @Value("${admin.email}") String adminEmail,
-                       @Value("${admin.password}") String adminPassword,
-                       @Value("${admin.name}") String adminName,
                        @Value("${google.client-id:}") String googleClientId,
                        @Value("${github.client-id:}") String githubClientId,
                        @Value("${github.client-secret:}") String githubClientSecret,
-                       @Value("${github.callback-url:}") String githubCallbackUrl,
-                       @Value("${app.auth.require-email-verification:false}") boolean requireEmailVerification) {
+                       @Value("${github.callback-url:}") String githubCallbackUrl) {
         this.userRepo        = userRepo;
-        this.passwordEncoder = passwordEncoder;
         this.jwtProvider     = jwtProvider;
         this.refreshTokens = refreshTokens;
-        this.accountEmail = accountEmail;
-        this.pendingRegistrations = pendingRegistrations;
-        this.adminEmail      = adminEmail.trim().toLowerCase();
-        this.adminPassword   = adminPassword;
-        this.adminName       = adminName;
         this.googleClientId  = googleClientId;
         this.githubClientId  = githubClientId;
         this.githubClientSecret = githubClientSecret;
         this.githubCallbackUrl = githubCallbackUrl;
-        this.requireEmailVerification = requireEmailVerification;
-    }
-
-    // ── Register ───────────────────────────────────────────────────────────────
-
-    @Transactional
-    public SignupResponse register(RegisterRequest req) {
-        String email = req.getEmail().trim().toLowerCase();
-        String name  = req.getName().trim().replaceAll("\\s+", " ");
-
-        if (userRepo.existsByEmail(email) || pendingRegistrations.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException(
-                "An account already exists for that email. Please sign in instead.");
-        }
-
-        PendingRegistration registration = PendingRegistration.builder()
-            .name(name)
-            .email(email)
-            .passwordHash(passwordEncoder.encode(req.getPassword()))
-            .build();
-        accountEmail.issueRegistration(registration);
-        return new SignupResponse("Check your email to verify your BytePath account.", email);
-    }
-
-    @Transactional
-    public AuthResponse verifyRegistration(String token) {
-        PendingRegistration registration = accountEmail.consumeRegistration(token);
-        if (userRepo.existsByEmail(registration.getEmail())) {
-            throw new IllegalArgumentException("An account already exists for that email. Please sign in instead.");
-        }
-        User user = userRepo.save(User.builder().loginId(generateLoginId()).name(registration.getName())
-            .email(registration.getEmail()).passwordHash(registration.getPasswordHash())
-            .role(User.Role.STUDENT).emailVerified(true).build());
-        return buildResponse(user);
-    }
-
-    // ── Login ──────────────────────────────────────────────────────────────────
-
-    public AuthResponse login(LoginRequest req) {
-        String identity = req.getIdentity().trim();
-        String password = req.getPassword();
-
-        // ── Admin shortcut ─────────────────────────────────────────────────────
-        boolean isAdminIdentity =
-            identity.equalsIgnoreCase(adminEmail);
-
-        if (isAdminIdentity && password.equals(adminPassword)) {
-            // Return or create the admin account
-            User admin = userRepo.findByEmail(adminEmail)
-                .orElseGet(() -> {
-                    User a = User.builder()
-                        .loginId(adminEmail)
-                        .name(adminName)
-                        .email(adminEmail)
-                        .passwordHash(passwordEncoder.encode(adminPassword))
-                        .role(User.Role.ADMIN)
-                        .build();
-                    return userRepo.save(a);
-                });
-            // Promote an existing account as well. This matters when the configured
-            // admin email was previously used during local development.
-            if (admin.getRole() != User.Role.ADMIN) admin.setRole(User.Role.ADMIN);
-            admin.setEmailVerified(true);
-            userRepo.save(admin);
-            return buildResponse(admin);
-        }
-
-        // ── Regular student login ──────────────────────────────────────────────
-        User user = findByIdentity(identity)
-            .orElseThrow(() ->
-                new IllegalArgumentException("That ID / email or password is incorrect."));
-
-        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
-            throw new IllegalArgumentException("That ID / email or password is incorrect.");
-        }
-        if (requireEmailVerification && !user.isEmailVerified()) {
-            throw new IllegalArgumentException("Please verify your email before signing in.");
-        }
-
-        return buildResponse(user);
     }
 
     @Transactional
@@ -187,7 +78,6 @@ public class AuthService {
                 .loginId(generateLoginId())
                 .name(cleanName)
                 .email(cleanEmail)
-                .passwordHash(passwordEncoder.encode("google-auth-provider"))
                 .role(User.Role.STUDENT)
                 .googleAuth(true)
                 .oauthProvider("GOOGLE")
@@ -294,7 +184,7 @@ public class AuthService {
             throw new IllegalArgumentException("GitHub OAuth is not configured on the backend.");
         }
 
-        String tokenResponse = RestClient.create()
+        Map<String, Object> tokenResponse = RestClient.create()
             .post()
             .uri("https://github.com/login/oauth/access_token")
             .header("Accept", "application/json")
@@ -303,9 +193,9 @@ public class AuthService {
             .body("client_id=" + encode(githubClientId) + "&client_secret=" + encode(githubClientSecret)
                 + "&code=" + encode(code) + "&redirect_uri=" + encode(githubCallbackUrl))
             .retrieve()
-            .body(String.class);
+            .body(Map.class);
 
-        String accessToken = parseFormValue(tokenResponse, "access_token");
+        String accessToken = tokenResponse == null ? "" : String.valueOf(tokenResponse.getOrDefault("access_token", ""));
         if (accessToken.isBlank()) throw new IllegalArgumentException("GitHub authorization could not be completed.");
 
         RestClient github = RestClient.builder()
@@ -330,21 +220,11 @@ public class AuthService {
         String cleanEmail = email.trim().toLowerCase();
         User user = userRepo.findByEmail(cleanEmail).orElseGet(() -> userRepo.save(User.builder()
             .loginId(generateLoginId()).name(name).email(cleanEmail)
-            .passwordHash(passwordEncoder.encode("github-auth-provider"))
             .role(User.Role.STUDENT).oauthProvider("GITHUB").emailVerified(true).build()));
         return buildResponse(user);
     }
 
     private String encode(String value) { return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8); }
-
-    private String parseFormValue(String body, String key) {
-        if (body == null) return "";
-        for (String pair : body.split("&")) {
-            String[] parts = pair.split("=", 2);
-            if (parts.length == 2 && key.equals(parts[0])) return URLDecoder.decode(parts[1], StandardCharsets.UTF_8);
-        }
-        return "";
-    }
 
     // ── UserDetailsService helper ──────────────────────────────────────────────
 
@@ -398,12 +278,4 @@ public class AuthService {
         return sb.toString();
     }
 
-    private java.util.Optional<User> findByIdentity(String identity) {
-        if (identity.contains("@")) {
-            return userRepo.findByEmail(identity.toLowerCase());
-        } else {
-            return userRepo.findByLoginId(identity.toUpperCase()
-                .replaceAll("\\s+", ""));
-        }
-    }
 }

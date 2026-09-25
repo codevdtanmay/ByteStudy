@@ -37,6 +37,6 @@ public class OpenApiConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                                        .description("Enter your JWT Bearer token returned from `/api/auth/login` or `/api/auth/register`.")));
+                                        .description("Enter your JWT Bearer token returned after Google or GitHub OAuth sign-in.")));
     }
 }

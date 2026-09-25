@@ -76,8 +76,8 @@ Required values include:
 - `DDL_AUTO=validate`, `FLYWAY_ENABLED=true`
 - A new random `JWT_SECRET` and `JWT_EXPIRATION_MS=900000`
 - A unique `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME`
-- `REQUIRE_EMAIL_VERIFICATION=true` after SMTP is configured
-- `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, and verified `MAIL_FROM`
+- `GOOGLE_CLIENT_ID` for Google sign-in
+- `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, and exact `GITHUB_CALLBACK_URL` for GitHub sign-in
 - `SUPABASE_URL`, server-only `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_BUCKET_NAME`
 - Live-mode `RAZORPAY_KEY_ID`, server-only `RAZORPAY_KEY_SECRET`, and `RAZORPAY_WEBHOOK_SECRET`
 - Optional OAuth/RAG/Tesseract variables when those features are enabled
@@ -90,7 +90,7 @@ Set these at build time:
 
 - `VITE_AUTH_API_URL=https://api.example.com/api`
 - `VITE_RAZORPAY_KEY_ID=rzp_live_...`
-- Optional `VITE_GOOGLE_CLIENT_ID`
+- `VITE_GOOGLE_CLIENT_ID` for Google sign-in
 
 Only `VITE_*` values are exposed to browser JavaScript. Never put database passwords, JWT secrets, SMTP passwords, Supabase service-role keys, Razorpay secrets, or private OAuth secrets in frontend variables.
 
@@ -101,7 +101,7 @@ Only `VITE_*` values are exposed to browser JavaScript. Never put database passw
 3. Confirm startup logs show successful Flyway validation and the API is listening.
 4. Set `CORS_ALLOWED_ORIGINS` to the exact frontend origin(s), comma-separated and with no trailing slash. For the current site use `https://byte.college,https://www.byte.college`, then redeploy the backend.
 5. Configure the private Supabase bucket and service-role key.
-6. Configure SMTP and verify the `MAIL_FROM` domain.
+6. Configure Google and GitHub OAuth callbacks.
 7. Configure Razorpay Live Mode and webhook URL: `https://api.example.com/api/payments/razorpay/webhook`.
 8. Deploy the frontend with the production API URL and public Razorpay key.
 9. Configure DNS and HTTPS for `app.example.com` and `api.example.com`.
@@ -153,8 +153,7 @@ Deploy the Railway backend first, copy its HTTPS URL, set `VITE_AUTH_API_URL` in
 - [ ] Invalid credentials are rejected; valid login succeeds.
 - [ ] Logout clears the session; refresh restores a valid session.
 - [ ] Expired tokens refresh or return the user to login.
-- [ ] If email verification is enabled, email arrives and unverified login is rejected.
-- [ ] Google/GitHub login is fully configured and tested, or disabled.
+- [ ] Google and GitHub login are fully configured and tested.
 
 ### Student features
 
