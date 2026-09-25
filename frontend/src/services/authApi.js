@@ -100,6 +100,8 @@ const getLocalUsers = () => {
 const request = async (path, payload, { session = true } = {}) => {
   const token = getAuthToken();
   let response;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 20000);
   try {
     response = await fetch(`${API_BASE_URL}${path}`, {
       method: 'POST',
@@ -109,9 +111,15 @@ const request = async (path, payload, { session = true } = {}) => {
       },
       credentials: 'include',
       body: JSON.stringify(payload),
+      signal: controller.signal,
     });
   } catch {
+    if (controller.signal.aborted) {
+      throw new Error('The request timed out. Email delivery may be unavailable; please try again shortly.');
+    }
     throw new Error('Cannot reach the BytePath API. Check the backend URL and CORS settings, then try again.');
+  } finally {
+    window.clearTimeout(timeout);
   }
 
   const data = await response.json().catch(() => ({}));
