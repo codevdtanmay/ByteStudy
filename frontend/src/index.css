@@ -898,6 +898,22 @@ html:not(.dark) .gate-branch-tab-inactive { background: rgba(255,255,255,.72) !i
 html.dark .gate-branch-tab-active { background: #ffffff !important; color: #000000 !important; }
 html.dark .gate-branch-tab-inactive { background: #151515 !important; color: #d4d4d4 !important; border-color: #3a3a3a !important; }
 
+html:not(.dark) .gate-branch-tab,
+html:not(.dark) .gate-branch-tab span,
+html:not(.dark) .gate-branch-tab-inactive,
+html:not(.dark) .gate-branch-tab-active {
+  color: #000000 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+html:not(.dark) .gate-branch-tab {
+  border-color: #000000 !important;
+}
+html:not(.dark) .promotion-claim-button,
+html:not(.dark) .promotion-claim-button svg {
+  color: #b42318 !important;
+}
+
 /* Shared workspace system: every page inherits the same surfaces, spacing
    language, borders, and action hierarchy as the AI Tools reference page. */
 html:not(.dark) .app-content-page .glass-card,
