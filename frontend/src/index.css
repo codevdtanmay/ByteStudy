@@ -2245,6 +2245,24 @@ html.dark {
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white) span { color: #28778d !important; }
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white) { background: rgba(255,255,255,.5) !important; border: 1px solid rgba(95,170,190,.18) !important; }
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white):hover { background: rgba(255,255,255,.82) !important; }
+:root:not(.dark) .admin-tab[class*="bg-indigo-600"],
+:root:not(.dark) .admin-tab[class*="bg-amber-600"] {
+  background: #e5e5e5 !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  box-shadow: none !important;
+}
+:root:not(.dark) .admin-tab[class*="bg-indigo-600"] svg,
+:root:not(.dark) .admin-tab[class*="bg-amber-600"] svg,
+:root:not(.dark) .admin-tab[class*="bg-indigo-600"] span,
+:root:not(.dark) .admin-tab[class*="bg-amber-600"] span {
+  color: #000000 !important;
+}
+:root:not(.dark) .admin-tab[class*="bg-indigo-600"] span[class*="bg-white"],
+:root:not(.dark) .admin-tab[class*="bg-amber-600"] span[class*="bg-white"] {
+  background: #ffffff !important;
+  border: 1px solid #000000 !important;
+}
 :root:not(.dark) .gate-page .gate-hero {
   /* Match the neutral stone/zinc banner treatment used by Useful AI Tools. */
   background: linear-gradient(to right, rgba(87, 83, 78, .15), rgba(113, 113, 122, .10), rgba(120, 113, 108, .15)) !important;
