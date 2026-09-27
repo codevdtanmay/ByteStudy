@@ -15,7 +15,7 @@ export default function PromotionBanner({ promotion, onExploreOffer }) {
   return (
     <aside
       aria-label="Promotional Announcement"
-      className="relative z-30 w-full overflow-hidden border-b transition-all duration-300
+      className="promotion-banner relative z-30 w-full overflow-hidden border-b transition-all duration-300
         bg-gradient-to-r from-amber-500 via-orange-600 to-amber-700 text-white border-amber-500/30 shadow-md
         dark:bg-black dark:bg-none dark:text-white dark:border-neutral-800"
     >

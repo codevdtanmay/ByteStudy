@@ -93,8 +93,8 @@ export default function Dashboard({
               <h3 className="mt-2 font-serif text-2xl tracking-[-0.03em] text-stone-900 dark:text-stone-100">SGPA and CGPA trajectory</h3>
             </div>
             <div className="flex gap-4 text-[11px] text-stone-500 dark:text-stone-400">
-              <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#a65337]" /> SGPA</span>
-              <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#2f5d50]" /> CGPA</span>
+              <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#525252]" /> SGPA</span>
+              <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#171717]" /> CGPA</span>
               <span className="flex items-center gap-1.5"><i className="legend-line bg-stone-400" /> Target</span>
             </div>
           </div>
@@ -111,8 +111,8 @@ export default function Dashboard({
                 <ComposedChart data={chartData} margin={{ top: 5, right: 5, left: -25, bottom: 5 }}>
                   <defs>
                     <linearGradient id="academicArea" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#a65337" stopOpacity={0.16} />
-                      <stop offset="95%" stopColor="#a65337" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#525252" stopOpacity={0.16} />
+                      <stop offset="95%" stopColor="#525252" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="2 5" stroke="#deddd6" />
@@ -120,8 +120,8 @@ export default function Dashboard({
                   <YAxis domain={[0, 10]} ticks={[0, 2, 4, 6, 8, 10]} tick={{ fill: '#85867f', fontSize: 11 }} axisLine={false} tickLine={false} />
                   <Tooltip content={<CustomTooltip />} />
                   {targetCgpa && <ReferenceLine y={parseFloat(targetCgpa)} stroke="#a9aaa2" strokeDasharray="4 4" strokeWidth={1} />}
-                  <Area name="SGPA" type="monotone" dataKey="sgpa" stroke="#a65337" strokeWidth={2} fill="url(#academicArea)" fillOpacity={1} />
-                  <Line name="CGPA" type="monotone" dataKey="cgpa" stroke="#2f5d50" strokeWidth={2.5} dot={{ fill: '#2f5d50', r: 3 }} activeDot={{ r: 5, fill: '#2f5d50' }} />
+                  <Area name="SGPA" type="monotone" dataKey="sgpa" stroke="#525252" strokeWidth={2} fill="url(#academicArea)" fillOpacity={1} />
+                  <Line name="CGPA" type="monotone" dataKey="cgpa" stroke="#171717" strokeWidth={2.5} dot={{ fill: '#171717', r: 3 }} activeDot={{ r: 5, fill: '#171717' }} />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
@@ -134,7 +134,7 @@ export default function Dashboard({
             <span className="font-serif text-5xl tracking-[-0.06em] text-stone-900 dark:text-stone-100">{creditsPct.toFixed(0)}<small className="ml-1 text-2xl">%</small></span>
             <span className="pb-1 text-right text-[11px] leading-4 text-stone-500">of the<br />curriculum</span>
           </div>
-          <div className="mt-5 h-2 bg-stone-200 dark:bg-stone-700"><div className="h-full bg-[#a65337] dark:bg-[#d99579]" style={{ width: `${creditsPct}%` }} /></div>
+          <div className="mt-5 h-2 bg-stone-200 dark:bg-stone-700"><div className="h-full bg-[#525252] dark:bg-[#d4d4d4]" style={{ width: `${creditsPct}%` }} /></div>
           <div className="mt-2 flex justify-between text-[11px] text-stone-500 dark:text-stone-400"><span>{earnedCredits} completed</span><span>{remainingCredits} remaining</span></div>
 
           <div className="mt-8 border-t border-stone-200 pt-5 dark:border-stone-700">
@@ -149,7 +149,7 @@ export default function Dashboard({
           </div>
         </aside>
       </section>
-
+{/* 
       <section className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
         <div className="dashboard-actions">
           <div className="mb-4 flex items-end justify-between gap-4"><div><p className="eyebrow">Next actions</p><h3 className="mt-2 font-serif text-2xl text-stone-900 dark:text-stone-100">Keep your record current</h3></div></div>
@@ -158,7 +158,7 @@ export default function Dashboard({
           </div>
         </div>
 
-      </section>
+      </section> */}
     </div>
   );
 }
