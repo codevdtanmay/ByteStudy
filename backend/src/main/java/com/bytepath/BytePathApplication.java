@@ -27,17 +27,31 @@ public class BytePathApplication {
             UserRepository userRepository,
             @Value("${admin.email}") String adminEmail,
             @Value("${admin.name}") String adminName) {
-        return args -> userRepository.findByEmail(adminEmail.trim().toLowerCase())
-            .ifPresentOrElse(user -> {
+        String configuredEmail = adminEmail == null ? "" : adminEmail.trim().toLowerCase();
+        if (configuredEmail.isBlank()) {
+            throw new IllegalStateException("ADMIN_EMAIL must be configured before starting the backend.");
+        }
+        return args -> {
+            userRepository.findAll().forEach(user -> {
+                User.Role expectedRole = configuredEmail.equals(user.getEmail().trim().toLowerCase())
+                    ? User.Role.ADMIN : User.Role.STUDENT;
+                if (user.getRole() != expectedRole) {
+                    user.setRole(expectedRole);
+                    userRepository.save(user);
+                }
+            });
+            userRepository.findByEmail(configuredEmail).ifPresentOrElse(user -> {
                 if (user.getRole() != User.Role.ADMIN) {
                     user.setRole(User.Role.ADMIN);
                     userRepository.save(user);
                 }
             }, () -> userRepository.save(User.builder()
-                .loginId(adminEmail.trim().toLowerCase())
+                .loginId(configuredEmail)
                 .name(adminName)
-                .email(adminEmail.trim().toLowerCase())
+                .email(configuredEmail)
+                .emailVerified(true)
                 .role(User.Role.ADMIN)
                 .build()));
+        };
     }
 }

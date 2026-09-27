@@ -19,7 +19,7 @@ import LoginPage from './components/LoginPage';
 import SearchModal from './components/SearchModal';
 import FeedbackModal from './components/FeedbackModal';
 import PromotionBanner from './components/PromotionBanner';
-import { consumeOAuthSession, getActiveSession, loginAsAdmin } from './services/authApi';
+import { consumeOAuthSession, getActiveSession } from './services/authApi';
 import { getActivePromotion } from './services/promotionApi';
 
 export default function App() {
@@ -125,14 +125,7 @@ export default function App() {
           onOpenSearch={() => setIsSearchOpen(true)}
           isByteAiOpen={store.activeTab === 'advisor'}
           onToggleByteAi={toggleByteAi}
-          onOpenAdmin={async () => {
-            if (store.userRole === 'ADMIN') {
-              store.setActiveTab('admin');
-            } else {
-              const adminSession = await loginAsAdmin();
-              store.handleLogin(adminSession);
-            }
-          }}
+          onOpenAdmin={() => store.setActiveTab('admin')}
         />
 
         {/* Dynamic Workspace Container */}

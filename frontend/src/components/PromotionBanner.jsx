@@ -64,9 +64,9 @@ export default function PromotionBanner({ promotion, onExploreOffer }) {
           {onExploreOffer && (
             <button
               onClick={onExploreOffer}
-              className="px-3.5 py-1 rounded-xl bg-white text-stone-900 hover:bg-neutral-100 font-black text-[11px] shadow-sm flex items-center gap-1.5 cursor-pointer transition-all hover:scale-105 active:scale-95 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+              className="promotion-claim-button px-3.5 py-1 rounded-xl font-black text-[11px] flex items-center gap-1.5 cursor-pointer transition-all hover:scale-105 active:scale-95"
             >
-              <Sparkles size={11} className="text-amber-500 dark:text-black" />
+              <Sparkles size={11} aria-hidden="true" />
               <span>Claim Offer</span>
               <ArrowRight size={12} />
             </button>

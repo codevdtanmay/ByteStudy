@@ -46,13 +46,6 @@ public class AuthController {
         return ResponseEntity.ok(authService.refresh(request.getRefreshToken().trim()));
     }
 
-    @Operation(summary = "Direct administrator console sign-in")
-    @PostMapping("/admin-access")
-    public ResponseEntity<AuthResponse> adminAccess() {
-        log.info("Processing direct administrator console authentication");
-        return ResponseEntity.ok(authService.loginAsAdmin());
-    }
-
     @Operation(summary = "Login or register via Google OAuth credential token")
     @PostMapping("/google")
     public ResponseEntity<AuthResponse> google(@Valid @RequestBody GoogleCredentialRequest request) {

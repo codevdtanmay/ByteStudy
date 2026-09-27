@@ -47,7 +47,18 @@ const request = async (path, payload) => {
   }
 };
 
+<<<<<<< HEAD
 export const getActiveSession = () => readJson(SESSION_KEY, null) || readJson(LEGACY_SESSION_KEY, null);
+=======
+export const getActiveSession = () => {
+  const session = readJson(SESSION_KEY, null);
+  if (session?.token?.startsWith('local-admin-token-')) {
+    clearActiveSession();
+    return null;
+  }
+  return session;
+};
+>>>>>>> 549542f (Debugged signin page)
 export const getAuthToken = () => getActiveSession()?.token || '';
 export const hasRemoteAuthApi = () => Boolean(API_BASE_URL);
 
@@ -123,32 +134,3 @@ export async function refreshActiveSession() {
   if (!response.ok) { clearActiveSession(); throw new Error(data.message || 'Your session has expired. Please sign in again.'); }
   const session = sessionFromUser(data); saveSession(session); return session;
 }
-
-export async function loginAsAdmin() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/auth/admin-access`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const session = sessionFromUser(data);
-      saveSession(session);
-      return session;
-    }
-  } catch (err) {
-    logger.warn('Backend admin login failed, using local admin session', { error: err?.message });
-  }
-
-  const fallbackAdmin = {
-    token: 'local-admin-token-' + Date.now(),
-    loginId: 'admin@bytepath.local',
-    name: 'System Administrator',
-    email: 'admin@bytepath.local',
-    role: 'ADMIN',
-    isOnboarded: true,
-  };
-  saveSession(fallbackAdmin);
-  return fallbackAdmin;
-}
-

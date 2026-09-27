@@ -1719,6 +1719,31 @@ html.dark .product-nav-item-active {
   background: rgba(108, 92, 231, 0.16) !important;
 }
 
+/* Promotion action and profile initial use the same high-contrast treatment
+   in every theme, so neither can disappear into a dark surface. */
+.promotion-claim-button {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+.promotion-claim-button:hover {
+  background: #e5e5e5 !important;
+  color: #000000 !important;
+}
+
+.promotion-claim-button svg {
+  color: #0b0b0b !important;
+}
+
+.sidebar-avatar {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border: 1px solid #ffffff;
+  box-shadow: none;
+}
+
 [class~="rounded-3xl"],
 [class~="rounded-[36px]"] {
   border-radius: var(--radius-feature) !important;

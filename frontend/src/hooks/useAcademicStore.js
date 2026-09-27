@@ -290,7 +290,7 @@ export function useAcademicStore() {
     if (loginId?.trim()) {
       const cleanLoginId = loginId.trim();
       const profile = getStudentProfile(cleanLoginId);
-      const isUserAdmin = role === 'ADMIN' || cleanLoginId.toLowerCase() === 'admin@bytepath.local';
+      const isUserAdmin = role === 'ADMIN';
       setStudentId(cleanLoginId);
       setUserRole(isUserAdmin ? 'ADMIN' : 'STUDENT');
       setActiveTab(isUserAdmin ? 'admin' : getSavedActiveTab(cleanLoginId));

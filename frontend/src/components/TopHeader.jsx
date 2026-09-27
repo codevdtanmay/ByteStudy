@@ -83,17 +83,7 @@ export default function TopHeader({
               <Shield size={14} />
               <span className="hidden sm:inline">Admin Console</span>
             </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onOpenAdmin}
-              className="px-2.5 py-1.5 rounded-xl text-[11px] font-bold text-stone-600 hover:text-stone-900 dark:text-neutral-400 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-neutral-900 border border-transparent dark:hover:border-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
-              title="Switch to Admin Console"
-            >
-              <Shield size={13} />
-              <span className="hidden md:inline">Admin</span>
-            </button>
-          )}
+          ) : null}
           <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="icon-button dark:bg-neutral-900 dark:border-neutral-800 dark:text-white dark:hover:bg-neutral-800" title="Toggle theme" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>

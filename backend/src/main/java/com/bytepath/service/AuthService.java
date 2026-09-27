@@ -41,6 +41,7 @@ public class AuthService {
     private final String githubClientId;
     private final String githubClientSecret;
     private final String githubCallbackUrl;
+    private final String adminEmail;
 
     public AuthService(UserRepository userRepo,
                        JwtTokenProvider jwtProvider,
@@ -48,7 +49,8 @@ public class AuthService {
                        @Value("${google.client-id:}") String googleClientId,
                        @Value("${github.client-id:}") String githubClientId,
                        @Value("${github.client-secret:}") String githubClientSecret,
-                       @Value("${github.callback-url:}") String githubCallbackUrl) {
+                       @Value("${github.callback-url:}") String githubCallbackUrl,
+                       @Value("${admin.email:}") String adminEmail) {
         this.userRepo        = userRepo;
         this.jwtProvider     = jwtProvider;
         this.refreshTokens = refreshTokens;
@@ -56,6 +58,7 @@ public class AuthService {
         this.githubClientId  = githubClientId;
         this.githubClientSecret = githubClientSecret;
         this.githubCallbackUrl = githubCallbackUrl;
+        this.adminEmail = normalizeEmail(adminEmail);
     }
 
     @Transactional
@@ -85,6 +88,8 @@ public class AuthService {
                 .build();
             return userRepo.save(newUser);
         });
+
+        applyConfiguredRole(user, cleanEmail);
 
         return buildResponse(user);
     }
@@ -221,26 +226,11 @@ public class AuthService {
         User user = userRepo.findByEmail(cleanEmail).orElseGet(() -> userRepo.save(User.builder()
             .loginId(generateLoginId()).name(name).email(cleanEmail)
             .role(User.Role.STUDENT).oauthProvider("GITHUB").emailVerified(true).build()));
+        applyConfiguredRole(user, cleanEmail);
         return buildResponse(user);
     }
 
     private String encode(String value) { return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8); }
-
-    public AuthResponse loginAsAdmin() {
-        User admin = userRepo.findByEmail("admin@bytepath.local")
-            .orElseGet(() -> userRepo.save(User.builder()
-                .loginId("admin@bytepath.local")
-                .name("System Administrator")
-                .email("admin@bytepath.local")
-                .role(User.Role.ADMIN)
-                .emailVerified(true)
-                .build()));
-        if (admin.getRole() != User.Role.ADMIN) {
-            admin.setRole(User.Role.ADMIN);
-            admin = userRepo.save(admin);
-        }
-        return buildResponse(admin);
-    }
 
     // ── UserDetailsService helper ──────────────────────────────────────────────
 
@@ -266,6 +256,19 @@ public class AuthService {
             .isOnboarded(user.isOnboarded())
             .targetCgpa(user.getTargetCgpa())
             .build();
+    }
+
+    private void applyConfiguredRole(User user, String email) {
+        User.Role expectedRole = !adminEmail.isBlank() && adminEmail.equals(normalizeEmail(email))
+            ? User.Role.ADMIN : User.Role.STUDENT;
+        if (user.getRole() != expectedRole) {
+            user.setRole(expectedRole);
+            userRepo.save(user);
+        }
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? "" : email.trim().toLowerCase();
     }
 
     private String hash(String value) {
