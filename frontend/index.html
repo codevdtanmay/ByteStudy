@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="theme-color" content="#0B0B10" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme') || 'dark';
+          const dark = saved === 'dark' || (saved === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+          document.documentElement.classList.toggle('light', !dark);
+        } catch {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        }
+      })();
+    </script>
     <meta name="description" content="ByteCollege - B.Tech CS & IT Curriculum Navigator & Academic Companion for HNBGU Engineering Students." />
     <meta name="keywords" content="ByteCollege, HNBGU, B.Tech CS & IT, B.Tech CSE, CGPA calculator, academic planner, syllabus, pyqs" />
     <title>ByteCollege – B.Tech CS & IT Curriculum Navigator & Academic Companion</title>

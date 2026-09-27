@@ -1,6 +1,8 @@
 package com.bytepath.controller;
 
 import com.bytepath.model.User;
+import com.bytepath.dto.request.PaymentOrderRequest;
+import jakarta.validation.Valid;
 import com.bytepath.service.RazorpayService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,10 +16,9 @@ public class PaymentController {
     public PaymentController(RazorpayService razorpay) { this.razorpay = razorpay; }
 
     @PostMapping("/razorpay/order")
-    public ResponseEntity<Map<String, Object>> order(@RequestBody Map<String, Object> body) {
-        long amount = ((Number) body.getOrDefault("amountPaise", 9900)).longValue();
-        if (amount < 100) throw new IllegalArgumentException("Invalid payment amount.");
-        return ResponseEntity.ok(razorpay.createOrder(amount, "bytepath-" + System.currentTimeMillis()));
+    public ResponseEntity<Map<String, Object>> order(@AuthenticationPrincipal User user,
+                                                      @Valid @RequestBody PaymentOrderRequest request) {
+        return ResponseEntity.ok(razorpay.createOrder(user, request.plan(), "bytepath-" + System.currentTimeMillis()));
     }
 
     @PostMapping("/razorpay/verify")

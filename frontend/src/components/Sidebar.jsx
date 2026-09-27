@@ -7,8 +7,6 @@ import {
   DollarSign,
   Shield,
   FileText,
-  Sun,
-  Moon,
   LogOut,
   X,
   Award,
@@ -20,6 +18,7 @@ import {
   Building2
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
+import ThemeControl from './ThemeControl';
 import { isAdminAccount } from '../services/authApi';
 
 const NAV_SECTIONS = [
@@ -166,12 +165,9 @@ export default function Sidebar({
             <span className="flex items-center gap-1.5"><Award size={13} /> Attendance {calculatedAttendancePercent}%</span>
             <span className="flex items-center gap-1.5"><Target size={13} /> {hasEndSemSubscription ? 'Pass active' : 'Standard plan'}</span>
           </div>
-          <div className="grid grid-cols-2 gap-2">
-            <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="secondary-button dark:bg-neutral-900 dark:border-neutral-800 dark:text-white dark:hover:bg-neutral-800">
-              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
-              {theme === 'dark' ? 'Light' : 'Dark'}
-            </button>
-            <button type="button" onClick={handleLogout} className="secondary-button text-[#a65337] dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-800 dark:hover:text-white dark:hover:bg-neutral-800">
+          <ThemeControl value={theme} onChange={setTheme} />
+          <div className="mt-2">
+            <button type="button" onClick={handleLogout} className="secondary-button w-full text-[#a65337] dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-800 dark:hover:text-white dark:hover:bg-neutral-800">
               <LogOut size={15} /> Sign out
             </button>
           </div>

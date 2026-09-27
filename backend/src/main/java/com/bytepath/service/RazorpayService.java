@@ -20,23 +20,43 @@ public class RazorpayService {
     private final String keySecret;
     private final String keyId;
     private final String webhookSecret;
+    private final PromotionService promotions;
+    private final long semesterPricePaise;
+    private final long annualPricePaise;
 
     public RazorpayService(SubscriptionRepository subscriptions,
+                           PromotionService promotions,
                            @Value("${razorpay.key-secret:}") String keySecret,
                            @Value("${razorpay.key-id:}") String keyId,
-                           @Value("${razorpay.webhook-secret:}") String webhookSecret) {
+                           @Value("${razorpay.webhook-secret:}") String webhookSecret,
+                           @Value("${razorpay.semester-price-inr:990}") long semesterPriceInr,
+                           @Value("${razorpay.annual-price-inr:2990}") long annualPriceInr) {
         this.subscriptions = subscriptions;
+        this.promotions = promotions;
         this.keySecret = keySecret == null ? "" : keySecret;
         this.keyId = keyId == null ? "" : keyId;
         this.webhookSecret = webhookSecret == null ? "" : webhookSecret;
+        if (semesterPriceInr < 1 || annualPriceInr < 1) throw new IllegalArgumentException("Razorpay prices must be positive.");
+        this.semesterPricePaise = semesterPriceInr * 100;
+        this.annualPricePaise = annualPriceInr * 100;
     }
 
-    public Map<String, Object> createOrder(long amountPaise, String receipt) {
+    public Map<String, Object> createOrder(User user, String plan, String receipt) {
         if (keyId.isBlank() || keySecret.isBlank()) throw new IllegalStateException("Razorpay is not configured on the backend.");
+        long amountPaise = priceFor(plan);
+        int discount = promotions.getCurrentPromotion().isActive()
+            ? Math.max(0, Math.min(100, promotions.getCurrentPromotion().getDiscountPercentage())) : 0;
+        amountPaise = Math.max(100, Math.round(amountPaise * (100 - discount) / 100.0));
         return RestClient.create().post().uri("https://api.razorpay.com/v1/orders")
             .headers(h -> h.setBasicAuth(keyId, keySecret))
-            .body(Map.of("amount", amountPaise, "currency", "INR", "receipt", receipt))
+            .body(Map.of("amount", amountPaise, "currency", "INR", "receipt", receipt, "notes", Map.of("userId", user.getId(), "plan", plan)))
             .retrieve().body(Map.class);
+    }
+
+    private long priceFor(String plan) {
+        if ("sem".equals(plan)) return semesterPricePaise;
+        if ("annual".equals(plan)) return annualPricePaise;
+        throw new IllegalArgumentException("Unsupported payment plan.");
     }
 
     @Transactional

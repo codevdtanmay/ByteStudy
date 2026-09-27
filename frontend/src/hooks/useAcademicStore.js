@@ -110,10 +110,10 @@ export function useAcademicStore() {
     }
   };
 
-  // ---- Dark / Light toggler ----
+  // ---- Appearance preference ----
   const [theme, setTheme] = useState(() => {
     try {
-      return localStorage.getItem('theme') || 'dark'; // Dark theme is default because it looks cooler
+      return localStorage.getItem('theme') || 'dark';
     } catch {
       return 'dark';
     }
@@ -226,14 +226,26 @@ export function useAcademicStore() {
   }, [studentId]);
 
   useEffect(() => {
-    localStorage.setItem('theme', theme);
+    const preference = ['light', 'dark', 'system'].includes(theme) ? theme : 'system';
+    localStorage.setItem('theme', preference);
     const root = document.documentElement;
-    if (theme === 'dark') {
+    const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+    const applyTheme = () => {
+      const shouldUseDark = preference === 'dark' || (preference === 'system' && mediaQuery?.matches);
+      root.dataset.themePreference = preference;
+      if (shouldUseDark) {
       root.classList.add('dark');
       root.classList.remove('light');
-    } else {
+      } else {
       root.classList.add('light');
       root.classList.remove('dark');
+      }
+    };
+
+    applyTheme();
+    if (preference === 'system' && mediaQuery) {
+      mediaQuery.addEventListener?.('change', applyTheme);
+      return () => mediaQuery.removeEventListener?.('change', applyTheme);
     }
   }, [theme]);
 
