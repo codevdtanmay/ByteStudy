@@ -331,10 +331,10 @@ export default function GatePrepPanel() {
   const activeBranchData = GATE_DATA[selectedBranch] || GATE_DATA.cs;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-7 animate-fade-in pb-16">
+    <div className="gate-page max-w-6xl mx-auto space-y-7 animate-fade-in pb-16">
       
       {/* Header Banner */}
-      <div className="glass-card p-6 sm:p-8 border border-slate-200 dark:border-neutral-800 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl shadow-xl relative overflow-hidden dark:bg-black dark:bg-none">
+      <div className="gate-hero glass-card p-6 sm:p-8 border border-slate-200 dark:border-neutral-800 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl shadow-xl relative overflow-hidden dark:bg-black dark:bg-none">
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none dark:hidden" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
@@ -383,7 +383,7 @@ export default function GatePrepPanel() {
                 onClick={() => setSelectedBranch(key)}
                 className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
                   isSelected
-                    ? 'bg-white text-black shadow-md font-black scale-[1.02] dark:bg-white dark:text-black'
+                    ? 'bg-white text-black shadow-md font-black scale-[1.02] dark:bg-white dark:text-white'
                     : 'bg-white/5 hover:bg-white/10 text-white/80 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800'
                 }`}
               >
