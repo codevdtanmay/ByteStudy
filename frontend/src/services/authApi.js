@@ -47,18 +47,14 @@ const request = async (path, payload) => {
   }
 };
 
-<<<<<<< HEAD
-export const getActiveSession = () => readJson(SESSION_KEY, null) || readJson(LEGACY_SESSION_KEY, null);
-=======
 export const getActiveSession = () => {
-  const session = readJson(SESSION_KEY, null);
+  const session = readJson(SESSION_KEY, null) || readJson(LEGACY_SESSION_KEY, null);
   if (session?.token?.startsWith('local-admin-token-')) {
     clearActiveSession();
     return null;
   }
   return session;
 };
->>>>>>> 549542f (Debugged signin page)
 export const getAuthToken = () => getActiveSession()?.token || '';
 export const hasRemoteAuthApi = () => Boolean(API_BASE_URL);
 

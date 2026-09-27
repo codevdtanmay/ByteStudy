@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { SYLLABUS, TOTAL_PROGRAM_CREDITS } from '../data/syllabus';
-import { clearActiveSession, hasRemoteAuthApi, getAuthToken, updateAcademicProfile } from '../services/authApi';
+import { clearActiveSession, getActiveSession, hasRemoteAuthApi, getAuthToken, updateAcademicProfile } from '../services/authApi';
 import { askAdvisor } from '../services/advisorApi';
 import logger from '../utils/logger';
 
@@ -49,13 +49,13 @@ const saveStudentProfile = (loginId, updates) => {
 };
 
 export function useAcademicStore() {
-  // ---- Profile details (type 'admin' as backdoor roll num for pyqs uploader) ----
+  // The persisted auth session is the source of truth for the current account.
+  // Do not restore an admin role from a standalone UI preference in localStorage.
+  const persistedSession = getActiveSession();
+
+  // ---- Profile details ----
   const [studentId, setStudentId] = useState(() => {
-    try {
-      return localStorage.getItem('activeStudentId') || '';
-    } catch {
-      return '';
-    }
+    return persistedSession?.loginId || '';
   });
 
   const initialProfile = getStudentProfile(studentId);
@@ -65,11 +65,7 @@ export function useAcademicStore() {
   });
 
   const [userRole, setUserRole] = useState(() => {
-    try {
-      return localStorage.getItem('activeUserRole') || '';
-    } catch {
-      return '';
-    }
+    return persistedSession?.role === 'ADMIN' ? 'ADMIN' : (persistedSession?.loginId ? 'STUDENT' : '');
   });
 
   const [isOnboarded, setIsOnboarded] = useState(() => {
