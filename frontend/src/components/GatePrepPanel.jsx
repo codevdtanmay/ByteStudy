@@ -334,8 +334,8 @@ export default function GatePrepPanel() {
     <div className="gate-page max-w-6xl mx-auto space-y-7 animate-fade-in pb-16">
       
       {/* Header Banner */}
-      <div className="gate-hero glass-card p-6 sm:p-8 border border-slate-200 dark:border-neutral-800 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl shadow-xl relative overflow-hidden dark:bg-black dark:bg-none">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none dark:hidden" />
+      <div className="gate-hero glass-card p-6 sm:p-8 border border-stone-200 dark:border-neutral-800 bg-gradient-to-r from-stone-600/15 via-zinc-500/10 to-stone-500/15 text-white rounded-3xl shadow-xl relative overflow-hidden dark:bg-black dark:bg-none">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-stone-500/10 rounded-full blur-3xl pointer-events-none dark:hidden" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 relative z-10">
           <div>

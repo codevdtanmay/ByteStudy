@@ -915,6 +915,14 @@ html, body { background: var(--background); color: var(--foreground); }
 input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 1; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 
+/* The label is targeted directly because legacy banner text selectors can
+   otherwise override the button's inherited color. */
+html .promotion-claim-button,
+html .promotion-claim-button span,
+html .promotion-claim-button svg {
+  color: #b42318 !important;
+}
+
 /* Central semantic design tokens. Components should consume these roles,
    rather than pairing arbitrary foreground/background hex values. */
 :root,
@@ -2237,6 +2245,38 @@ html.dark {
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white) span { color: #28778d !important; }
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white) { background: rgba(255,255,255,.5) !important; border: 1px solid rgba(95,170,190,.18) !important; }
 :root:not(.dark) .gate-page .gate-hero button:not(.bg-white):hover { background: rgba(255,255,255,.82) !important; }
+:root:not(.dark) .gate-page .gate-hero {
+  /* Match the neutral stone/zinc banner treatment used by Useful AI Tools. */
+  background: linear-gradient(to right, rgba(87, 83, 78, .15), rgba(113, 113, 122, .10), rgba(120, 113, 108, .15)) !important;
+  border-color: #d6d3d1 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tabs {
+  border-top-color: #000000 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab,
+:root:not(.dark) .gate-page .gate-branch-tab span {
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab {
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab-active {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab-inactive {
+  background: rgba(255, 255, 255, .72) !important;
+  color: #000000 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab-inactive:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+:root:not(.dark) .gate-page .gate-branch-tab span {
+  color: #000000 !important;
+}
 :root:not(.dark) .gate-page > .grid > .glass-card { border-color: #d8e4ec !important; box-shadow: 0 8px 20px rgba(31,74,99,.06) !important; }
 :root:not(.dark) .gate-page > .grid > .glass-card:nth-child(1) svg { color: #20aabd !important; }
 :root:not(.dark) .gate-page > .grid > .glass-card:nth-child(2) svg { color: #4384c3 !important; }
