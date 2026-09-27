@@ -25,7 +25,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
       role: 'Founder & Lead System Architect',
       specialty: 'Platform Engineering, Cloud Infrastructure & AI Systems',
       avatarInitial: 'A',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
+      image: 'https://ibb.co/rGdCzgYk',
       bio: 'Spearheaded the engineering and architectural foundation of ByteCollege. Passionate about distributed systems, resilient web software, and crafting high-yield digital tools for university scholars.',
       tags: ['System Architecture', 'Spring Boot 3', 'PostgreSQL', 'AI RAG Engine', 'Security'],
       quote: 'ByteCollege was born to solve real student problems—fragmented notes, missing past papers, and attendance uncertainty. We engineered an all-in-one operating system for engineering scholars.',
@@ -47,7 +47,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
   const pillars = [
     {
       title: 'Institutional Alignment',
-      desc: 'Formulated specifically around the curriculum of School of Engineering & Technology (SET), HNB Garhwal Central University.',
+      desc: 'Formulated specifically around the curriculum of School of Engineering & Technology (SOET), HNB Garhwal Central University.',
       icon: GraduationCap
     },
     {
