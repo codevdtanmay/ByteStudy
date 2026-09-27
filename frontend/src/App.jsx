@@ -4,13 +4,11 @@ import Sidebar from './components/Sidebar';
 import TopHeader from './components/TopHeader';
 import Dashboard from './components/Dashboard';
 import SemestersPanel from './components/SemestersPanel';
-import PredictorPanel from './components/PredictorPanel';
 import SyllabusPanel from './components/SyllabusPanel';
 import FocusZone from './components/FocusZone';
 import DeadlineTracker from './components/DeadlineTracker';
 import ExpenseTracker from './components/ExpenseTracker';
-import GradeSimulator from './components/GradeSimulator';
-import CareerPanel from './components/CareerPanel';
+import AboutLeadershipPanel from './components/AboutLeadershipPanel';
 import GatePrepPanel from './components/GatePrepPanel';
 import HnbguAchieversPanel from './components/HnbguAchieversPanel';
 import UsefulAiToolsPanel from './components/UsefulAiToolsPanel';
@@ -168,18 +166,6 @@ export default function App() {
             />
           )}
 
-          {store.activeTab === 'predictor' && (
-            <PredictorPanel 
-              currentCgpa={store.currentCgpa}
-              targetCgpa={store.targetCgpa}
-              setTargetCgpa={store.setTargetCgpa}
-              cgpaPredictor={store.cgpaPredictor}
-              earnedCredits={store.earnedCredits}
-              remainingCredits={store.remainingCredits}
-              pastSgpas={store.pastSgpas}
-            />
-          )}
-
           {store.activeTab === 'pyqs' && (
             <SyllabusPanel 
               uploadedPyqs={store.uploadedPyqs}
@@ -214,24 +200,6 @@ export default function App() {
             />
           )}
 
-          {store.activeTab === 'gradesim' && (
-            <GradeSimulator 
-              currentSemester={store.currentSemester}
-              simulatedGrades={store.simulatedGrades}
-              setSimulatedGrades={store.setSimulatedGrades}
-              simulatedSgpa={store.simulatedSgpa}
-              currentCgpa={store.currentCgpa}
-              targetCgpa={store.targetCgpa}
-            />
-          )}
-
-          {store.activeTab === 'career' && (
-            <CareerPanel 
-              careerPhase={store.careerPhase}
-              currentSemester={store.currentSemester}
-            />
-          )}
-
           {store.activeTab === 'gate' && (
             <GatePrepPanel />
           )}
@@ -242,6 +210,10 @@ export default function App() {
 
           {store.activeTab === 'aitools' && (
             <UsefulAiToolsPanel />
+          )}
+
+          {store.activeTab === 'about' && (
+            <AboutLeadershipPanel onOpenFeedback={() => setIsFeedbackOpen(true)} />
           )}
 
           {store.activeTab === 'admin' && store.userRole === 'ADMIN' && (

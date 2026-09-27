@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   ComposedChart
 } from 'recharts';
-import { ArrowUpRight, Award, BookOpen, FileText, Sliders, Target, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, Award, BookOpen, FileText, Target, TrendingUp, Trophy, Building2 } from 'lucide-react';
 import { TOTAL_PROGRAM_CREDITS, SYLLABUS } from '../data/syllabus';
 
 function CustomTooltip({ active, payload, label }) {
@@ -59,9 +59,9 @@ export default function Dashboard({
 
   const academicActions = [
     { label: 'Update semester record', description: 'Record SGPA and attendance', tab: 'semesters', icon: BookOpen },
-    { label: 'Estimate target CGPA', description: 'Plan the SGPA you need next', tab: 'predictor', icon: Target },
+    { label: 'GATE Prep Hub', description: 'Exam syllabus, weightage & links', tab: 'gate', icon: Trophy },
     { label: 'Review syllabus', description: 'Browse courses and PYQs', tab: 'pyqs', icon: FileText },
-    { label: 'Simulate final SGPA', description: 'Project grades for current courses', tab: 'gradesim', icon: Sliders }
+    { label: 'Administration & Founders', description: 'Company vision & leadership', tab: 'about', icon: Building2 }
   ];
 
   return (
@@ -74,13 +74,13 @@ export default function Dashboard({
         </div>
         <div className="flex shrink-0 gap-2">
           <button type="button" className="primary-button" onClick={() => setActiveTab('semesters')}>Update record <ArrowUpRight size={14} /></button>
-          <button type="button" className="secondary-button" onClick={() => setActiveTab('predictor')}>Plan target</button>
+          <button type="button" className="secondary-button" onClick={() => setActiveTab('pyqs')}>Explore PYQs</button>
         </div>
       </section>
 
       <section className="dashboard-metrics grid grid-cols-2 sm:grid-cols-4">
         <Metric label="Current CGPA" value={currentCgpa || '—'} note={`Across ${earnedCredits} completed credits`} icon={Award} onClick={() => setActiveTab('semesters')} accent />
-        <Metric label="Target CGPA" value={targetCgpa || '8.50'} note="Your current academic aim" icon={Target} onClick={() => setActiveTab('predictor')} />
+        <Metric label="Target CGPA" value={targetCgpa || '8.50'} note="Your current academic aim" icon={Target} onClick={() => setActiveTab('semesters')} />
         <Metric label="Credits earned" value={`${earnedCredits} / ${TOTAL_PROGRAM_CREDITS}`} note={`${remainingCredits} credits remaining`} icon={BookOpen} onClick={() => setActiveTab('semesters')} />
         <Metric label="Attendance" value={calculatedAttendancePercent !== 'N/A' ? `${calculatedAttendancePercent}%` : '—'} note="Recommended minimum: 75%" icon={TrendingUp} onClick={() => setActiveTab('semesters')} />
       </section>

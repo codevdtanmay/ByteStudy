@@ -2,15 +2,13 @@ import React from 'react';
 import { 
   LayoutDashboard, 
   BookOpen, 
-  TrendingUp, 
-  Briefcase, 
   Clock, 
   Calendar, 
   DollarSign, 
-  Sliders, 
   Shield, 
   FileText,
-  Brain
+  Brain,
+  Building2
 } from 'lucide-react';
 import { isAdminAccount } from '../services/authApi';
 
@@ -19,15 +17,13 @@ const TABS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, category: 'Academic' },
   { id: 'advisor', label: 'ByteAI Advisor 🤖', icon: Brain, category: 'Academic' },
   { id: 'semesters', label: 'Semesters & Attendance', icon: BookOpen, category: 'Academic' },
-  { id: 'predictor', label: 'Target Estimator', icon: TrendingUp, category: 'Academic' },
   { id: 'pyqs', label: 'Syllabus & PYQs', icon: FileText, category: 'Academic' },
   // Student Life Group
   { id: 'focus', label: 'Focus Zone ⏱️', icon: Clock, category: 'Student Life' },
   { id: 'deadlines', label: 'Deadline Planner 📅', icon: Calendar, category: 'Student Life' },
   { id: 'expenses', label: 'Pocket Budget 💰', icon: DollarSign, category: 'Student Life' },
-  { id: 'gradesim', label: 'Grade Simulator 📊', icon: Sliders, category: 'Student Life' },
-  // Career & Control
-  { id: 'career', label: 'Career Roadmap 🚀', icon: Briefcase, category: 'Career' },
+  // Administration & Governance
+  { id: 'about', label: 'Administration & Founders 🏛️', icon: Building2, category: 'Administration' },
   { id: 'admin', label: 'Admin Console ⚙️', icon: Shield, category: 'Control', adminOnly: true },
 ];
 

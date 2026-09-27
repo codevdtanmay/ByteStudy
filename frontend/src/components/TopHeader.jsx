@@ -5,16 +5,14 @@ const TAB_TITLES = {
   dashboard: { title: 'Overview' },
   advisor: { title: 'ByteAI Advisor' },
   semesters: { title: 'Semesters & Attendance' },
-  predictor: { title: 'Target Estimator' },
   pyqs: { title: 'Syllabus & PYQs' },
   focus: { title: 'Focus Zone' },
   deadlines: { title: 'Deadline Planner' },
   expenses: { title: 'Pocket Budget' },
-  gradesim: { title: 'Grade Simulator' },
-  career: { title: 'Career Roadmap' },
   gate: { title: 'GATE Preparation Hub 📚' },
   achievers: { title: 'Achievers of HNBGU 🏆' },
   aitools: { title: 'Essential AI Tools for Students 🚀' },
+  about: { title: 'Administration & Founders 🏛️' },
   admin: { title: 'Admin Console' }
 };
 

@@ -2,12 +2,9 @@ import React from 'react';
 import {
   LayoutDashboard,
   BookOpen,
-  TrendingUp,
-  Briefcase,
   Clock,
   Calendar,
   DollarSign,
-  Sliders,
   Shield,
   FileText,
   Sun,
@@ -20,7 +17,7 @@ import {
   MessageSquare,
   Trophy,
   Sparkles,
-  Cpu
+  Building2
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
@@ -40,17 +37,17 @@ const NAV_SECTIONS = [
       { id: 'gate', label: 'GATE Prep Hub', icon: Trophy },
       { id: 'achievers', label: 'Achievers of HNBGU', icon: Award },
       { id: 'aitools', label: 'Useful AI Tools', icon: Sparkles },
-      { id: 'predictor', label: 'Target Estimator', icon: TrendingUp },
-      { id: 'gradesim', label: 'Grade Simulator', icon: Sliders },
       { id: 'focus', label: 'Focus Zone', icon: Clock },
       { id: 'deadlines', label: 'Deadline Planner', icon: Calendar },
-      { id: 'expenses', label: 'Pocket Budget', icon: DollarSign },
-      { id: 'career', label: 'Career Roadmap', icon: Briefcase }
+      { id: 'expenses', label: 'Pocket Budget', icon: DollarSign }
     ]
   },
   {
     title: 'Administration',
-    items: [{ id: 'admin', label: 'Admin Console', icon: Shield, adminOnly: true }]
+    items: [
+      { id: 'about', label: 'Administration & Founders', icon: Building2 },
+      { id: 'admin', label: 'Admin Console', icon: Shield, adminOnly: true }
+    ]
   }
 ];
 

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, BookOpen, Clock, Calendar, DollarSign, Sliders, Briefcase, TrendingUp, FileText, ArrowRight } from 'lucide-react';
+import { Search, X, BookOpen, Clock, Calendar, DollarSign, FileText, ArrowRight, Trophy, Award, Sparkles, Building2 } from 'lucide-react';
 import { SYLLABUS } from '../data/syllabus';
 
 const QUICK_TOOLS = [
-  { id: 'dashboard', title: 'Dashboard & SGPA Timeline', category: 'Academic', icon: BookOpen },
+  { id: 'dashboard', title: 'Dashboard & Academic Overview', category: 'Academic', icon: BookOpen },
   { id: 'semesters', title: 'Semesters & Course Attendance', category: 'Academic', icon: BookOpen },
-  { id: 'predictor', title: 'Target CGPA Estimator', category: 'Planner', icon: TrendingUp },
   { id: 'pyqs', title: 'Syllabus & Past Exam PYQs', category: 'Resources', icon: FileText },
+  { id: 'gate', title: 'GATE Preparation Hub 📚', category: 'Academics', icon: Trophy },
+  { id: 'achievers', title: 'Achievers of HNBGU 🏆', category: 'Showcase', icon: Award },
+  { id: 'aitools', title: 'Essential AI Tools for Students 🚀', category: 'Productivity', icon: Sparkles },
   { id: 'focus', title: 'Focus Zone & Pomodoro Timer ⏱️', category: 'Productivity', icon: Clock },
   { id: 'deadlines', title: 'Deadline & Assignment Planner 📅', category: 'Productivity', icon: Calendar },
   { id: 'expenses', title: 'Pocket Expense Manager 💰', category: 'Student Life', icon: DollarSign },
-  { id: 'gradesim', title: 'Interactive Grade Simulator 📊', category: 'Simulation', icon: Sliders },
-  { id: 'career', title: 'Web Dev Career Roadmap 🚀', category: 'Career', icon: Briefcase },
+  { id: 'about', title: 'Administration & About Founders 🏛️', category: 'Company', icon: Building2 },
 ];
 
 export default function SearchModal({ isOpen, onClose, setActiveTab }) {
