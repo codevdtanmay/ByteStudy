@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   ComposedChart
 } from 'recharts';
-import { ArrowUpRight, Award, BookOpen, FileText, Target, TrendingUp, Trophy, Building2 } from 'lucide-react';
+import { ArrowUpRight, Award, BookOpen, ChevronRight, FileText, Target, TrendingUp, Trophy, Building2 } from 'lucide-react';
 import { TOTAL_PROGRAM_CREDITS, SYLLABUS } from '../data/syllabus';
 
 function CustomTooltip({ active, payload, label }) {
@@ -34,13 +34,31 @@ function CustomTooltip({ active, payload, label }) {
 function Metric({ label, value, note, icon: Icon, onClick, accent = false }) {
   const Component = onClick ? 'button' : 'div';
   return (
-    <Component type={onClick ? 'button' : undefined} onClick={onClick} className={`academic-metric ${onClick ? 'cursor-pointer hover:bg-[#f4eee9] dark:hover:bg-[#34302b]' : ''}`}>
+    <Component
+      type={onClick ? 'button' : undefined}
+      onClick={onClick}
+      aria-label={onClick ? `View details for ${label}` : undefined}
+      className={`academic-metric group text-left transition-all duration-150 ${
+        onClick
+          ? 'cursor-pointer hover:bg-[#f4eee9] dark:hover:bg-[#34302b] hover:shadow-sm hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#a65337]'
+          : ''
+      }`}
+    >
       <div className="flex items-start justify-between gap-3">
         <span className="eyebrow">{label}</span>
-        <Icon size={16} className={accent ? 'text-[#a65337] dark:text-[#d99579]' : 'text-stone-400'} />
+        <div className="flex items-center gap-1">
+          <Icon size={16} className={accent ? 'text-[#a65337] dark:text-[#d99579]' : 'text-stone-400'} />
+          {onClick && (
+            <ChevronRight
+              size={14}
+              className="text-stone-400 opacity-60 transition-transform group-hover:translate-x-0.5 group-hover:opacity-100"
+              aria-hidden="true"
+            />
+          )}
+        </div>
       </div>
-      <p className={`mt-3 text-[26px] font-semibold tracking-[-0.04em] ${accent ? 'text-[#a65337] dark:text-[#d99579]' : 'text-stone-900 dark:text-stone-100'}`}>{value}</p>
-      <p className="mt-1 text-[11px] text-stone-500 dark:text-stone-400">{note}</p>
+      <p className={`mt-3 text-2xl font-semibold tracking-[-0.04em] ${accent ? 'text-[#a65337] dark:text-[#d99579]' : 'text-stone-900 dark:text-stone-100'}`}>{value}</p>
+      <p className="mt-1 text-xs text-stone-500 dark:text-stone-400">{note}</p>
     </Component>
   );
 }
@@ -73,7 +91,7 @@ export default function Dashboard({
           <p className="mt-3 max-w-xl text-sm leading-6 text-stone-500 dark:text-stone-400">Track your semester standing, understand your remaining credits, and make the next academic decision with confidence.</p>
         </div>
         <div className="flex shrink-0 gap-2">
-          <button type="button" className="primary-button" onClick={() => setActiveTab('semesters')}>Update record <ArrowUpRight size={14} /></button>
+          <button type="button" className="secondary-button font-medium border-stone-300 dark:border-neutral-700" onClick={() => setActiveTab('semesters')}>Update record <ArrowUpRight size={14} /></button>
           <button type="button" className="secondary-button" onClick={() => setActiveTab('pyqs')}>Explore PYQs</button>
         </div>
       </section>
@@ -92,7 +110,7 @@ export default function Dashboard({
               <p className="eyebrow">Performance history</p>
               <h3 className="mt-2 font-serif text-2xl tracking-[-0.03em] text-stone-900 dark:text-stone-100">SGPA and CGPA trajectory</h3>
             </div>
-            <div className="flex gap-4 text-[11px] text-stone-500 dark:text-stone-400">
+            <div className="flex gap-4 text-xs text-stone-500 dark:text-stone-400">
               <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#525252]" /> SGPA</span>
               <span className="flex items-center gap-1.5"><i className="legend-dot bg-[#171717]" /> CGPA</span>
               <span className="flex items-center gap-1.5"><i className="legend-line bg-stone-400" /> Target</span>
@@ -103,7 +121,14 @@ export default function Dashboard({
               <p className="eyebrow">No record yet</p>
               <h4 className="mt-3 font-serif text-xl text-stone-800 dark:text-stone-100">Begin with your first semester</h4>
               <p className="mt-2 max-w-sm text-xs leading-5 text-stone-500">Add your semester SGPA and attendance to make this academic history meaningful.</p>
-              <button type="button" onClick={() => setActiveTab('semesters')} className="mt-5 text-xs font-semibold text-[#a65337] hover:underline dark:text-[#d99579]">Add semester grades <ArrowUpRight size={13} className="inline" /></button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('semesters')}
+                className="primary-button mt-5 inline-flex items-center gap-2 px-4 py-2.5 text-xs font-semibold shadow-sm"
+              >
+                <span>Add semester grades</span>
+                <ArrowUpRight size={14} aria-hidden="true" />
+              </button>
             </div>
           ) : (
             <div className="h-[290px] pt-6">

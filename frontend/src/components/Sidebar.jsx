@@ -92,7 +92,7 @@ export default function Sidebar({
             <BrandLogo />
             <span>
               <span className="block text-[15px] font-bold tracking-[-0.02em] text-stone-900 dark:text-stone-100">ByteCollege</span>
-              <span className="block mt-0.5 text-[10px] uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">Academic planner</span>
+              <span className="block mt-0.5 text-xs font-medium tracking-normal text-stone-500 dark:text-stone-400">Academic Planner</span>
             </span>
           </button>
           <button type="button" onClick={() => setIsOpen(false)} className="md:hidden icon-button" aria-label="Close navigation">
@@ -105,7 +105,13 @@ export default function Sidebar({
             <div className="flex items-center justify-between gap-3">
               <div className="sidebar-profile-name min-w-0">
                 <span className="sidebar-avatar">{(studentName || 'S').slice(0, 1).toUpperCase()}</span>
-                <p className="truncate">{studentName || 'Student Scholar'}</p>
+                <p
+                  className="truncate text-xs font-semibold text-stone-900 dark:text-stone-100"
+                  title={studentName || 'Student Scholar'}
+                  aria-label={`Current student: ${studentName || 'Student Scholar'}`}
+                >
+                  {studentName || 'Student Scholar'}
+                </p>
               </div>
               <span className="status-mark"><CheckCircle2 size={15} /></span>
             </div>
@@ -122,14 +128,14 @@ export default function Sidebar({
             </div>
           </div>
 
-          <nav aria-label="Primary navigation" className="space-y-6">
+          <nav aria-label="Primary navigation" className="space-y-5">
             {NAV_SECTIONS.map((section) => {
               const visibleItems = section.items.filter(({ adminOnly }) => !adminOnly || isAdmin);
               if (!visibleItems.length) return null;
               return (
-                <section key={section.title || 'primary-navigation'}>
+                <section key={section.title || 'primary-navigation'} className="space-y-1.5">
                   {section.title && <p className="eyebrow px-3">{section.title}</p>}
-                  <div className={`${section.title ? 'mt-2' : ''} space-y-0.5`}>
+                  <div className="space-y-0.5">
                     {visibleItems.map(({ id, label, icon: Icon }) => {
                       const isActive = activeTab === id;
                       return (
@@ -149,16 +155,18 @@ export default function Sidebar({
                 </section>
               );
             })}
-          </nav>
 
-          <button
-            type="button"
-            onClick={onOpenFeedback}
-            className="mt-7 flex w-full items-center gap-2 rounded-xl border border-stone-200 bg-stone-100 px-3 py-2.5 text-left text-xs font-bold text-stone-800 transition-colors hover:bg-stone-200 dark:border-neutral-800 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
-          >
-            <MessageSquare size={16} />
-            <span>Give feedback</span>
-          </button>
+            <section className="pt-2 border-t border-stone-200/60 dark:border-neutral-800/60">
+              <button
+                type="button"
+                onClick={onOpenFeedback}
+                className="flex w-full items-center gap-2 rounded-xl border border-stone-200 bg-stone-100 px-3 py-2.5 text-left text-xs font-semibold text-stone-800 transition-colors hover:bg-stone-200 dark:border-neutral-800 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
+              >
+                <MessageSquare size={16} />
+                <span>Give feedback</span>
+              </button>
+            </section>
+          </nav>
         </div>
 
         <div className="border-t border-stone-200 dark:border-neutral-800 p-4">
@@ -166,7 +174,7 @@ export default function Sidebar({
             <span className="flex items-center gap-1.5"><Award size={13} /> Attendance {calculatedAttendancePercent}%</span>
             <span className="flex items-center gap-1.5"><Target size={13} /> {hasEndSemSubscription ? 'Pass active' : 'Standard plan'}</span>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 md:hidden">
             <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="secondary-button dark:bg-neutral-900 dark:border-neutral-800 dark:text-white dark:hover:bg-neutral-800">
               {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
               {theme === 'dark' ? 'Light' : 'Dark'}

@@ -34,13 +34,13 @@ export default function TopHeader({
 
   return (
     <header className="product-header">
-      <div className="product-header-inner flex min-h-[82px] items-center justify-between gap-5 px-5 py-4 sm:px-8 lg:px-10">
+      <div className="product-header-inner max-w-7xl mx-auto flex min-h-[76px] items-center justify-between gap-5 px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <button type="button" onClick={onOpenSidebar} className="md:hidden icon-button" aria-label="Open navigation">
             <Menu size={18} />
           </button>
           <div className="min-w-0">
-            <h1 className="mt-1 truncate font-serif text-[26px] leading-none tracking-[-0.03em] text-stone-900 dark:text-stone-100 sm:text-[30px]">{tabInfo.title}</h1>
+            <h1 className="mt-1 truncate font-serif text-2xl leading-none tracking-[-0.03em] text-stone-900 dark:text-stone-100 sm:text-3xl">{tabInfo.title}</h1>
           </div>
         </div>
 
