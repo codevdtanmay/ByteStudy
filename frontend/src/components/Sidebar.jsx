@@ -17,7 +17,10 @@ import {
   Award,
   Target,
   CheckCircle2,
-  MessageSquare
+  MessageSquare,
+  Trophy,
+  Sparkles,
+  Cpu
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import { isAdminAccount } from '../services/authApi';
@@ -34,6 +37,9 @@ const NAV_SECTIONS = [
   {
     title: 'More tools',
     items: [
+      { id: 'gate', label: 'GATE Prep Hub', icon: Trophy },
+      { id: 'achievers', label: 'Achievers of HNBGU', icon: Award },
+      { id: 'aitools', label: 'Useful AI Tools', icon: Sparkles },
       { id: 'predictor', label: 'Target Estimator', icon: TrendingUp },
       { id: 'gradesim', label: 'Grade Simulator', icon: Sliders },
       { id: 'focus', label: 'Focus Zone', icon: Clock },
@@ -83,8 +89,8 @@ export default function Sidebar({
         />
       )}
 
-      <aside className={`product-sidebar fixed inset-y-0 left-0 z-50 w-[268px] flex flex-col border-r border-stone-200 dark:border-stone-700 bg-[#fbfaf7] dark:bg-[#20241f] transition-transform duration-200 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-        <div className="flex items-center justify-between px-6 py-6 border-b border-stone-200 dark:border-stone-700">
+      <aside className={`product-sidebar fixed inset-y-0 left-0 z-50 w-[268px] flex flex-col border-r border-stone-200 dark:border-neutral-800 bg-[#fbfaf7] dark:bg-black transition-transform duration-200 ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+        <div className="flex items-center justify-between px-6 py-6 border-b border-stone-200 dark:border-neutral-800">
           <button type="button" onClick={() => goTo('dashboard')} className="flex items-center gap-3 text-left">
             <BrandLogo />
             <span>
@@ -151,24 +157,24 @@ export default function Sidebar({
           <button
             type="button"
             onClick={onOpenFeedback}
-            className="mt-7 flex w-full items-center gap-2 rounded-xl border border-indigo-200/70 bg-indigo-50/70 px-3 py-2.5 text-left text-xs font-bold text-indigo-700 transition-colors hover:border-indigo-300 hover:bg-indigo-100 dark:border-indigo-900/50 dark:bg-indigo-950/20 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
+            className="mt-7 flex w-full items-center gap-2 rounded-xl border border-stone-200 bg-stone-100 px-3 py-2.5 text-left text-xs font-bold text-stone-800 transition-colors hover:bg-stone-200 dark:border-neutral-800 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800"
           >
             <MessageSquare size={16} />
             <span>Give feedback</span>
           </button>
         </div>
 
-        <div className="border-t border-stone-200 dark:border-stone-700 p-4">
-          <div className="mb-3 flex items-center justify-between px-2 text-[10px] text-stone-500 dark:text-stone-400">
+        <div className="border-t border-stone-200 dark:border-neutral-800 p-4">
+          <div className="mb-3 flex items-center justify-between px-2 text-[10px] text-stone-500 dark:text-neutral-400">
             <span className="flex items-center gap-1.5"><Award size={13} /> Attendance {calculatedAttendancePercent}%</span>
             <span className="flex items-center gap-1.5"><Target size={13} /> {hasEndSemSubscription ? 'Pass active' : 'Standard plan'}</span>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="secondary-button">
+            <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="secondary-button dark:bg-neutral-900 dark:border-neutral-800 dark:text-white dark:hover:bg-neutral-800">
               {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
               {theme === 'dark' ? 'Light' : 'Dark'}
             </button>
-            <button type="button" onClick={handleLogout} className="secondary-button text-[#a65337] dark:text-[#d99579]">
+            <button type="button" onClick={handleLogout} className="secondary-button text-[#a65337] dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-800 dark:hover:text-white dark:hover:bg-neutral-800">
               <LogOut size={15} /> Sign out
             </button>
           </div>

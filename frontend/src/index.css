@@ -33,30 +33,35 @@
 
 .brand-logo{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}.brand-logo-icon{display:block;width:38px;height:38px}.brand-logo-book{fill:#f4b51b}.brand-logo-b{fill:#1c2228}.brand-logo-with-name{gap:.65rem}.brand-logo-with-name .brand-logo-icon{width:52px;height:52px}.brand-logo-name{display:flex;flex-direction:column;text-align:left}.brand-logo-name strong{color:#1c2228;font-size:1.15rem;letter-spacing:-.04em}.brand-logo-name strong span{color:#f4b51b}.brand-logo-name small{margin-top:.15rem;color:#7e8585;font-size:.43rem;letter-spacing:.14em;white-space:nowrap}.brand-mark{background:#f4b51b;color:#1c2228}
 .brand-loader{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(244,181,27,.25);border-radius:20px;background:rgba(244,181,27,.08);box-shadow:0 0 0 8px rgba(244,181,27,.04)}.brand-loader-logo{width:54px;height:54px}.brand-loader-logo-base{opacity:.22;filter:grayscale(1)}.brand-loader-fill{position:absolute;inset:9px;display:flex;align-items:center;justify-content:center;overflow:hidden;clip-path:inset(100% 0 0 0);animation:brand-logo-fill 1.45s ease-in-out infinite}.brand-loader-fill .brand-logo{flex:0 0 auto}@keyframes brand-logo-fill{0%,100%{clip-path:inset(100% 0 0 0)}50%{clip-path:inset(0 0 0 0)}}
-html.dark .brand-logo-b{fill:#f5f4ed}html.dark .brand-logo-name strong{color:#f5f4ed}html.dark .brand-logo-name small{color:#899395}html.dark .brand-mark{background:#f4b51b;color:#1c2228}
-html.dark .product-nav-item-active{color:#ffd166;background:#2c2617;border-left-color:#f4b51b}html.dark .product-nav-item:hover{background:#252b2e}html.dark .product-nav-item{color:#aeb6b4}
-html.dark .secondary-button,html.dark .icon-button{color:#d1d5d0}html.dark .secondary-button:hover,html.dark .icon-button:hover{background:#202629;border-color:#f4b51b;color:#ffd166}
-html.dark .metric-chip strong{color:#ffd166}html.dark .product-header{background:rgba(17,20,23,.96)}
-html.dark [class*="dark:bg-surface-"]{background-color:#202629!important}html.dark [class*="dark:bg-indigo-"],html.dark [class*="dark:bg-purple-"],html.dark [class*="dark:bg-violet-"]{background-color:#2c2617!important}html.dark [class*="dark:text-indigo-"],html.dark [class*="dark:text-purple-"],html.dark [class*="dark:text-violet-"]{color:#ffd166!important}
-html.dark [class*="dark:border-slate-"]{border-color:#30383b!important}html.dark [class*="dark:text-slate-500"]{color:#899395!important}html.dark [class*="dark:text-slate-400"]{color:#aeb6b4!important}html.dark [class*="dark:text-slate-300"]{color:#d1d5d0!important}
+html.dark .brand-logo-b{fill:#ffffff}
+html.dark .brand-logo-name strong{color:#ffffff}
+html.dark .brand-logo-name small{color:#71717a}
+html.dark .brand-mark{background:#ffffff;color:#000000}
+html.dark .product-nav-item-active{color:#ffffff;background:#18181b;border-left-color:#ffffff}
+html.dark .product-nav-item:hover{background:#121212;color:#ffffff}
+html.dark .product-nav-item{color:#a1a1aa}
+html.dark .secondary-button,html.dark .icon-button{color:#ffffff;background:#121212;border-color:#27272a}
+html.dark .secondary-button:hover,html.dark .icon-button:hover{background:#18181b;border-color:#3f3f46;color:#ffffff}
+html.dark .metric-chip strong{color:#ffffff}
+html.dark .product-header{background:rgba(0,0,0,.95);border-bottom:1px solid #27272a}
 
 html.dark {
-  --background: #111417;
-  --text-primary: #f3f0e8;
-  --text-secondary: #9da29f;
-  --glass-bg: #1a1e21;
-  --glass-border: #30383b;
-  --card-bg: #1a1e21;
-  --input-bg: #15191c;
-  --input-border: #3d474a;
-  --brand-primary: #f4b51b;
-  --brand-primary-dark: #ffd166;
-  --brand-accent: #a8c7b5;
-  --accent-soft: #2c2617;
-  --accent-border: #806321;
+  --background: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --glass-bg: #09090b;
+  --glass-border: #27272a;
+  --card-bg: #09090b;
+  --input-bg: #121212;
+  --input-border: #27272a;
+  --brand-primary: #ffffff;
+  --brand-primary-dark: #e4e4e7;
+  --brand-accent: #ffffff;
+  --accent-soft: #18181b;
+  --accent-border: #3f3f46;
 }
 
-html.dark body { background: #111417; }
+html.dark body { background: #000000 !important; color: #ffffff !important; }
 
 /* Flat product surfaces. Kept under the existing class names so components
    can share the same visual language without local one-off styling. */
@@ -170,20 +175,25 @@ body {
 .byteai-quick-action:hover { color: #fff; border-color: transparent; background: linear-gradient(135deg, #6d28d9, #db2777); transform: translateY(-1px); }
 .byteai-input-bar { border-top: 1px solid #eadfff; background: #fffaff; }
 
-html.dark .byteai-surface { border-color: #49377a; background: #111221; box-shadow: 0 24px 70px rgba(0, 0, 0, .55); }
-html.dark .byteai-header { color: #f8f4ff; border-color: #30254e; background: linear-gradient(115deg, #1b1530, #211526 58%, #2a2114); }
-html.dark .byteai-status { color: #6ee7b7; }
-html.dark .byteai-clear { color: #c4b5fd; }
-html.dark .byteai-clear:hover { background: #2a2146; color: #fda4af; }
-html.dark .byteai-messages { background: linear-gradient(180deg, #111221, #0c0d18); }
-html.dark .byteai-message-avatar { color: #c4b5fd; border-color: #49377a; background: #251b42; }
-html.dark .byteai-bubble-ai { color: #f5f3ff; border-color: #30254e; background: #191a2a; }
-html.dark .byteai-typing { border-color: #30254e; background: #191a2a; }
-html.dark .byteai-actions { border-color: #30254e; background: #151525; }
-html.dark .byteai-actions-label { color: #c4b5fd; }
-html.dark .byteai-quick-action { border-color: #49377a; color: #ddd6fe; background: linear-gradient(135deg, #211942, #311b2d); }
-html.dark .byteai-quick-action:hover { color: #fff; border-color: transparent; }
-html.dark .byteai-input-bar { border-color: #30254e; background: #111221; }
+html.dark .byteai-navbar-button { background: #ffffff !important; color: #000000 !important; border-color: #ffffff !important; box-shadow: none !important; }
+html.dark .byteai-navbar-button:hover { background: #e4e4e7 !important; color: #000000 !important; transform: none !important; box-shadow: none !important; }
+html.dark .byteai-navbar-button-open { background: #18181b !important; color: #ffffff !important; border-color: #3f3f46 !important; }
+html.dark .byteai-surface { border-color: #27272a; background: #09090b; box-shadow: 0 24px 70px rgba(0, 0, 0, .85); }
+html.dark .byteai-header { color: #ffffff; border-color: #27272a; background: #000000; }
+html.dark .byteai-avatar { background: #ffffff; color: #000000; }
+html.dark .byteai-status { color: #a1a1aa; }
+html.dark .byteai-clear { color: #a1a1aa; }
+html.dark .byteai-clear:hover { background: #18181b; color: #ffffff; }
+html.dark .byteai-messages { background: #000000; }
+html.dark .byteai-message-avatar { color: #ffffff; border-color: #27272a; background: #121212; }
+html.dark .byteai-bubble-ai { color: #ffffff; border-color: #27272a; background: #09090b; }
+html.dark .byteai-bubble-user { background: #ffffff; color: #000000; border: 1px solid #ffffff; }
+html.dark .byteai-typing { border-color: #27272a; background: #09090b; color: #ffffff; }
+html.dark .byteai-actions { border-color: #27272a; background: #09090b; }
+html.dark .byteai-actions-label { color: #a1a1aa; }
+html.dark .byteai-quick-action { border-color: #27272a; color: #ffffff; background: #121212; }
+html.dark .byteai-quick-action:hover { color: #000000; border-color: #ffffff; background: #ffffff; }
+html.dark .byteai-input-bar { border-color: #27272a; background: #09090b; }
 
 .grade-selector-control { min-width: 0; }
 @media (max-width: 639px) {
@@ -545,24 +555,24 @@ html.dark .tab-inactive:hover {
 }
 
 html.dark {
-  --background: #0b0b10;
-  --text-primary: #f5f5f7;
-  --text-secondary: #9c9ca8;
-  --glass-bg: #17171f;
-  --glass-border: #2a2a35;
+  --background: #000000;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --glass-bg: #09090b;
+  --glass-border: #27272a;
   --glass-shadow: none;
-  --card-bg: #17171f;
-  --input-bg: #1e1e28;
-  --input-border: #3a3a48;
-  --brand-primary: #6c5ce7;
-  --brand-primary-dark: #7c6ef6;
-  --brand-accent: #2dd4bf;
-  --accent-soft: #282342;
-  --accent-border: #5145a7;
-  --primary: #6c5ce7;
-  --primary-hover: #7c6ef6;
-  --danger: #f97362;
-  --warning: #f5b942;
+  --card-bg: #09090b;
+  --input-bg: #121212;
+  --input-border: #27272a;
+  --brand-primary: #ffffff;
+  --brand-primary-dark: #e4e4e7;
+  --brand-accent: #ffffff;
+  --accent-soft: #18181b;
+  --accent-border: #3f3f46;
+  --primary: #ffffff;
+  --primary-hover: #e4e4e7;
+  --danger: #ef4444;
+  --warning: #f59e0b;
 }
 
 html,
@@ -634,9 +644,9 @@ h6,
 }
 
 html.dark .product-nav-item-active {
-  color: #a89fff;
-  background: rgba(108, 92, 231, 0.16);
-  border-left-color: var(--brand-primary);
+  color: #ffffff !important;
+  background: #18181b !important;
+  border-left-color: #ffffff !important;
 }
 
 .brand-logo-name strong,
@@ -649,27 +659,30 @@ html.dark .brand-logo-name strong {
   color: var(--text-secondary);
 }
 
-/* Keep legacy Tailwind pages aligned with the new semantic palette. */
+/* Minimalist Black and White dark theme overrides */
 html.dark [class*="dark:bg-surface-"],
 html.dark [class*="dark:bg-slate-"] {
-  background-color: var(--surface-raised, #1e1e28) !important;
+  background-color: #09090b !important;
 }
 
 html.dark [class*="dark:bg-indigo-"],
 html.dark [class*="dark:bg-purple-"],
 html.dark [class*="dark:bg-violet-"] {
-  background-color: rgba(108, 92, 231, 0.18) !important;
+  background-color: #121212 !important;
+  background-image: none !important;
 }
 
 html.dark [class*="dark:text-indigo-"],
 html.dark [class*="dark:text-purple-"],
 html.dark [class*="dark:text-violet-"] {
-  color: #a89fff !important;
+  color: #ffffff !important;
 }
 
 html.dark [class*="dark:border-slate-"],
-html.dark [class*="dark:border-indigo-"] {
-  border-color: var(--glass-border) !important;
+html.dark [class*="dark:border-indigo-"],
+html.dark [class*="dark:border-purple-"],
+html.dark [class*="dark:border-violet-"] {
+  border-color: #27272a !important;
 }
 
 /* Rounded reference surfaces: preserve full pills, raise ordinary cards. */
@@ -765,89 +778,100 @@ html.dark [class*="dark:border-indigo-"] {
    legacy indigo/surface utilities; normalize those to the same blue-slate
    palette so labels, controls, and borders remain readable together. */
 html.dark [class*="dark:bg-surface-"] {
-  background-color: #2b302a !important;
+  background-color: #09090b !important;
 }
 
-/* Larger attendance controls for quick one-tap logging. */
+/* Attendance controls */
 .attendance-action {
   min-height: 2.7rem;
   padding: .7rem .65rem;
   gap: .35rem;
   font-size: .78rem;
 }
+
+/* Neutralize all purples/indigos/violets in dark mode to black & white */
 html.dark [class*="dark:bg-indigo-"],
 html.dark [class*="dark:bg-purple-"],
-html.dark [class*="dark:bg-violet-"] {
-  background-color: #3b302b !important;
-}
-html.dark [class*="dark:border-indigo-"],
-html.dark [class*="dark:border-purple-"],
-html.dark [class*="dark:border-violet-"] {
-  border-color: #4a5148 !important;
-}
-html.dark [class*="dark:text-indigo-"],
-html.dark [class*="dark:text-purple-"],
-html.dark [class*="dark:text-violet-"] {
-  color: #d99579 !important;
-}
-html.dark [class~="dark:text-slate-500"] {
-  color: #a8b7c8 !important;
-}
-html.dark [class~="dark:text-slate-400"] {
-  color: #b8c5d3 !important;
-}
-html.dark [class~="dark:text-slate-300"] {
-  color: #d0dae5 !important;
+html.dark [class*="dark:bg-violet-"],
+html.dark [class*="bg-violet-"],
+html.dark [class*="bg-purple-"],
+html.dark [class*="bg-indigo-"] {
+  background-color: #141414 !important;
+  background-image: none !important;
 }
 
-/* Dark mode uses a neutral charcoal/olive foundation. Legacy blue utility
-   colors are intentionally softened so they do not compete with the accent. */
+html.dark [class*="dark:border-indigo-"],
+html.dark [class*="dark:border-purple-"],
+html.dark [class*="dark:border-violet-"],
+html.dark [class*="border-violet-"],
+html.dark [class*="border-purple-"],
+html.dark [class*="border-indigo-"] {
+  border-color: #27272a !important;
+}
+
+html.dark [class*="dark:text-indigo-"],
+html.dark [class*="dark:text-purple-"],
+html.dark [class*="dark:text-violet-"],
+html.dark [class*="text-violet-"],
+html.dark [class*="text-purple-"],
+html.dark [class*="text-indigo-"] {
+  color: #ffffff !important;
+}
+
+html.dark [class~="dark:text-slate-500"] {
+  color: #71717a !important;
+}
+html.dark [class~="dark:text-slate-400"] {
+  color: #a1a1aa !important;
+}
+html.dark [class~="dark:text-slate-300"] {
+  color: #d4d4d8 !important;
+}
+html.dark [class~="dark:text-slate-200"],
+html.dark [class~="dark:text-slate-100"] {
+  color: #ffffff !important;
+}
+
+/* Dark mode uses pure black backgrounds and fine 1px neutral borders */
 html.dark [class*="dark:border-slate-"] {
-  border-color: #454a43 !important;
+  border-color: #27272a !important;
 }
 html.dark [class*="dark:bg-blue-"],
 html.dark [class*="dark:bg-cyan-"],
 html.dark [class*="dark:bg-sky-"],
 html.dark [class*="dark:bg-slate-"] {
-  background-color: #2b302a !important;
+  background-color: #09090b !important;
   background-image: none !important;
 }
 html.dark [class*="dark:border-blue-"],
 html.dark [class*="dark:border-cyan-"],
 html.dark [class*="dark:border-sky-"] {
-  border-color: #596155 !important;
+  border-color: #27272a !important;
 }
 html.dark [class*="dark:text-blue-"],
 html.dark [class*="dark:text-cyan-"],
 html.dark [class*="dark:text-sky-"] {
-  color: #c7c5bb !important;
+  color: #ffffff !important;
 }
-html.dark [class*="dark:bg-[#"]:not([class*="dark:bg-[#20241f]"]) {
-  background-color: #292d28 !important;
+html.dark [class*="dark:bg-[#"] {
+  background-color: #000000 !important;
 }
 
-/* Type labels and older non-dark utility colors used by the academic lists. */
 html.dark [class*="bg-blue-"],
 html.dark [class*="bg-cyan-"],
-html.dark [class*="bg-sky-"],
-html.dark [class*="bg-violet-"],
-html.dark [class*="bg-purple-"] {
-  background-color: #343a33 !important;
+html.dark [class*="bg-sky-"] {
+  background-color: #121212 !important;
   background-image: none !important;
 }
 html.dark [class*="border-blue-"],
 html.dark [class*="border-cyan-"],
-html.dark [class*="border-sky-"],
-html.dark [class*="border-violet-"],
-html.dark [class*="border-purple-"] {
-  border-color: #596155 !important;
+html.dark [class*="border-sky-"] {
+  border-color: #27272a !important;
 }
 html.dark [class*="text-blue-"],
 html.dark [class*="text-cyan-"],
-html.dark [class*="text-sky-"],
-html.dark [class*="text-violet-"],
-html.dark [class*="text-purple-"] {
-  color: #c7c5bb !important;
+html.dark [class*="text-sky-"] {
+  color: #ffffff !important;
 }
 
 /* Keep cards and controls compact and consistent; pills remain fully round. */

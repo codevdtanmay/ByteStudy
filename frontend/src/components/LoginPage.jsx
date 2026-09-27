@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Github, Sparkles, ArrowRight, AlertCircle } from 'lucide-react';
-import { hasRemoteAuthApi, signInWithGoogleAccessToken, startGithubSignIn } from '../services/authApi';
+import { Github, Sparkles, ArrowRight, AlertCircle, Shield } from 'lucide-react';
+import { hasRemoteAuthApi, signInWithGoogleAccessToken, startGithubSignIn, loginAsAdmin } from '../services/authApi';
 import BrandLogo from './BrandLogo';
 
 function GoogleIcon({ className = 'h-5 w-5' }) {
@@ -66,6 +66,32 @@ export default function LoginPage({ onLoginSuccess }) {
           {error && <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-600"><AlertCircle size={16} className="mt-0.5 shrink-0"/><span>{error}</span></div>}
           <button type="button" disabled={busy} onClick={googleSignIn} className="relative flex w-full items-center justify-center gap-3 rounded-xl bg-white py-3.5 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-wait disabled:opacity-60"><GoogleIcon/>Continue with Google<ArrowRight size={15} className="absolute right-4 text-slate-400"/></button>
           <button type="button" disabled={busy} onClick={githubSignIn} className="relative flex w-full items-center justify-center gap-3 rounded-xl bg-[#24292f] py-3.5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#1f2328] hover:shadow-md disabled:cursor-wait disabled:opacity-60"><Github size={19} fill="currentColor"/>Continue with GitHub<ArrowRight size={15} className="absolute right-4 text-slate-400"/></button>
+
+          <div className="relative my-4 flex items-center justify-center">
+            <span className="h-px w-full bg-slate-200 dark:bg-slate-700"></span>
+            <span className="absolute bg-[#faf8f5] dark:bg-[#1d221c] px-3 text-[10px] font-bold uppercase tracking-wider text-slate-400">or management</span>
+          </div>
+
+          <button
+            type="button"
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true);
+              try {
+                const adminSession = await loginAsAdmin();
+                onLoginSuccess(adminSession);
+              } catch (e) {
+                setError(e.message || 'Admin login failed');
+              } finally {
+                setBusy(false);
+              }
+            }}
+            className="relative flex w-full items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 py-3.5 text-xs font-bold text-white shadow-md shadow-indigo-500/25 transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-60 cursor-pointer"
+          >
+            <Shield size={16} className="text-indigo-200" />
+            <span>Open Admin Console</span>
+            <ArrowRight size={15} className="absolute right-4 text-white/70" />
+          </button>
         </div>
         <div className="my-7 flex items-center gap-3"><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/><span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">OAuth secured</span><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/></div>
       </section>

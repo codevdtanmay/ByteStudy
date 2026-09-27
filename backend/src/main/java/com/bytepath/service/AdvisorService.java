@@ -24,20 +24,36 @@ public class AdvisorService {
     private final RagClient ragClient;
     private final OpenRouterClient openRouterClient;
     private final DocumentSearchService documentSearch;
+    private final com.bytepath.repository.SemesterRecordRepository semesterRepo;
+    private final com.bytepath.repository.AttendanceLogRepository attendanceRepo;
 
     public AdvisorService(ChatMessageRepository chatRepo,
                           CgpaCalculatorService cgpaService,
                           RagClient ragClient,
                           OpenRouterClient openRouterClient,
-                          DocumentSearchService documentSearch) {
+                          DocumentSearchService documentSearch,
+                          com.bytepath.repository.SemesterRecordRepository semesterRepo,
+                          com.bytepath.repository.AttendanceLogRepository attendanceRepo) {
         this.chatRepo    = chatRepo;
         this.cgpaService = cgpaService;
         this.ragClient   = ragClient;
         this.openRouterClient = openRouterClient;
         this.documentSearch = documentSearch;
+        this.semesterRepo = semesterRepo;
+        this.attendanceRepo = attendanceRepo;
     }
 
     // ── Public API ─────────────────────────────────────────────────────────────
+
+    /**
+     * Process incoming student query by orchestrating academic context internally.
+     */
+    @Transactional
+    public ChatMessage processMessage(User user, String userText) {
+        List<SemesterRecord> semesters  = semesterRepo.findByUserOrderBySemesterNumberAsc(user);
+        List<AttendanceLog>  attendance = attendanceRepo.findByUserOrderByDateDesc(user);
+        return processMessage(user, userText, semesters, attendance);
+    }
 
     /** Return the full chat history for this user, ordered oldest-first. */
     public List<ChatMessage> getHistory(User user) {

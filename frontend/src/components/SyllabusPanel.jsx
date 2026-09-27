@@ -47,7 +47,8 @@ export default function SyllabusPanel({
   hasEndSemSubscription = false,
   activateEndSemSubscription,
   studentId = '',
-  userRole = ''
+  userRole = '',
+  promotion = null
 }) {
   const [selectedSem, setSelectedSem] = useState(1);
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);
@@ -61,6 +62,13 @@ export default function SyllabusPanel({
   const [savingVideoFor, setSavingVideoFor] = useState('');
   const isAdmin = isAdminAccount({ role: userRole });
   const hasPremiumAccess = isAdmin || hasEndSemSubscription;
+  const isPromoFreeSem = Boolean(
+    promotion?.active && (
+      (promotion.freeSemesterList || []).includes(Number(selectedSem)) ||
+      promotion.freeTrialActive
+    )
+  );
+  const hasEffectiveAccess = hasPremiumAccess || isPromoFreeSem;
 
   useEffect(() => {
     let cancelled = false;
@@ -168,7 +176,7 @@ export default function SyllabusPanel({
 
   const chooseExamFile = (resource, selectedExamType) => {
     setExamPicker(null);
-    if (selectedExamType === 'END_SEM' && !hasPremiumAccess) {
+    if (selectedExamType === 'END_SEM' && !hasEffectiveAccess) {
       setPendingDownload({ resource });
       setIsSubModalOpen(true);
       return;
@@ -201,7 +209,7 @@ export default function SyllabusPanel({
   };
 
   const handleEndSemClick = (courseTitle, fileData = null, fileName = null) => {
-    if (!hasPremiumAccess) {
+    if (!hasEffectiveAccess) {
       setPendingDownload({ courseTitle, fileData, fileName });
       setIsSubModalOpen(true);
     } else {
@@ -252,35 +260,37 @@ export default function SyllabusPanel({
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md ${
             hasPremiumAccess ? 'bg-gradient-to-tr from-emerald-500 to-teal-600' : 'bg-gradient-to-tr from-indigo-500 to-purple-600'
           }`}>
-            {hasPremiumAccess ? <CheckCircle2 size={22} /> : <Lock size={20} />}
+            {hasEffectiveAccess ? <CheckCircle2 size={22} /> : <Lock size={20} />}
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200">
-                {hasPremiumAccess ? (isAdmin ? 'Admin Access Active 🛡️' : 'End-Sem VIP Pass Active 🌟') : 'End-Sem Files Locked 🔒'}
+                {hasPremiumAccess 
+                  ? (isAdmin ? 'Admin Access Active 🛡️' : 'End-Sem VIP Pass Active 🌟')
+                  : (isPromoFreeSem ? `Semester ${selectedSem} Free Access Active! 🎁` : 'End-Sem Files Locked 🔒')}
               </h3>
               <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full text-white ${
-                hasEndSemSubscription ? 'bg-emerald-500' : 'bg-indigo-500'
+                hasPremiumAccess ? (hasEndSemSubscription ? 'bg-emerald-500' : 'bg-indigo-500') : (isPromoFreeSem ? 'bg-teal-600' : 'bg-indigo-500')
               }`}>
-                {hasPremiumAccess ? (isAdmin ? 'ADMIN OVERRIDE' : 'UNLOCKED VIA RAZORPAY') : 'RAZORPAY PASS'}
+                {hasPremiumAccess ? (isAdmin ? 'ADMIN OVERRIDE' : 'UNLOCKED VIA RAZORPAY') : (isPromoFreeSem ? '100% FREE PROMO' : 'RAZORPAY PASS')}
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
               {hasPremiumAccess 
                 ? (isAdmin ? 'Administrator access is active, so all End-Sem materials are available without a subscription.' : 'Full 8-Semester End-Sem question papers, answer keys, and model notes unlocked.') 
-                : 'Mid-Sem materials are FREE. End-Sem papers require a one-time Razorpay subscription.'
+                : (isPromoFreeSem ? `Special offer active! All End-Sem question papers and solutions for Semester ${selectedSem} are completely free to view and download.` : 'Mid-Sem materials are FREE. End-Sem papers require an active subscription or promo pass.')
               }
             </p>
           </div>
         </div>
 
-        {!hasPremiumAccess && !hasEndSemSubscription && (
+        {!hasEffectiveAccess && (
           <button
             onClick={() => setIsSubModalOpen(true)}
             className="btn-primary text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 shadow-md cursor-pointer"
           >
             <Sparkles size={14} />
-            <span>Unlock End-Sem Files (<span className="currency-symbol">₹</span>99)</span>
+            <span>Unlock End-Sem Files {promotion?.discountPercentage ? `(${promotion.discountPercentage}% OFF)` : '(₹99)'}</span>
           </button>
         )}
       </div>
@@ -419,20 +429,24 @@ export default function SyllabusPanel({
                       <span className="text-[8px] bg-emerald-500/20 text-emerald-500 px-1 rounded font-bold">FREE</span>
                     </button>
 
-                    {/* End-Sem File Button (Protected by Razorpay Subscription) */}
+                    {/* End-Sem File Button (Protected by Subscription / Free with Promo) */}
                     <button
                       onClick={() => openExamPicker(course, 'END_SEM')}
                       className={`px-2.5 py-1 text-[10px] font-bold rounded-lg border transition-all cursor-pointer flex items-center gap-1.5 ${
-                        hasPremiumAccess
-                          ? 'bg-indigo-500/15 border-indigo-500/30 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-500/25'
+                        hasEffectiveAccess
+                          ? (isPromoFreeSem && !hasPremiumAccess
+                              ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-300 hover:bg-emerald-500/25'
+                              : 'bg-indigo-500/15 border-indigo-500/30 text-indigo-600 dark:text-indigo-300 hover:bg-indigo-500/25')
                           : 'bg-gradient-to-r from-amber-500/15 to-rose-500/15 border-amber-500/30 text-amber-600 dark:text-amber-300 hover:scale-105'
                       }`}
                     >
-                      {hasPremiumAccess ? <Download size={11} /> : <Lock size={11} className="text-amber-500" />}
+                      {hasEffectiveAccess ? <Download size={11} /> : <Lock size={11} className="text-amber-500" />}
                       <span>End-Sem PYQ</span>
-                      {!hasPremiumAccess && (
+                      {!hasEffectiveAccess ? (
                         <span className="text-[8px] bg-amber-500 text-white px-1 rounded font-black">VIP</span>
-                      )}
+                      ) : (isPromoFreeSem && !hasPremiumAccess ? (
+                        <span className="text-[8px] bg-emerald-500 text-white px-1 rounded font-black">FREE PROMO</span>
+                      ) : null)}
                     </button>
 
                     <button
@@ -459,12 +473,14 @@ export default function SyllabusPanel({
         })}
       </div>
 
-      {/* Subscription Modal Triggered via Razorpay */}
+      {/* Subscription Modal Triggered via Razorpay or Promo Claim */}
       <EndSemSubscriptionModal
         isOpen={isSubModalOpen}
         onClose={() => setIsSubModalOpen(false)}
         onSubscribeSuccess={handleSubscribeSuccess}
         studentId={studentId}
+        targetSemester={selectedSem}
+        promotion={promotion}
       />
 
       {examPicker && (

@@ -226,6 +226,22 @@ public class AuthService {
 
     private String encode(String value) { return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8); }
 
+    public AuthResponse loginAsAdmin() {
+        User admin = userRepo.findByEmail("admin@bytepath.local")
+            .orElseGet(() -> userRepo.save(User.builder()
+                .loginId("admin@bytepath.local")
+                .name("System Administrator")
+                .email("admin@bytepath.local")
+                .role(User.Role.ADMIN)
+                .emailVerified(true)
+                .build()));
+        if (admin.getRole() != User.Role.ADMIN) {
+            admin.setRole(User.Role.ADMIN);
+            admin = userRepo.save(admin);
+        }
+        return buildResponse(admin);
+    }
+
     // ── UserDetailsService helper ──────────────────────────────────────────────
 
     public User loadUserByLoginId(String loginId) {

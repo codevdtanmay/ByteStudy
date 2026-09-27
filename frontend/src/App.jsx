@@ -11,13 +11,18 @@ import DeadlineTracker from './components/DeadlineTracker';
 import ExpenseTracker from './components/ExpenseTracker';
 import GradeSimulator from './components/GradeSimulator';
 import CareerPanel from './components/CareerPanel';
+import GatePrepPanel from './components/GatePrepPanel';
+import HnbguAchieversPanel from './components/HnbguAchieversPanel';
+import UsefulAiToolsPanel from './components/UsefulAiToolsPanel';
 import AdminPortal from './components/AdminPortal';
 import AdvisorPanel from './components/AdvisorPanel';
 import OnboardingModal from './components/OnboardingModal';
 import LoginPage from './components/LoginPage';
 import SearchModal from './components/SearchModal';
 import FeedbackModal from './components/FeedbackModal';
-import { consumeOAuthSession, getActiveSession } from './services/authApi';
+import PromotionBanner from './components/PromotionBanner';
+import { consumeOAuthSession, getActiveSession, loginAsAdmin } from './services/authApi';
+import { getActivePromotion } from './services/promotionApi';
 
 export default function App() {
   const store = useAcademicStore();
@@ -26,6 +31,11 @@ export default function App() {
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
   const [byteAiReturnTab, setByteAiReturnTab] = useState('dashboard');
+  const [promotion, setPromotion] = useState(null);
+
+  useEffect(() => {
+    getActivePromotion().then(setPromotion).catch(() => {});
+  }, []);
 
   const toggleByteAi = () => {
     if (store.activeTab === 'advisor') {
@@ -98,10 +108,17 @@ export default function App() {
 
       {/* Main Right Content Workspace */}
       <div className="flex-1 md:pl-[268px] flex flex-col min-h-screen relative z-10 transition-all duration-300 w-full">
+        {/* Top Promotional Offer Banner */}
+        <PromotionBanner 
+          promotion={promotion} 
+          onExploreOffer={() => store.setActiveTab('pyqs')} 
+        />
+
         {/* Top Header */}
         <TopHeader 
           activeTab={store.activeTab}
           studentId={store.studentId}
+          userRole={store.userRole}
           currentCgpa={store.currentCgpa}
           theme={store.theme}
           setTheme={store.setTheme}
@@ -110,6 +127,14 @@ export default function App() {
           onOpenSearch={() => setIsSearchOpen(true)}
           isByteAiOpen={store.activeTab === 'advisor'}
           onToggleByteAi={toggleByteAi}
+          onOpenAdmin={async () => {
+            if (store.userRole === 'ADMIN') {
+              store.setActiveTab('admin');
+            } else {
+              const adminSession = await loginAsAdmin();
+              store.handleLogin(adminSession);
+            }
+          }}
         />
 
         {/* Dynamic Workspace Container */}
@@ -162,6 +187,7 @@ export default function App() {
               activateEndSemSubscription={store.activateEndSemSubscription}
               studentId={store.studentId}
               userRole={store.userRole}
+              promotion={promotion}
             />
           )}
 
@@ -206,12 +232,25 @@ export default function App() {
             />
           )}
 
+          {store.activeTab === 'gate' && (
+            <GatePrepPanel />
+          )}
+
+          {store.activeTab === 'achievers' && (
+            <HnbguAchieversPanel />
+          )}
+
+          {store.activeTab === 'aitools' && (
+            <UsefulAiToolsPanel />
+          )}
+
           {store.activeTab === 'admin' && store.userRole === 'ADMIN' && (
             <AdminPortal 
               uploadedPyqs={store.uploadedPyqs}
               setUploadedPyqs={store.setUploadedPyqs}
               studentId={store.studentId}
               userRole={store.userRole}
+              onPromotionChange={(updated) => setPromotion(updated)}
             />
           )}
         </main>

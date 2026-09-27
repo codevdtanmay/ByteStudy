@@ -54,14 +54,17 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .headers(headers -> headers.frameOptions(frame -> frame.deny()))
             .authorizeHttpRequests(auth -> auth
-                // Public
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/promotions/active").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/achievers/**").permitAll()
                 .requestMatchers("/api/payments/razorpay/webhook").permitAll()
                 .requestMatchers("/api/syllabus/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/pyqs/*/public-view").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/pyqs/*/public-pages/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html",
                                  "/api-docs/**", "/v3/api-docs/**").permitAll()
+                // Admin-only operations
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // Admin-only write operations
                 .requestMatchers(HttpMethod.POST,   "/api/pyqs/upload-init").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST,   "/api/pyqs/*/complete").hasRole("ADMIN")

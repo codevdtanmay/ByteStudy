@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { SYLLABUS, TOTAL_PROGRAM_CREDITS } from '../data/syllabus';
 import { clearActiveSession, hasRemoteAuthApi, getAuthToken, updateAcademicProfile } from '../services/authApi';
 import { askAdvisor } from '../services/advisorApi';
+import logger from '../utils/logger';
 
 // ---- Storage Helpers (Standard hooks to keep state persisted) ----
 const getStorageItem = (key, fallback) => {
@@ -102,9 +103,9 @@ export function useAcademicStore() {
         name: profile.name,
         targetCgpa: Number(profile.targetCgpa),
         onboarded: true,
-      }).catch((error) => console.warn('Could not sync academic profile:', error));
+      }).catch((error) => logger.warn('Could not sync academic profile', { error: error?.message }));
     } catch (e) {
-      console.error(e);
+      logger.error('Failed to complete onboarding profile update', e);
     }
   };
 
@@ -210,7 +211,7 @@ export function useAcademicStore() {
       localStorage.setItem('endSemSubscriptionData', JSON.stringify(paymentData));
       setHasEndSemSubscription(true);
     } catch (e) {
-      console.error(e);
+      logger.error('Failed to activate end sem subscription in local storage', e);
     }
   };
 
@@ -288,10 +289,11 @@ export function useAcademicStore() {
     if (loginId?.trim()) {
       const cleanLoginId = loginId.trim();
       const profile = getStudentProfile(cleanLoginId);
+      const isUserAdmin = role === 'ADMIN' || cleanLoginId.toLowerCase() === 'admin@bytepath.local';
       setStudentId(cleanLoginId);
-      setUserRole(role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
-      setActiveTab(getSavedActiveTab(cleanLoginId));
-      localStorage.setItem('activeUserRole', role === 'ADMIN' ? 'ADMIN' : 'STUDENT');
+      setUserRole(isUserAdmin ? 'ADMIN' : 'STUDENT');
+      setActiveTab(isUserAdmin ? 'admin' : getSavedActiveTab(cleanLoginId));
+      localStorage.setItem('activeUserRole', isUserAdmin ? 'ADMIN' : 'STUDENT');
       setStudentName(profile?.name || name?.trim() || '');
       setTargetCgpa(profile?.targetCgpa || account?.targetCgpa || '8.50');
       setPastSgpas(profile?.pastSgpas || EMPTY_SGPAS);

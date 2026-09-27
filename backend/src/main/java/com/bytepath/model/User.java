@@ -49,7 +49,8 @@ public class User implements UserDetails {
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
-    /** BCrypt-hashed password. Never stored in plain text. */
+    /** BCrypt-hashed password. Never stored in plain text and never exposed in JSON responses. */
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @Column(name = "password_hash")
     private String passwordHash;
 
@@ -98,7 +99,8 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
-    /** Spring Security uses this field for authentication. */
+    /** Spring Security uses this field for authentication. Never exposed via serialization. */
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @Override
     public String getPassword() { return passwordHash; }
 

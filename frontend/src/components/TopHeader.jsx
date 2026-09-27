@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Sun, Moon, LogOut, Search, Brain, Sparkles } from 'lucide-react';
+import { Menu, Sun, Moon, LogOut, Search, Brain, Sparkles, Shield } from 'lucide-react';
 
 const TAB_TITLES = {
   dashboard: { title: 'Overview' },
@@ -12,10 +12,26 @@ const TAB_TITLES = {
   expenses: { title: 'Pocket Budget' },
   gradesim: { title: 'Grade Simulator' },
   career: { title: 'Career Roadmap' },
+  gate: { title: 'GATE Preparation Hub 📚' },
+  achievers: { title: 'Achievers of HNBGU 🏆' },
+  aitools: { title: 'Essential AI Tools for Students 🚀' },
   admin: { title: 'Admin Console' }
 };
 
-export default function TopHeader({ activeTab, studentId, currentCgpa, theme, setTheme, handleLogout, onOpenSidebar, onOpenSearch, isByteAiOpen, onToggleByteAi }) {
+export default function TopHeader({
+  activeTab,
+  studentId,
+  userRole = '',
+  currentCgpa,
+  theme,
+  setTheme,
+  handleLogout,
+  onOpenSidebar,
+  onOpenSearch,
+  isByteAiOpen,
+  onToggleByteAi,
+  onOpenAdmin
+}) {
   const tabInfo = TAB_TITLES[activeTab] || TAB_TITLES.dashboard;
 
   return (
@@ -56,10 +72,34 @@ export default function TopHeader({ activeTab, studentId, currentCgpa, theme, se
               <strong>{currentCgpa}</strong>
             </div>
           )}
-          <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="icon-button" title="Toggle theme" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
+          {userRole === 'ADMIN' ? (
+            <button
+              type="button"
+              onClick={onOpenAdmin}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                activeTab === 'admin'
+                  ? 'bg-stone-900 text-white dark:bg-white dark:text-black shadow-md'
+                  : 'bg-stone-100 text-stone-800 dark:bg-neutral-900 dark:text-white hover:bg-stone-200 dark:hover:bg-neutral-800 border border-stone-200 dark:border-neutral-800'
+              }`}
+            >
+              <Shield size={14} />
+              <span className="hidden sm:inline">Admin Console</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpenAdmin}
+              className="px-2.5 py-1.5 rounded-xl text-[11px] font-bold text-stone-600 hover:text-stone-900 dark:text-neutral-400 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-neutral-900 border border-transparent dark:hover:border-neutral-800 transition-all flex items-center gap-1 cursor-pointer"
+              title="Switch to Admin Console"
+            >
+              <Shield size={13} />
+              <span className="hidden md:inline">Admin</span>
+            </button>
+          )}
+          <button type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="icon-button dark:bg-neutral-900 dark:border-neutral-800 dark:text-white dark:hover:bg-neutral-800" title="Toggle theme" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}>
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <button type="button" onClick={handleLogout} className="icon-button text-[#a65337] dark:text-[#d99579]" title="Sign out" aria-label="Sign out">
+          <button type="button" onClick={handleLogout} className="icon-button text-[#a65337] dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-800 dark:hover:text-white dark:hover:bg-neutral-800" title="Sign out" aria-label="Sign out">
             <LogOut size={16} />
           </button>
         </div>
