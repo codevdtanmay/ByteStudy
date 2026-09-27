@@ -1734,7 +1734,44 @@ html.dark .product-nav-item-active {
 }
 
 .promotion-claim-button svg {
-  color: #0b0b0b !important;
+  color: #b42318 !important;
+}
+
+.promotion-claim-button {
+  color: #b42318 !important;
+}
+
+.promotion-claim-button:hover {
+  color: #8f1d14 !important;
+}
+
+.syllabus-access-tag {
+  color: #b42318 !important;
+  background: #fee2e2 !important;
+}
+
+.syllabus-vip-tag {
+  color: #b42318 !important;
+  background: #fee2e2 !important;
+}
+
+.syllabus-youtube-button {
+  color: #b42318 !important;
+  background: #fee2e2 !important;
+  border: 1px solid #fecaca !important;
+}
+
+.syllabus-youtube-button:hover {
+  color: #8f1d14 !important;
+  background: #fecaca !important;
+}
+
+html.dark .syllabus-access-tag,
+html.dark .syllabus-vip-tag,
+html.dark .syllabus-youtube-button {
+  color: #f87171 !important;
+  background: #3a1717 !important;
+  border-color: #7f1d1d !important;
 }
 
 .sidebar-avatar {

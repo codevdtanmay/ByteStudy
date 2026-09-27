@@ -269,7 +269,7 @@ export default function SyllabusPanel({
                   ? (isAdmin ? 'Admin Access Active 🛡️' : 'End-Sem VIP Pass Active 🌟')
                   : (isPromoFreeSem ? `Semester ${selectedSem} Free Access Active! 🎁` : 'End-Sem Files Locked 🔒')}
               </h3>
-              <span className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full text-white ${
+              <span className={`syllabus-access-tag text-[9px] font-extrabold px-2 py-0.5 rounded-full ${
                 hasPremiumAccess ? (hasEndSemSubscription ? 'bg-emerald-500' : 'bg-indigo-500') : (isPromoFreeSem ? 'bg-teal-600' : 'bg-indigo-500')
               }`}>
                 {hasPremiumAccess ? (isAdmin ? 'ADMIN OVERRIDE' : 'UNLOCKED VIA RAZORPAY') : (isPromoFreeSem ? '100% FREE PROMO' : 'RAZORPAY PASS')}
@@ -359,7 +359,7 @@ export default function SyllabusPanel({
                       href={dynamicYtQuery}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition-colors shadow-sm cursor-pointer"
+                      className="syllabus-youtube-button inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-bold rounded-lg transition-colors shadow-sm cursor-pointer"
                     >
                       <Youtube size={12} />
                       <span>YouTube One-Shot</span>
@@ -443,7 +443,7 @@ export default function SyllabusPanel({
                       {hasEffectiveAccess ? <Download size={11} /> : <Lock size={11} className="text-amber-500" />}
                       <span>End-Sem PYQ</span>
                       {!hasEffectiveAccess ? (
-                        <span className="text-[8px] bg-amber-500 text-white px-1 rounded font-black">VIP</span>
+                        <span className="syllabus-vip-tag text-[8px] px-1 rounded font-black">VIP</span>
                       ) : (isPromoFreeSem && !hasPremiumAccess ? (
                         <span className="text-[8px] bg-emerald-500 text-white px-1 rounded font-black">FREE PROMO</span>
                       ) : null)}
