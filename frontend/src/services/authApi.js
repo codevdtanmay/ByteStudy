@@ -1,4 +1,3 @@
-import logger from '../utils/logger';
 
 const SESSION_KEY = 'bytecollege.auth.session.v1';
 const LEGACY_SESSION_KEY = 'bytestudy.auth.session.v1';
@@ -125,30 +124,5 @@ export async function refreshActiveSession() {
 }
 
 export async function loginAsAdmin() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/auth/admin-access`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const session = sessionFromUser(data);
-      saveSession(session);
-      return session;
-    }
-  } catch (err) {
-    logger.warn('Backend admin login failed, using local admin session', { error: err?.message });
-  }
-
-  const fallbackAdmin = {
-    token: 'local-admin-token-' + Date.now(),
-    loginId: 'admin@bytepath.local',
-    name: 'System Administrator',
-    email: 'admin@bytepath.local',
-    role: 'ADMIN',
-    isOnboarded: true,
-  };
-  saveSession(fallbackAdmin);
-  return fallbackAdmin;
+  throw new Error('Admin access is restricted. Sign in with the configured administrator account.');
 }
-

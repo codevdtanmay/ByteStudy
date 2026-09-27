@@ -129,8 +129,12 @@ export default function App() {
             if (store.userRole === 'ADMIN') {
               store.setActiveTab('admin');
             } else {
-              const adminSession = await loginAsAdmin();
-              store.handleLogin(adminSession);
+              try {
+                const adminSession = await loginAsAdmin();
+                store.handleLogin(adminSession);
+              } catch (error) {
+                window.alert(error.message);
+              }
             }
           }}
         />

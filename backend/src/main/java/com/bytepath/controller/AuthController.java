@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Base64;
+import org.springframework.http.ResponseCookie;
 
 /**
  * Authentication REST controller.
@@ -31,6 +34,7 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthService authService;
+    private final SecureRandom secureRandom = new SecureRandom();
 
     @Value("${app.frontend-url:http://localhost:5173}")
     private String frontendUrl;
@@ -44,13 +48,6 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequest request) {
         log.info("Processing token refresh request");
         return ResponseEntity.ok(authService.refresh(request.getRefreshToken().trim()));
-    }
-
-    @Operation(summary = "Direct administrator console sign-in")
-    @PostMapping("/admin-access")
-    public ResponseEntity<AuthResponse> adminAccess() {
-        log.info("Processing direct administrator console authentication");
-        return ResponseEntity.ok(authService.loginAsAdmin());
     }
 
     @Operation(summary = "Login or register via Google OAuth credential token")
@@ -71,8 +68,10 @@ public class AuthController {
     @GetMapping("/github/start")
     public ResponseEntity<Void> githubStart() {
         log.info("Initiating GitHub OAuth redirect");
+        String state = Base64.getUrlEncoder().withoutPadding().encodeToString(secureRandom.generateSeed(32));
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(authService.githubAuthorizationUrl()))
+                .location(URI.create(authService.githubAuthorizationUrl(state)))
+                .header("Set-Cookie", oauthStateCookie(state).toString())
                 .build();
     }
 
@@ -80,7 +79,14 @@ public class AuthController {
     @GetMapping("/github/callback")
     public ResponseEntity<Void> githubCallback(
             @RequestParam(required = false) String code,
-            @RequestParam(required = false) String error) {
+            @RequestParam(required = false) String error,
+            @RequestParam(required = false) String state,
+            @CookieValue(value = "bytepath_oauth_state", required = false) String storedState) {
+        if (state == null || storedState == null
+                || !java.security.MessageDigest.isEqual(state.getBytes(StandardCharsets.UTF_8), storedState.getBytes(StandardCharsets.UTF_8))) {
+            log.warn("GitHub OAuth callback rejected because state validation failed");
+            return redirect("error=" + encode("GitHub sign-in could not be verified."));
+        }
         if (error != null || code == null || code.isBlank()) {
             log.warn("GitHub OAuth callback aborted or error: {}", error);
             return redirect("error=" + encode(error == null ? "GitHub sign-in was cancelled." : error));
@@ -103,7 +109,14 @@ public class AuthController {
     private ResponseEntity<Void> redirect(String fragment) {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(frontendUrl + "#" + fragment))
+                .header("Set-Cookie", oauthStateCookie("").toString())
                 .build();
+    }
+
+    private ResponseCookie oauthStateCookie(String value) {
+        return ResponseCookie.from("bytepath_oauth_state", value)
+                .httpOnly(true).secure(frontendUrl.startsWith("https://"))
+                .sameSite("Lax").path("/api/auth/github").maxAge(value.isBlank() ? 0 : 600).build();
     }
 
     private String encode(String value) {

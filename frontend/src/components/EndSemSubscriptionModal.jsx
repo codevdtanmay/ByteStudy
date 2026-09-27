@@ -79,7 +79,7 @@ export default function EndSemSubscriptionModal({
       const orderResponse = await fetch(`${apiBase}/payments/razorpay/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(getAuthToken() ? { Authorization: `Bearer ${getAuthToken()}` } : {}) },
-        body: JSON.stringify({ amountPaise: currentPrice * 100 })
+        body: JSON.stringify({ plan: selectedPlanId })
       });
 
       if (!orderResponse.ok) {

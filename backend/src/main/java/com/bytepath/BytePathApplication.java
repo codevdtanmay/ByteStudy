@@ -27,6 +27,9 @@ public class BytePathApplication {
             UserRepository userRepository,
             @Value("${admin.email}") String adminEmail,
             @Value("${admin.name}") String adminName) {
+        if (adminEmail == null || adminEmail.isBlank()) {
+            throw new IllegalStateException("ADMIN_EMAIL must be configured before starting the backend.");
+        }
         return args -> userRepository.findByEmail(adminEmail.trim().toLowerCase())
             .ifPresentOrElse(user -> {
                 if (user.getRole() != User.Role.ADMIN) {

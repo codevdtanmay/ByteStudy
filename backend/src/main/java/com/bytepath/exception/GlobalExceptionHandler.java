@@ -41,14 +41,12 @@ public class GlobalExceptionHandler {
         List<ValidationErrorDetail> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> ValidationErrorDetail.builder()
                         .field(fieldError.getField())
-                        .rejectedValue(fieldError.getRejectedValue())
+                        .rejectedValue(null)
                         .message(fieldError.getDefaultMessage())
                         .build())
                 .toList();
 
-        String primaryMessage = fieldErrors.isEmpty()
-                ? "Request payload validation failed."
-                : fieldErrors.get(0).getField() + ": " + fieldErrors.get(0).getMessage();
+        String primaryMessage = "Request payload validation failed.";
 
         log.warn("Validation error on {} {}: {} field errors", 
                 request.getMethod(), request.getRequestURI(), fieldErrors.size());
@@ -67,7 +65,7 @@ public class GlobalExceptionHandler {
             ConstraintViolationException ex, HttpServletRequest request) {
         log.warn("Constraint violation on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.BAD_REQUEST, "Request parameters are invalid.", request.getRequestURI()));
     }
 
     /**
@@ -102,7 +100,7 @@ public class GlobalExceptionHandler {
             RuntimeException ex, HttpServletRequest request) {
         log.warn("Bad request on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ApiErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage(), request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.BAD_REQUEST, "The request could not be processed.", request.getRequestURI()));
     }
 
     /**
@@ -113,9 +111,7 @@ public class GlobalExceptionHandler {
             RuntimeException ex, HttpServletRequest request) {
         log.warn("Authentication failed on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ApiErrorResponse.of(HttpStatus.UNAUTHORIZED, 
-                        ex.getMessage() != null ? ex.getMessage() : "Authentication required.", 
-                        request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.UNAUTHORIZED, "Authentication required.", request.getRequestURI()));
     }
 
     /**
@@ -137,7 +133,7 @@ public class GlobalExceptionHandler {
             RuntimeException ex, HttpServletRequest request) {
         log.warn("Resource not found on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ApiErrorResponse.of(HttpStatus.NOT_FOUND, ex.getMessage(), request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.NOT_FOUND, "The requested resource was not found.", request.getRequestURI()));
     }
 
     /**
@@ -148,7 +144,7 @@ public class GlobalExceptionHandler {
             ConflictException ex, HttpServletRequest request) {
         log.warn("Conflict on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ApiErrorResponse.of(HttpStatus.CONFLICT, ex.getMessage(), request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.CONFLICT, "The request conflicts with the current resource state.", request.getRequestURI()));
     }
 
     /**
@@ -159,7 +155,7 @@ public class GlobalExceptionHandler {
             ValidationException ex, HttpServletRequest request) {
         log.warn("Unprocessable entity on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(ApiErrorResponse.of(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), request.getRequestURI()));
+                .body(ApiErrorResponse.of(HttpStatus.UNPROCESSABLE_ENTITY, "The request failed business validation.", request.getRequestURI()));
     }
 
     /**
@@ -169,7 +165,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorResponse> handleServiceUnavailable(
             IllegalStateException ex, HttpServletRequest request) {
         log.error("Service unavailable on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
-        String message = ex.getMessage() == null ? "The service is temporarily unavailable." : ex.getMessage();
+        String message = "The service is temporarily unavailable.";
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(ApiErrorResponse.of(HttpStatus.SERVICE_UNAVAILABLE, message, request.getRequestURI()));
     }

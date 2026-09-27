@@ -169,13 +169,14 @@ public class AuthService {
         );
     }
 
-    public String githubAuthorizationUrl() {
+    public String githubAuthorizationUrl(String state) {
         if (githubClientId.isBlank() || githubClientSecret.isBlank()) {
             throw new IllegalArgumentException("GitHub OAuth is not configured on the backend.");
         }
         return "https://github.com/login/oauth/authorize?client_id=" + encode(githubClientId)
             + "&redirect_uri=" + encode(githubCallbackUrl)
-            + "&scope=" + encode("read:user user:email");
+            + "&scope=" + encode("read:user user:email")
+            + "&state=" + encode(state);
     }
 
     @Transactional
@@ -225,22 +226,6 @@ public class AuthService {
     }
 
     private String encode(String value) { return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8); }
-
-    public AuthResponse loginAsAdmin() {
-        User admin = userRepo.findByEmail("admin@bytepath.local")
-            .orElseGet(() -> userRepo.save(User.builder()
-                .loginId("admin@bytepath.local")
-                .name("System Administrator")
-                .email("admin@bytepath.local")
-                .role(User.Role.ADMIN)
-                .emailVerified(true)
-                .build()));
-        if (admin.getRole() != User.Role.ADMIN) {
-            admin.setRole(User.Role.ADMIN);
-            admin = userRepo.save(admin);
-        }
-        return buildResponse(admin);
-    }
 
     // ── UserDetailsService helper ──────────────────────────────────────────────
 

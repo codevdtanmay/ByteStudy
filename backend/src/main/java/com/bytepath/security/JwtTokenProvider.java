@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Generates, validates, and parses JWT tokens.
@@ -22,7 +23,13 @@ public class JwtTokenProvider {
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration-ms}") long expirationMs) {
-        byte[] keyBytes = secret.getBytes();
+        if (secret == null || secret.isBlank() || secret.length() < 32) {
+            throw new IllegalStateException("JWT_SECRET must be configured with at least 32 characters.");
+        }
+        if (expirationMs < 60_000L) {
+            throw new IllegalStateException("JWT_EXPIRATION_MS must be at least 60000 milliseconds.");
+        }
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
         this.expirationMs = expirationMs;
     }
