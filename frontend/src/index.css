@@ -829,6 +829,75 @@ html.dark .signal-glow { background: #000000 !important; background-image: none 
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke: #666666 !important; }
 html.dark svg path[fill], html.dark svg circle[fill] { filter: grayscale(1); }
 
+/* Authoritative theme contract. Light mode owns the color palette; dark mode
+   owns the black/white/gray palette. Component rules below are intentionally
+   scoped so one theme cannot override the other. */
+html:not(.dark) {
+  --background: #f3f7fc;
+  --text-primary: #14283d;
+  --text-secondary: #60758b;
+  --glass-bg: #ffffff;
+  --glass-border: #d8e5ef;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #cbd9e6;
+  --brand-primary: #25b8c8;
+  --brand-primary-dark: #159ead;
+  --brand-accent: #f0a43c;
+  --accent-soft: #e8f7fb;
+  --accent-border: #b9dfe8;
+  --surface-raised: #f7fbff;
+}
+
+html.dark {
+  --background: #000000;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a1a1aa;
+  --glass-bg: #111111;
+  --glass-border: #2a2a2a;
+  --card-bg: #111111;
+  --input-bg: #151515;
+  --input-border: #3a3a3a;
+  --brand-primary: #ffffff;
+  --brand-primary-dark: #d4d4d4;
+  --brand-accent: #ffffff;
+  --accent-soft: #1b1b1b;
+  --accent-border: #454545;
+  --surface-raised: #171717;
+}
+
+html:not(.dark) .admin-hero {
+  background: linear-gradient(135deg, #e8f7fb, #eef3ff) !important;
+  border-color: #c8e1ea !important;
+  color: #14283d !important;
+}
+html:not(.dark) .admin-hero h1,
+html:not(.dark) .admin-hero p,
+html:not(.dark) .admin-hero span,
+html:not(.dark) .admin-hero svg { color: inherit !important; }
+html:not(.dark) .admin-tab { color: #527189 !important; background: transparent !important; }
+html:not(.dark) .admin-tab:hover { color: #14283d !important; background: #d9f1f5 !important; border-color: #b9dfe8 !important; }
+html:not(.dark) .admin-tab[class*="bg-indigo-600"],
+html:not(.dark) .admin-tab[class*="bg-amber-600"] { background: #25b8c8 !important; color: #ffffff !important; border-color: #25b8c8 !important; }
+html:not(.dark) .admin-tab[class*="bg-indigo-600"] svg,
+html:not(.dark) .admin-tab[class*="bg-amber-600"] svg { color: #ffffff !important; }
+
+html.dark .admin-hero { background: #111111 !important; border-color: #2a2a2a !important; color: #f5f5f5 !important; }
+html.dark .admin-tab { color: #a1a1aa !important; background: transparent !important; }
+html.dark .admin-tab:hover { color: #ffffff !important; background: #242424 !important; border-color: #454545 !important; }
+html.dark .admin-tab[class*="bg-indigo-600"],
+html.dark .admin-tab[class*="bg-amber-600"] { background: #ffffff !important; color: #000000 !important; border-color: #ffffff !important; }
+html.dark .admin-tab[class*="bg-indigo-600"] svg,
+html.dark .admin-tab[class*="bg-amber-600"] svg { color: #000000 !important; }
+
+html:not(.dark) .promotion-banner { background: #202d3b !important; color: #ffffff !important; border-color: #34485b !important; }
+html.dark .promotion-banner { background: #171717 !important; color: #ffffff !important; border-color: #2a2a2a !important; }
+
+html:not(.dark) .gate-branch-tab-active { background: #ffffff !important; color: #14283d !important; }
+html:not(.dark) .gate-branch-tab-inactive { background: rgba(255,255,255,.72) !important; color: #24536a !important; }
+html.dark .gate-branch-tab-active { background: #ffffff !important; color: #000000 !important; }
+html.dark .gate-branch-tab-inactive { background: #151515 !important; color: #d4d4d4 !important; border-color: #3a3a3a !important; }
+
 /* Final page-scoped contrast and overflow corrections. */
 .logout-confirm-button {
   display: inline-flex;
