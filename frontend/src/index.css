@@ -898,6 +898,78 @@ html:not(.dark) .gate-branch-tab-inactive { background: rgba(255,255,255,.72) !i
 html.dark .gate-branch-tab-active { background: #ffffff !important; color: #000000 !important; }
 html.dark .gate-branch-tab-inactive { background: #151515 !important; color: #d4d4d4 !important; border-color: #3a3a3a !important; }
 
+/* Shared workspace system: every page inherits the same surfaces, spacing
+   language, borders, and action hierarchy as the AI Tools reference page. */
+html:not(.dark) .app-content-page .glass-card,
+html:not(.dark) .app-content-page .editorial-panel,
+html:not(.dark) .app-content-page .neu-card,
+html:not(.dark) .app-content-page .neu-flat {
+  background: #ffffff !important;
+  border-color: #d8e5ef !important;
+  box-shadow: 0 8px 24px rgba(41, 79, 111, .06) !important;
+}
+
+html:not(.dark) .app-content-page .primary-button,
+html:not(.dark) .app-content-page .btn-primary {
+  background: #17202b !important;
+  border-color: #17202b !important;
+  color: #ffffff !important;
+}
+
+html:not(.dark) .app-content-page .secondary-button,
+html:not(.dark) .app-content-page .icon-button {
+  background: #ffffff !important;
+  border-color: #d8e5ef !important;
+  color: #25394f !important;
+}
+
+html:not(.dark) .app-content-page input,
+html:not(.dark) .app-content-page select,
+html:not(.dark) .app-content-page textarea {
+  background: #ffffff !important;
+  border-color: #cbd9e6 !important;
+  color: #25394f !important;
+}
+
+html:not(.dark) .app-content-page [class*="bg-gradient-"]:not(.gate-hero):not(.admin-hero),
+html:not(.dark) .app-content-page [class*="bg-indigo-"]:not(.gate-branch-tab),
+html:not(.dark) .app-content-page [class*="bg-purple-"]:not(.gate-branch-tab),
+html:not(.dark) .app-content-page [class*="bg-violet-"]:not(.gate-branch-tab) {
+  background-image: none !important;
+  background-color: #e8f7fb !important;
+}
+
+html.dark .app-content-page .glass-card,
+html.dark .app-content-page .editorial-panel,
+html.dark .app-content-page .neu-card,
+html.dark .app-content-page .neu-flat {
+  background: #111111 !important;
+  border-color: #2a2a2a !important;
+  box-shadow: none !important;
+}
+
+html.dark .app-content-page .primary-button,
+html.dark .app-content-page .btn-primary {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.dark .app-content-page .secondary-button,
+html.dark .app-content-page .icon-button {
+  background: #151515 !important;
+  border-color: #353535 !important;
+  color: #ffffff !important;
+}
+
+html.dark .app-content-page input,
+html.dark .app-content-page select,
+html.dark .app-content-page textarea {
+  background: #151515 !important;
+  border-color: #3a3a3a !important;
+  color: #f5f5f5 !important;
+}
+
 /* Final page-scoped contrast and overflow corrections. */
 .logout-confirm-button {
   display: inline-flex;

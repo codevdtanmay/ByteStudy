@@ -129,7 +129,7 @@ export default function App() {
         />
 
         {/* Dynamic Workspace Container */}
-        <main id="main-content" className={`${store.activeTab === 'advisor' ? 'max-w-none px-4 sm:px-6' : 'max-w-7xl px-4 sm:px-6 lg:px-8'} mx-auto py-5 sm:py-6 flex-1 w-full space-y-5`} tabIndex="-1">
+        <main id="main-content" className={`app-content-page ${store.activeTab === 'advisor' ? 'max-w-none px-4 sm:px-6' : 'max-w-7xl px-4 sm:px-6 lg:px-8'} mx-auto py-5 sm:py-6 flex-1 w-full space-y-5`} tabIndex="-1">
           {store.activeTab === 'dashboard' && (
             <Dashboard 
               chartData={store.chartData}
