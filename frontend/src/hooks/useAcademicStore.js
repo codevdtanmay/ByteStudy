@@ -231,6 +231,7 @@ export function useAcademicStore() {
       root.classList.add('light');
       root.classList.remove('dark');
     }
+    root.style.colorScheme = theme;
   }, [theme]);
 
   useEffect(() => {

@@ -712,7 +712,6 @@ html.dark [class*="border-indigo-"], html.dark [class*="border-violet-"], html.d
 html.dark .auth-shell { background:#000 !important; color:#fff !important; }
 html.dark .auth-shell::before, html.dark .auth-shell::after, html.dark .signal-glow { background:#000 !important; background-image:none !important; }
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke:#666 !important; }
-html.dark svg path[fill], html.dark svg circle[fill] { filter:grayscale(1); }
 :root:not(.dark) [class*="bg-gradient-"] { background-image:none !important; background-color:var(--accent-soft) !important; }
 
 /* Final cascade guard: the legacy theme blocks above contain several accent
@@ -827,7 +826,90 @@ html.dark .auth-shell { background: #000000 !important; color: #ffffff !importan
 html.dark .auth-shell::before, html.dark .auth-shell::after,
 html.dark .signal-glow { background: #000000 !important; background-image: none !important; }
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke: #666666 !important; }
-html.dark svg path[fill], html.dark svg circle[fill] { filter: grayscale(1); }
+
+/* Central semantic design tokens. Components should consume these roles,
+   rather than pairing arbitrary foreground/background hex values. */
+:root,
+html:not(.dark) {
+  --background: #f3f7fc;
+  --foreground: #14283d;
+  --card: #ffffff;
+  --card-foreground: #14283d;
+  --popover: #ffffff;
+  --popover-foreground: #14283d;
+  --primary: #17202b;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f7fb;
+  --secondary-foreground: #24536a;
+  --muted: #edf3f8;
+  --muted-foreground: #60758b;
+  --accent: #25b8c8;
+  --accent-foreground: #ffffff;
+  --border: #d8e5ef;
+  --input: #cbd9e6;
+  --ring: #25b8c8;
+  --link: #176b8c;
+  --success: #15803d;
+  --success-foreground: #ffffff;
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --error: #b42318;
+  --error-foreground: #ffffff;
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+}
+
+html.dark {
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --card: #111111;
+  --card-foreground: #f5f5f5;
+  --popover: #151515;
+  --popover-foreground: #f5f5f5;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #1b1b1b;
+  --secondary-foreground: #d4d4d4;
+  --muted: #171717;
+  --muted-foreground: #a1a1aa;
+  --accent: #ffffff;
+  --accent-foreground: #000000;
+  --border: #2a2a2a;
+  --input: #3a3a3a;
+  --ring: #ffffff;
+  --link: #e4e4e7;
+  --success: #86efac;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #451a03;
+  --error: #f87171;
+  --error-foreground: #450a0a;
+  --info: #93c5fd;
+  --info-foreground: #172554;
+}
+
+html, body { background: var(--background); color: var(--foreground); }
+body { transition: background-color .2s ease, color .2s ease; }
+
+button, input, select, textarea { color: var(--foreground); }
+input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 1; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+button:disabled, input:disabled, select:disabled, textarea:disabled { cursor: not-allowed; opacity: .58; }
+
+.app-content-page a:not([class*="bg-"]):not([class*="button"]),
+.app-content-page .link,
+.app-content-page .text-link { color: var(--link); }
+.app-content-page table thead { color: var(--muted-foreground); background: var(--muted); }
+.app-content-page table tbody tr { border-color: var(--border); }
+.app-content-page table tbody tr:hover { background: color-mix(in srgb, var(--accent) 8%, var(--card)); }
+.app-content-page [role="dialog"], .app-content-page [role="menu"], .app-content-page [role="listbox"] {
+  background: var(--popover);
+  color: var(--popover-foreground);
+  border-color: var(--border);
+}
 
 /* Authoritative theme contract. Light mode owns the color palette; dark mode
    owns the black/white/gray palette. Component rules below are intentionally
@@ -1238,10 +1320,6 @@ html.dark .auth-card .neu-button {
   border-color: #2a2a2a !important;
 }
 
-html.dark svg path[fill],
-html.dark svg circle[fill] {
-  filter: grayscale(1);
-}
 
 /* Light mode surfaces use one restrained accent so unrelated legacy colors do
    not compete with each other; semantic success/error text remains available. */
@@ -2092,7 +2170,6 @@ html.dark ::-webkit-scrollbar-track { background: #090909 !important; }
 html.dark ::-webkit-scrollbar-thumb { background: #555555 !important; border-color: #090909 !important; }
 html.dark ::-webkit-scrollbar-thumb:hover { background: #777777 !important; }
 html.dark .auth-shell::before, html.dark .auth-shell::after, html.dark .signal-glow { background: #000000 !important; }
-html.dark svg path[fill], html.dark svg circle[fill] { filter: grayscale(1); }
 html.dark, html.dark body { background: #000000 !important; color: #ffffff; }
 html.dark .glass-card, html.dark .neu-flat, html.dark .neu-card, html.dark .editorial-panel, html.dark .byteai-surface, html.dark .auth-card { background: var(--glass-bg) !important; border-color: var(--glass-border) !important; box-shadow: none !important; }
 html.dark [class*="bg-gradient-"], html.dark [class*="from-"], html.dark [class*="via-"], html.dark [class*="to-"] { background-image: none !important; }
@@ -2102,4 +2179,3 @@ html.dark [class*="border-indigo-"], html.dark [class*="border-violet-"], html.d
 html.dark .auth-shell { background: #000000 !important; color: #ffffff !important; }
 html.dark .auth-shell::before, html.dark .auth-shell::after, html.dark .signal-glow { background: #000000 !important; background-image: none !important; }
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke: #666666 !important; }
-html.dark svg path[fill], html.dark svg circle[fill] { filter: grayscale(1); }

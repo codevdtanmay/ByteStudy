@@ -2,7 +2,7 @@
 <html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="theme-color" content="#0B0B10" />
+    <meta name="theme-color" content="#f3f7fc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="ByteCollege - B.Tech CS & IT Curriculum Navigator & Academic Companion for HNBGU Engineering Students." />
     <meta name="keywords" content="ByteCollege, HNBGU, B.Tech CS & IT, B.Tech CSE, CGPA calculator, academic planner, syllabus, pyqs" />
@@ -10,6 +10,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem('theme');
+          const theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          document.documentElement.classList.toggle('light', theme !== 'dark');
+          document.documentElement.style.colorScheme = theme;
+        } catch (_) {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+          document.documentElement.style.colorScheme = 'dark';
+        }
+      })();
+    </script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
