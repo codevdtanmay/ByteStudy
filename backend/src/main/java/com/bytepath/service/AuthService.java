@@ -189,7 +189,7 @@ public class AuthService {
             .uri("https://github.com/login/oauth/access_token")
             .header("Accept", "application/json")
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .header("User-Agent", "ByteStudy-Backend")
+            .header("User-Agent", "ByteCollege-Backend")
             .body("client_id=" + encode(githubClientId) + "&client_secret=" + encode(githubClientSecret)
                 + "&code=" + encode(code) + "&redirect_uri=" + encode(githubCallbackUrl))
             .retrieve()
@@ -202,7 +202,7 @@ public class AuthService {
             .baseUrl("https://api.github.com")
             .defaultHeader("Authorization", "Bearer " + accessToken)
             .defaultHeader("Accept", "application/vnd.github+json")
-            .defaultHeader("User-Agent", "ByteStudy-Backend")
+            .defaultHeader("User-Agent", "ByteCollege-Backend")
             .build();
         Map profile = github.get().uri("/user").retrieve().body(Map.class);
         String email = profile == null ? "" : String.valueOf(profile.getOrDefault("email", ""));

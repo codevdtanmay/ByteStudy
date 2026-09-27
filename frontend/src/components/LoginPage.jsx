@@ -61,7 +61,7 @@ export default function LoginPage({ onLoginSuccess }) {
     <div className="auth-layout">
       <section className="auth-intro"><BrandLogo showName className="auth-intro-brand"/><h1>Make your<br/><em>next move</em> count.</h1><p>One calm space for the deadlines, grades and decisions that shape your degree.</p></section>
       <section className="auth-card">
-        <div className="space-y-1"><h2>Welcome to ByteStudy</h2><p>Sign in securely and keep your momentum.</p></div>
+        <div className="space-y-1"><h2>Welcome to ByteCollege</h2><p>Sign in securely and keep your momentum.</p></div>
         <div className="mt-7 space-y-3">
           {error && <div className="flex items-start gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-600"><AlertCircle size={16} className="mt-0.5 shrink-0"/><span>{error}</span></div>}
           <button type="button" disabled={busy} onClick={googleSignIn} className="relative flex w-full items-center justify-center gap-3 rounded-xl bg-white py-3.5 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-wait disabled:opacity-60"><GoogleIcon/>Continue with Google<ArrowRight size={15} className="absolute right-4 text-slate-400"/></button>

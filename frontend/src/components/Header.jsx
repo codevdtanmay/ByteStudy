@@ -22,8 +22,8 @@ export default function Header({
             </div>
           </div>
           <div>
-            <h1 className="text-base sm:text-lg font-bold gradient-text leading-tight">ByteStudy</h1>
-            <p className="text-[10px] text-slate-500 leading-none">Curriculum Navigator & Career Launchpad</p>
+            <h1 className="text-base sm:text-lg font-bold gradient-text leading-tight">ByteCollege</h1>
+            <p className="text-[10px] text-slate-500 leading-none">Curriculum Navigator & Academic Companion</p>
           </div>
         </div>
 

@@ -103,7 +103,7 @@ export default function EndSemSubscriptionModal({
         key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_key',
         order_id: order.id,
         currency: 'INR',
-        name: 'ByteStudy Scholar Pass',
+        name: 'ByteCollege Scholar Pass',
         description: `End-Sem Premium Pass - ${currentPlanLabel}`,
         image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=100',
         handler: async function (response) {
@@ -129,7 +129,7 @@ export default function EndSemSubscriptionModal({
         },
         prefill: {
           name: studentId || 'B.Tech Student',
-          email: 'student@bytestudy.edu',
+          email: 'student@bytecollege.edu',
         },
         notes: {
           studentId: studentId,

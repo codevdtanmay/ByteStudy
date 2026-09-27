@@ -1,6 +1,7 @@
 import logger from '../utils/logger';
 
-const SESSION_KEY = 'bytestudy.auth.session.v1';
+const SESSION_KEY = 'bytecollege.auth.session.v1';
+const LEGACY_SESSION_KEY = 'bytestudy.auth.session.v1';
 const API_BASE_URL = (import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8081/api').replace(/\/$/, '');
 
 export const isAdminAccount = (account = {}) => (account?.role || '').toUpperCase() === 'ADMIN';
@@ -46,12 +47,15 @@ const request = async (path, payload) => {
   }
 };
 
-export const getActiveSession = () => readJson(SESSION_KEY, null);
+export const getActiveSession = () => readJson(SESSION_KEY, null) || readJson(LEGACY_SESSION_KEY, null);
 export const getAuthToken = () => getActiveSession()?.token || '';
 export const hasRemoteAuthApi = () => Boolean(API_BASE_URL);
 
 export const clearActiveSession = () => {
-  try { localStorage.removeItem(SESSION_KEY); } catch { /* ignore storage cleanup failures */ }
+  try {
+    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+  } catch { /* ignore storage cleanup failures */ }
 };
 
 export const consumeOAuthSession = () => {
@@ -68,7 +72,7 @@ export const consumeOAuthSession = () => {
   const session = sessionFromUser({
     token,
     loginId,
-    name: params.get('name') || 'ByteStudy Scholar',
+    name: params.get('name') || 'ByteCollege Scholar',
     email: params.get('email') || '',
     role: params.get('role') || 'STUDENT',
   });

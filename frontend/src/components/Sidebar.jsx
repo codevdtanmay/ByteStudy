@@ -91,7 +91,7 @@ export default function Sidebar({
           <button type="button" onClick={() => goTo('dashboard')} className="flex items-center gap-3 text-left">
             <BrandLogo />
             <span>
-              <span className="block text-[15px] font-bold tracking-[-0.02em] text-stone-900 dark:text-stone-100">ByteStudy</span>
+              <span className="block text-[15px] font-bold tracking-[-0.02em] text-stone-900 dark:text-stone-100">ByteCollege</span>
               <span className="block mt-0.5 text-[10px] uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400">Academic planner</span>
             </span>
           </button>

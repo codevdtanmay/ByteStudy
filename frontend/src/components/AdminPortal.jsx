@@ -408,7 +408,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl font-black tracking-tight text-white">ByteStudy Admin Console</h1>
+                <h1 className="text-xl font-black tracking-tight text-white">ByteCollege Admin Console</h1>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/20 border border-white/30 text-white">
                   Super Admin
                 </span>

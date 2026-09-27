@@ -71,7 +71,7 @@ export default function OnboardingModal({
             <Sparkles size={11} /> First-Time Setup
           </div>
           <h2 className="text-2xl font-black gradient-text tracking-tight">
-            Welcome to ByteStudy!
+            Welcome to ByteCollege!
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Choose your semester and branch, then add your academic details to set up your profile.
@@ -240,7 +240,7 @@ export default function OnboardingModal({
             </div>
             <h3 className="text-lg font-bold text-slate-800 dark:text-white">A note about your branch</h3>
             <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-              ByteStudy currently syncs with the CSE/IT syllabus. Branch-specific content for ECE, ME, and IE will be added later.
+              ByteCollege currently syncs with the CSE/IT syllabus. Branch-specific content for ECE, ME, and IE will be added later.
             </p>
             <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
               For now, first-year subjects are shared across branches. The semester order is flipped, so find your semester’s subjects and start flipping through the syllabus.

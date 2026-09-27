@@ -25,18 +25,19 @@ const setStorageItem = (key, value) => {
 const getSavedActiveTab = (loginId) => {
   if (!loginId) return 'dashboard';
   try {
-    return localStorage.getItem(`bytestudy.activeTab.${loginId}`) || 'dashboard';
+    return localStorage.getItem(`bytecollege.activeTab.${loginId}`) || localStorage.getItem(`bytestudy.activeTab.${loginId}`) || 'dashboard';
   } catch {
     return 'dashboard';
   }
 };
 
-const PROFILE_STORE_KEY = 'bytestudy.studentProfiles.v1';
+const PROFILE_STORE_KEY = 'bytecollege.studentProfiles.v1';
+const LEGACY_PROFILE_STORE_KEY = 'bytestudy.studentProfiles.v1';
 const EMPTY_SGPAS = { 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: '' };
 
 const getStudentProfile = (loginId) => {
   if (!loginId) return null;
-  const profiles = getStorageItem(PROFILE_STORE_KEY, {});
+  const profiles = getStorageItem(PROFILE_STORE_KEY, null) || getStorageItem(LEGACY_PROFILE_STORE_KEY, {});
   return profiles[loginId] || null;
 };
 
@@ -123,7 +124,7 @@ export function useAcademicStore() {
   useEffect(() => {
     if (!studentId) return;
     try {
-      localStorage.setItem(`bytestudy.activeTab.${studentId}`, activeTab);
+      localStorage.setItem(`bytecollege.activeTab.${studentId}`, activeTab);
     } catch {
       // Private browsing or storage restrictions should not block navigation.
     }

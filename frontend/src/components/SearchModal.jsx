@@ -151,7 +151,7 @@ export default function SearchModal({ isOpen, onClose, setActiveTab }) {
         {/* Footer shortcuts helper */}
         <div className="p-3 bg-slate-50 dark:bg-[#070814] border-t border-slate-200 dark:border-indigo-950/40 text-center text-[11px] text-slate-400 flex items-center justify-between px-5">
           <span>Tip: Navigate using quick keywords</span>
-          <span>ByteStudy B.Tech CS & IT 196-Credit Navigator</span>
+          <span>ByteCollege B.Tech CS & IT 196-Credit Navigator</span>
         </div>
 
       </div>

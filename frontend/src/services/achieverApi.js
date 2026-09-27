@@ -23,7 +23,7 @@ const fallbackAchievers = [
     batch: '2024',
     cgpa: '9.78',
     achievementTitle: 'University Gold Medalist & SDE at Oracle',
-    quote: 'ByteStudy syllabus navigator and past year papers kept me aligned throughout my semester exams.',
+    quote: 'ByteCollege syllabus navigator and past year papers kept me aligned throughout my semester exams.',
     companyOrExam: 'Oracle Cloud Systems',
     photoUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300',
     badgeLabel: 'GOLD MEDALIST',

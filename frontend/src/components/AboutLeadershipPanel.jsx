@@ -26,9 +26,9 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
       specialty: 'Platform Engineering, Cloud Infrastructure & AI Systems',
       avatarInitial: 'A',
       image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
-      bio: 'Spearheaded the engineering and architectural foundation of ByteStudy. Passionate about distributed systems, resilient web software, and crafting high-yield digital tools for university scholars.',
+      bio: 'Spearheaded the engineering and architectural foundation of ByteCollege. Passionate about distributed systems, resilient web software, and crafting high-yield digital tools for university scholars.',
       tags: ['System Architecture', 'Spring Boot 3', 'PostgreSQL', 'AI RAG Engine', 'Security'],
-      quote: 'ByteStudy was born to solve real student problems—fragmented notes, missing past papers, and attendance uncertainty. We engineered an all-in-one operating system for engineering scholars.',
+      quote: 'ByteCollege was born to solve real student problems—fragmented notes, missing past papers, and attendance uncertainty. We engineered an all-in-one operating system for engineering scholars.',
       email: 'anjalimaurya028@gmail.com'
     },
     {
@@ -39,7 +39,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
       bio: 'Orchestrates academic resource management, past question paper curation, and student community engagement across branches. Ensures every file and syllabus outline adheres strictly to university standards.',
       tags: ['University Relations', 'PYQ Verification', 'Operations', 'Academic Coordination'],
-      quote: 'Every semester question paper and syllabus module on ByteStudy is meticulously cross-checked with departmental syllabi to ensure students never study outdated material.',
+      quote: 'Every semester question paper and syllabus module on ByteCollege is meticulously cross-checked with departmental syllabi to ensure students never study outdated material.',
       email: 'myselftanmay8@gmail.com'
     }
   ];
@@ -73,7 +73,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
     { label: 'Department Coverage', value: 'School of Engineering & Technology (CSE, IT, ECE, EE, ME)' },
     { label: 'Academic Regulations', value: 'Choice Based Credit System (CBCS) & NEP Framework' },
     { label: 'Student Support Desk', value: '24/7 Digital Grievance & Resource Request Portal' },
-    { label: 'Platform Release', value: 'ByteStudy Enterprise v2.1 (Production)' }
+    { label: 'Platform Release', value: 'ByteCollege Enterprise v2.1 (Production)' }
   ];
 
   return (
@@ -86,10 +86,10 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
             Institutional Overview & Founders
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-stone-900 dark:text-white leading-tight">
-            About ByteStudy & Leadership
+            About ByteCollege & Leadership
           </h1>
           <p className="mt-3 text-sm sm:text-base text-stone-600 dark:text-neutral-400 leading-relaxed">
-            ByteStudy is an autonomous academic companion built to empower B.Tech students at Hemvati Nandan Bahuguna Garhwal Central University. From syllabus tracking and verified PYQs to intelligent GATE prep and attendance monitoring, we bridge the gap between classroom teaching and semester excellence.
+            ByteCollege is an autonomous academic companion built to empower B.Tech students at Hemvati Nandan Bahuguna Garhwal Central University. From syllabus tracking and verified PYQs to intelligent GATE prep and attendance monitoring, we bridge the gap between classroom teaching and semester excellence.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -184,7 +184,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
         </div>
       </section>
 
-      {/* Pillars of ByteStudy */}
+      {/* Pillars of ByteCollege */}
       <section className="space-y-4">
         <div className="border-b border-stone-200 dark:border-neutral-800 pb-3">
           <h2 className="text-xl font-bold tracking-tight text-stone-900 dark:text-white flex items-center gap-2">
@@ -233,7 +233,7 @@ export default function AboutLeadershipPanel({ onOpenFeedback }) {
               Academic Administration & Official Guidelines
             </h3>
             <p className="mt-1 text-xs text-stone-500 dark:text-neutral-400 max-w-2xl">
-              ByteStudy coordinates with student representatives and faculty advisors to reflect official syllabus revisions, examination schedules, and course objectives.
+              ByteCollege coordinates with student representatives and faculty advisors to reflect official syllabus revisions, examination schedules, and course objectives.
             </p>
           </div>
 
