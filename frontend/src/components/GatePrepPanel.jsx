@@ -374,14 +374,14 @@ export default function GatePrepPanel() {
         </div>
 
         {/* Branch Selector Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-6 pt-5 border-t border-white/15 dark:border-neutral-800">
+        <div className="gate-branch-tabs grid grid-cols-2 sm:grid-cols-5 gap-2 mt-6 pt-5 border-t border-white/15 dark:border-neutral-800">
           {Object.entries(GATE_DATA).map(([key, data]) => {
             const isSelected = selectedBranch === key;
             return (
               <button
                 key={key}
                 onClick={() => setSelectedBranch(key)}
-                className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
+                className={`gate-branch-tab ${isSelected ? 'gate-branch-tab-active' : 'gate-branch-tab-inactive'} py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center cursor-pointer ${
                   isSelected
                     ? 'bg-white text-black shadow-md font-black scale-[1.02] dark:bg-white dark:text-white'
                     : 'bg-white/5 hover:bg-white/10 text-white/80 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-800'

@@ -828,6 +828,44 @@ html.dark .auth-shell::before, html.dark .auth-shell::after,
 html.dark .signal-glow { background: #000000 !important; background-image: none !important; }
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke: #666666 !important; }
 html.dark svg path[fill], html.dark svg circle[fill] { filter: grayscale(1); }
+
+/* Final page-scoped contrast and overflow corrections. */
+.logout-confirm-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border: 1px solid #b42318 !important;
+  border-radius: var(--radius-control);
+  background: #b42318 !important;
+  color: #ffffff !important;
+  font-size: .75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.logout-confirm-button:hover { background: #8f1d14 !important; border-color: #8f1d14 !important; }
+
+.gate-branch-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.gate-branch-tab { min-width: 0; opacity: 1 !important; border: 1px solid #c8e1ea !important; box-shadow: none !important; }
+.gate-branch-tab-active { background: #ffffff !important; color: #14283d !important; border-color: #ffffff !important; }
+.gate-branch-tab-inactive { background: rgba(255, 255, 255, .62) !important; color: #24536a !important; }
+.gate-branch-tab-inactive:hover { background: rgba(255, 255, 255, .9) !important; color: #14283d !important; }
+.gate-branch-tab span { opacity: 1 !important; color: inherit !important; }
+
+.admin-hero { background: #171717 !important; background-image: none !important; border-color: #2f2f2f !important; color: #ffffff !important; box-shadow: none !important; }
+.admin-hero h1, .admin-hero p, .admin-hero span, .admin-hero svg { color: inherit; }
+.admin-hero .admin-tabs { flex-wrap: wrap; overflow: visible; scrollbar-width: none; }
+.admin-tab { min-height: 2.5rem; white-space: normal; color: #bdbdbd !important; background: transparent !important; border: 1px solid transparent; }
+.admin-tab:hover { color: #ffffff !important; background: #242424 !important; border-color: #3a3a3a; }
+.admin-tab[class*="bg-indigo-600"], .admin-tab[class*="bg-amber-600"] { background: #ffffff !important; color: #111111 !important; border-color: #ffffff !important; }
+.admin-tab[class*="bg-indigo-600"] svg, .admin-tab[class*="bg-amber-600"] svg { color: #111111 !important; }
+html.dark .gate-branch-tab-active { background: #ffffff !important; color: #111111 !important; }
+html.dark .gate-branch-tab-inactive { background: #151515 !important; color: #d4d4d4 !important; border-color: #3a3a3a !important; }
+html.dark .gate-branch-tab-inactive:hover { background: #242424 !important; color: #ffffff !important; }
+
+@media (max-width: 639px) {
+  .gate-branch-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-tab { flex: 1 1 100%; justify-content: flex-start; }
+}
 html.dark .dashboard-page .dashboard-hero,
 html.dark .dashboard-page .dashboard-metrics,
 html.dark .dashboard-page .dashboard-panel { background: #090909 !important; border-color: #292929 !important; box-shadow: none !important; }

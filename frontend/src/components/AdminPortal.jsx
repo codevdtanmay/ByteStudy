@@ -397,10 +397,10 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
   });
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 animate-fade-in pb-16">
+    <div className="admin-portal max-w-5xl mx-auto space-y-8 animate-fade-in pb-16">
       
       {/* Admin Portal Header */}
-      <div className="glass-card p-6 border border-slate-200 dark:border-neutral-800 bg-gradient-to-r from-slate-900 via-stone-950 to-slate-900 dark:bg-black dark:bg-none text-white rounded-3xl shadow-xl">
+      <div className="admin-hero glass-card p-6 border border-slate-200 dark:border-neutral-800 bg-gradient-to-r from-slate-900 via-stone-950 to-slate-900 dark:bg-black dark:bg-none text-white rounded-3xl shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-stone-700 to-stone-900 dark:bg-white flex items-center justify-center shadow-lg">
@@ -433,10 +433,10 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 mt-6 overflow-x-auto pb-1 border-t border-white/10 dark:border-neutral-800 pt-4">
+        <div className="admin-tabs flex items-center gap-2 mt-6 overflow-x-auto pb-1 border-t border-white/10 dark:border-neutral-800 pt-4">
           <button
             onClick={() => setActiveTab('resources')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+            className={`admin-tab px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeTab === 'resources'
                 ? 'bg-indigo-600 dark:bg-white text-white dark:text-black shadow-md font-black'
                 : 'text-slate-400 dark:text-neutral-400 hover:text-white hover:bg-white/5 dark:hover:bg-neutral-900'
@@ -449,7 +449,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
 
           <button
             onClick={() => setActiveTab('promotions')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+            className={`admin-tab px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeTab === 'promotions'
                 ? 'bg-indigo-600 dark:bg-white text-white dark:text-black shadow-md font-black'
                 : 'text-slate-400 dark:text-neutral-400 hover:text-white hover:bg-white/5 dark:hover:bg-neutral-900'
@@ -464,7 +464,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
 
           <button
             onClick={() => setActiveTab('subscriptions')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+            className={`admin-tab px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeTab === 'subscriptions'
                 ? 'bg-indigo-600 dark:bg-white text-white dark:text-black shadow-md font-black'
                 : 'text-slate-400 dark:text-neutral-400 hover:text-white hover:bg-white/5 dark:hover:bg-neutral-900'
@@ -477,7 +477,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
 
           <button
             onClick={() => setActiveTab('feedback')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+            className={`admin-tab px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeTab === 'feedback'
                 ? 'bg-indigo-600 dark:bg-white text-white dark:text-black shadow-md font-black'
                 : 'text-slate-400 dark:text-neutral-400 hover:text-white hover:bg-white/5 dark:hover:bg-neutral-900'
@@ -490,7 +490,7 @@ export default function AdminPortal({ uploadedPyqs, setUploadedPyqs, studentId, 
 
           <button
             onClick={() => setActiveTab('achievers')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+            className={`admin-tab px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeTab === 'achievers'
                 ? 'bg-amber-600 dark:bg-white text-white dark:text-black shadow-md font-black'
                 : 'text-slate-400 dark:text-neutral-400 hover:text-white hover:bg-white/5 dark:hover:bg-neutral-900'

@@ -244,7 +244,7 @@ export default function App() {
             <p className="mt-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">Your saved profile and academic records will remain safe. You can sign in again anytime.</p>
             <div className="mt-6 grid grid-cols-2 gap-3">
               <button type="button" onClick={() => setIsLogoutConfirmOpen(false)} className="secondary-button justify-center">No, stay</button>
-              <button type="button" onClick={confirmLogout} className="btn-primary justify-center bg-rose-600 hover:bg-rose-700">Yes, logout</button>
+              <button type="button" onClick={confirmLogout} className="logout-confirm-button justify-center">Yes, logout</button>
             </div>
           </div>
         </div>
