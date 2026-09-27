@@ -827,6 +827,94 @@ html.dark .auth-shell::before, html.dark .auth-shell::after,
 html.dark .signal-glow { background: #000000 !important; background-image: none !important; }
 html.dark .signal-route, html.dark .signal-route-back, html.dark .signal-route-alt { stroke: #666666 !important; }
 
+/* Absolute final theme layer. Keep this block last so legacy utility rules
+   cannot redefine semantic tokens after the theme has been selected. */
+html:not(.dark) {
+  --background: #f3f7fc;
+  --foreground: #14283d;
+  --card: #ffffff;
+  --card-foreground: #14283d;
+  --popover: #ffffff;
+  --popover-foreground: #14283d;
+  --primary: #17202b;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f7fb;
+  --secondary-foreground: #24536a;
+  --muted: #edf3f8;
+  --muted-foreground: #60758b;
+  --accent: #25b8c8;
+  --accent-foreground: #ffffff;
+  --border: #d8e5ef;
+  --input: #cbd9e6;
+  --ring: #25b8c8;
+  --link: #176b8c;
+  --success: #15803d;
+  --success-foreground: #ffffff;
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --error: #b42318;
+  --error-foreground: #ffffff;
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+  --text-primary: #14283d;
+  --text-secondary: #60758b;
+  --glass-bg: #ffffff;
+  --glass-border: #d8e5ef;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #cbd9e6;
+  --brand-primary: #25b8c8;
+  --brand-primary-dark: #159ead;
+  --accent-soft: #e8f7fb;
+  --accent-border: #b9dfe8;
+  --surface-raised: #f7fbff;
+}
+
+html.dark {
+  --background: #000000;
+  --foreground: #f5f5f5;
+  --card: #111111;
+  --card-foreground: #f5f5f5;
+  --popover: #151515;
+  --popover-foreground: #f5f5f5;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #1b1b1b;
+  --secondary-foreground: #d4d4d4;
+  --muted: #171717;
+  --muted-foreground: #a1a1aa;
+  --accent: #ffffff;
+  --accent-foreground: #000000;
+  --border: #2a2a2a;
+  --input: #3a3a3a;
+  --ring: #ffffff;
+  --link: #e4e4e7;
+  --success: #86efac;
+  --success-foreground: #052e16;
+  --warning: #fbbf24;
+  --warning-foreground: #451a03;
+  --error: #f87171;
+  --error-foreground: #450a0a;
+  --info: #93c5fd;
+  --info-foreground: #172554;
+  --text-primary: #f5f5f5;
+  --text-secondary: #a1a1aa;
+  --glass-bg: #111111;
+  --glass-border: #2a2a2a;
+  --card-bg: #111111;
+  --input-bg: #151515;
+  --input-border: #3a3a3a;
+  --brand-primary: #ffffff;
+  --brand-primary-dark: #d4d4d4;
+  --accent-soft: #1b1b1b;
+  --accent-border: #454545;
+  --surface-raised: #171717;
+}
+
+html, body { background: var(--background); color: var(--foreground); }
+input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 1; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
 /* Central semantic design tokens. Components should consume these roles,
    rather than pairing arbitrary foreground/background hex values. */
 :root,
