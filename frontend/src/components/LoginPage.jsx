@@ -67,7 +67,50 @@ export default function LoginPage({ onLoginSuccess }) {
           <button type="button" disabled={busy} onClick={googleSignIn} className="relative flex w-full items-center justify-center gap-3 rounded-xl bg-white py-3.5 text-xs font-bold text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-wait disabled:opacity-60"><GoogleIcon/>Continue with Google<ArrowRight size={15} className="absolute right-4 text-slate-400"/></button>
           <button type="button" disabled={busy} onClick={githubSignIn} className="relative flex w-full items-center justify-center gap-3 rounded-xl bg-[#24292f] py-3.5 text-xs font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#1f2328] hover:shadow-md disabled:cursor-wait disabled:opacity-60"><Github size={19} fill="currentColor"/>Continue with GitHub<ArrowRight size={15} className="absolute right-4 text-slate-400"/></button>
         </div>
-        <div className="my-7 flex items-center gap-3"><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/><span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">OAuth secured</span><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/></div>
+        <div className="my-6 flex items-center gap-3"><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/><span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">OAuth secured</span><span className="h-px flex-1 bg-slate-300/60 dark:bg-slate-700"/></div>
+
+        {/* Social Sharing Plugin & Peer Recommendation */}
+        <div className="pt-1 text-center">
+          <p className="text-[11px] font-semibold text-slate-500 dark:text-stone-400 mb-2">Share ByteCollege with peers</p>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <a 
+              href="https://api.whatsapp.com/send?text=Check%20out%20ByteCollege%20-%20B.Tech%20CS%20%26%20IT%20Companion%20for%20HNBGU%20Students%3A%20https%3A%2F%2Fbyte.college%2F" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-all text-[11px] font-bold"
+              title="Share on WhatsApp"
+            >
+              WhatsApp
+            </a>
+            <a 
+              href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fbyte.college%2F&text=ByteCollege%20%E2%80%93%20B.Tech%20CS%20%26%20IT%20Academic%20Companion%20for%20HNBGU%20Students.%20Explore%20syllabus%2C%20PYQs%2C%20and%20CGPA%20calculator!" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-2.5 py-1.5 rounded-lg bg-slate-900/10 dark:bg-white/10 text-slate-800 dark:text-white hover:bg-slate-900/20 transition-all text-[11px] font-bold"
+              title="Share on X"
+            >
+              X / Twitter
+            </a>
+            <a 
+              href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbyte.college%2F" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-2.5 py-1.5 rounded-lg bg-blue-600/10 text-blue-600 dark:text-blue-400 hover:bg-blue-600/20 transition-all text-[11px] font-bold"
+              title="Share on LinkedIn"
+            >
+              LinkedIn
+            </a>
+            <a 
+              href="https://t.me/share/url?url=https%3A%2F%2Fbyte.college%2F&text=ByteCollege%20-%20B.Tech%20CS%20%26%20IT%20Companion%20for%20HNBGU%20Students" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="px-2.5 py-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400 hover:bg-sky-500/20 transition-all text-[11px] font-bold"
+              title="Share on Telegram"
+            >
+              Telegram
+            </a>
+          </div>
+        </div>
       </section>
     </div>
   </main>;
