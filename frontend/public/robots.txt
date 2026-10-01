@@ -1,0 +1,14 @@
+# ByteCollege Robots.txt
+# Platform: https://byte.college
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /oauth2/
+
+# Host
+Host: https://byte.college
+
+# Sitemaps
+Sitemap: https://byte.college/sitemap.xml

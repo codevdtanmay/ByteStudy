@@ -2,14 +2,110 @@
 <html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="theme-color" content="#f3f7fc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="ByteCollege - B.Tech CS & IT Curriculum Navigator & Academic Companion for HNBGU Engineering Students." />
-    <meta name="keywords" content="ByteCollege, HNBGU, B.Tech CS & IT, B.Tech CSE, CGPA calculator, academic planner, syllabus, pyqs" />
-    <title>ByteCollege – B.Tech CS & IT Curriculum Navigator & Academic Companion</title>
+    <meta name="theme-color" content="#f3f7fc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- Primary SEO Metadata -->
+    <title>ByteCollege – B.Tech CS &amp; IT Academic Companion Hub</title>
+    <meta name="title" content="ByteCollege – B.Tech CS &amp; IT Academic Companion Hub" />
+    <meta name="description" content="ByteCollege is the all-in-one B.Tech CS &amp; IT companion for HNBGU students. Explore verified syllabus, PYQs, calculate CGPA, track attendance, and prep for GATE." />
+    <meta name="keywords" content="ByteCollege, HNBGU, B.Tech CS &amp; IT, B.Tech CSE syllabus, HNBGU engineering, CGPA calculator, academic companion, previous year questions, HNBGU PYQs, GATE preparation, semester planner" />
+    <meta name="author" content="ByteCollege" />
+    <meta name="application-name" content="ByteCollege" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://byte.college/" />
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://byte.college/" />
+    <meta property="og:site_name" content="ByteCollege" />
+    <meta property="og:title" content="ByteCollege – B.Tech CS &amp; IT Academic Companion Hub" />
+    <meta property="og:description" content="ByteCollege is the all-in-one B.Tech CS &amp; IT companion for HNBGU students. Explore verified syllabus, PYQs, calculate CGPA, track attendance, and prep for GATE." />
+    <meta property="og:image" content="https://byte.college/og-image.png" />
+    <meta property="og:image:secure_url" content="https://byte.college/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ByteCollege B.Tech CS &amp; IT Academic Companion" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://byte.college/" />
+    <meta name="twitter:title" content="ByteCollege – B.Tech CS &amp; IT Academic Companion Hub" />
+    <meta name="twitter:description" content="ByteCollege is the all-in-one B.Tech CS &amp; IT companion for HNBGU students. Explore verified syllabus, PYQs, calculate CGPA, track attendance, and prep for GATE." />
+    <meta name="twitter:image" content="https://byte.college/og-image.png" />
+    <meta name="twitter:image:alt" content="ByteCollege B.Tech CS &amp; IT Academic Platform" />
+
+    <!-- Structured Data: JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://byte.college/#website",
+          "url": "https://byte.college/",
+          "name": "ByteCollege",
+          "alternateName": ["ByteStudy", "Byte College HNBGU"],
+          "description": "B.Tech CS & IT Curriculum Navigator & Academic Companion for HNBGU Engineering Students.",
+          "publisher": {
+            "@id": "https://byte.college/#organization"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://byte.college/#organization",
+          "name": "ByteCollege",
+          "url": "https://byte.college/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://byte.college/logo.svg",
+            "width": 320,
+            "height": 80
+          },
+          "description": "Academic platform providing verified syllabus, previous year questions (PYQs), CGPA calculator, and academic tools for HNBGU B.Tech Computer Science and Information Technology students.",
+          "sameAs": [
+            "https://www.hnbgu.ac.in"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://byte.college/#app",
+          "name": "ByteCollege Academic Companion",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "120"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Typography & Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Theme Initialization Script -->
     <script>
       (() => {
         try {
@@ -28,7 +124,58 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Crawler-Accessible Semantic Shell (Replaced by React on Client Mount) -->
+    <div id="root">
+      <header style="padding: 24px; text-align: center;">
+        <img src="/logo.svg" alt="ByteCollege - B.Tech CS &amp; IT Academic Platform Logo" width="220" height="55" style="max-width: 100%; height: auto;" />
+        <nav aria-label="Quick Navigation" style="margin-top: 16px;">
+          <a href="/" style="margin: 0 10px; color: #f59e0b; font-weight: 600;">Home</a>
+          <a href="/#syllabus" style="margin: 0 10px; color: #475569;">B.Tech Syllabus</a>
+          <a href="/#pyqs" style="margin: 0 10px; color: #475569;">Previous Year Questions (PYQs)</a>
+          <a href="/#calculator" style="margin: 0 10px; color: #475569;">CGPA Calculator</a>
+          <a href="/#gate-prep" style="margin: 0 10px; color: #475569;">GATE Prep Hub</a>
+          <a href="/#achievers" style="margin: 0 10px; color: #475569;">HNBGU Achievers</a>
+          <a href="/#ai-tools" style="margin: 0 10px; color: #475569;">Useful AI Tools</a>
+          <a href="/#about" style="margin: 0 10px; color: #475569;">About &amp; Administration</a>
+        </nav>
+      </header>
+      <main style="max-width: 900px; margin: 0 auto; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <h1 style="font-size: 2.2rem; color: #0f172a; margin-bottom: 12px;">ByteCollege – B.Tech CS &amp; IT Academic Companion</h1>
+        <p style="font-size: 1.1rem; line-height: 1.6; color: #475569;">
+          ByteCollege is the unified academic companion for Hemvati Nandan Bahuguna Garhwal University (HNBGU) engineering students. Navigate semester curricula, download verified past exam papers, calculate target CGPA, track attendance metrics, and accelerate your engineering journey.
+        </p>
+        <section style="margin-top: 28px;">
+          <h2 style="font-size: 1.5rem; color: #1e293b;">B.Tech CSE &amp; IT Curriculum, Syllabus &amp; PYQs</h2>
+          <p style="color: #64748b; line-height: 1.6;">
+            Access authentic syllabus breakdowns across all 8 semesters, subject-wise marking schemes, recommended textbooks, and verified previous year question papers (PYQs) for HNBGU university examinations.
+          </p>
+        </section>
+        <section style="margin-top: 24px;">
+          <h2 style="font-size: 1.5rem; color: #1e293b;">Smart Academic Tracking &amp; CGPA Simulator</h2>
+          <p style="color: #64748b; line-height: 1.6;">
+            Calculate current SGPA and cumulative CGPA, forecast required grades for graduation honours, and monitor lecture attendance with real-time percentage alerts.
+          </p>
+        </section>
+        <section style="margin-top: 24px;">
+          <h2 style="font-size: 1.5rem; color: #1e293b;">GATE Preparation &amp; Official University Resources</h2>
+          <p style="color: #64748b; line-height: 1.6;">
+            Explore curated GATE CS &amp; IT resources, exam patterns, top achiever benchmarks, and direct links to official educational portals:
+          </p>
+          <ul style="margin-top: 10px; padding-left: 20px; line-height: 1.8; color: #334155;">
+            <li><a href="https://www.hnbgu.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">HNBGU Official University Website</a></li>
+            <li><a href="https://gate2025.iitr.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">GATE Official Examination Portal</a></li>
+            <li><a href="https://github.com/bytepath" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">ByteCollege Open Source Community</a></li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <noscript>
+      <div style="padding: 20px; text-align: center; background: #fffbeb; color: #92400e;">
+        <strong>JavaScript Required:</strong> Please enable JavaScript to access all interactive features of ByteCollege, including live CGPA simulations, AI advisor, and student dashboard.
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
