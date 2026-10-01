@@ -12,11 +12,21 @@
     <meta name="title" content="ByteCollege – B.Tech CS &amp; IT Academic Companion Hub" />
     <meta name="description" content="ByteCollege is the all-in-one B.Tech CS &amp; IT companion for HNBGU students. Explore verified syllabus, PYQs, calculate CGPA, track attendance, and prep for GATE." />
     <meta name="keywords" content="ByteCollege, HNBGU, B.Tech CS &amp; IT, B.Tech CSE syllabus, HNBGU engineering, CGPA calculator, academic companion, previous year questions, HNBGU PYQs, GATE preparation, semester planner" />
-    <meta name="author" content="ByteCollege" />
+    <meta name="author" content="ByteCollege Academic Board" />
     <meta name="application-name" content="ByteCollege" />
+
+    <!-- Freshness & Publication Timestamps (AEO & AI Engine Signals) -->
+    <meta name="date" content="2024-08-15T09:00:00+05:30" />
+    <meta name="published_date" content="2024-08-15T09:00:00+05:30" />
+    <meta name="modified_date" content="2026-10-01T12:00:00+05:30" />
+    <meta property="article:published_time" content="2024-08-15T09:00:00+05:30" />
+    <meta property="article:modified_time" content="2026-10-01T12:00:00+05:30" />
+    <meta name="DC.date.issued" content="2024-08-15" />
+    <meta name="revised" content="Thursday, October 1, 2026" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://byte.college/" />
+    <link rel="author" href="https://byte.college/#organization" />
 
     <!-- Favicon & PWA Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -46,7 +56,7 @@
     <meta name="twitter:image" content="https://byte.college/og-image.png" />
     <meta name="twitter:image:alt" content="ByteCollege B.Tech CS &amp; IT Academic Platform" />
 
-    <!-- Structured Data: JSON-LD Schema Markup -->
+    <!-- Structured Data: JSON-LD Schema Markup (Full AEO & AI Knowledge Graph) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -64,6 +74,25 @@
           "inLanguage": "en-US"
         },
         {
+          "@type": "WebPage",
+          "@id": "https://byte.college/#webpage",
+          "url": "https://byte.college/",
+          "name": "ByteCollege – B.Tech CS & IT Academic Companion Hub",
+          "isPartOf": {
+            "@id": "https://byte.college/#website"
+          },
+          "author": {
+            "@id": "https://byte.college/#organization"
+          },
+          "publisher": {
+            "@id": "https://byte.college/#organization"
+          },
+          "datePublished": "2024-08-15T09:00:00+05:30",
+          "dateModified": "2026-10-01T12:00:00+05:30",
+          "description": "ByteCollege is the all-in-one B.Tech CS & IT companion for HNBGU students. Explore verified syllabus, PYQs, calculate CGPA, track attendance, and prep for GATE.",
+          "inLanguage": "en-US"
+        },
+        {
           "@type": "EducationalOrganization",
           "@id": "https://byte.college/#organization",
           "name": "ByteCollege",
@@ -75,8 +104,53 @@
             "height": 80
           },
           "description": "Academic platform providing verified syllabus, previous year questions (PYQs), CGPA calculator, and academic tools for HNBGU B.Tech Computer Science and Information Technology students.",
+          "email": "support@byte.college",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Srinagar Garhwal",
+            "addressRegion": "Uttarakhand",
+            "postalCode": "246174",
+            "addressCountry": "IN"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "academic support",
+            "email": "support@byte.college",
+            "availableLanguage": ["English", "Hindi"]
+          },
           "sameAs": [
-            "https://www.hnbgu.ac.in"
+            "https://www.hnbgu.ac.in",
+            "https://github.com/codevdtanmay/ByteStudy"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://byte.college/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is ByteCollege and who is it designed for?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ByteCollege is a specialized academic companion engineered specifically for B.Tech Computer Science and Information Technology students enrolled at Hemvati Nandan Bahuguna Garhwal University (HNBGU). It provides verified course syllabi, past examination question papers (PYQs), real-time CGPA simulators, attendance monitors, and GATE preparation pathways."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does ByteCollege calculate SGPA and CGPA for HNBGU engineering students?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ByteCollege implements HNBGU's official credit-weighted grading formula where Semester Grade Point Average (SGPA) is calculated as the sum of credit points multiplied by grade points earned, divided by total semester credits. The cumulative CGPA computes overall academic performance across all completed semesters."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where can HNBGU engineering students download verified Previous Year Question Papers (PYQs)?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "HNBGU engineering students can access and download authentic, verified End-Semester Previous Year Question Papers (PYQs) directly within ByteCollege's Syllabus and PYQs module, organized semester-by-semester from semester 1 to semester 8."
+              }
+            }
           ]
         },
         {
@@ -126,7 +200,7 @@
   <body>
     <!-- Crawler-Accessible Semantic Shell (Replaced by React on Client Mount) -->
     <div id="root">
-      <header style="padding: 24px; text-align: center;">
+      <header style="padding: 24px; text-align: center; border-bottom: 1px solid #e2e8f0;">
         <img src="/logo.svg" alt="ByteCollege - B.Tech CS &amp; IT Academic Platform Logo" width="220" height="55" style="max-width: 100%; height: auto;" />
         <nav aria-label="Quick Navigation" style="margin-top: 16px;">
           <a href="/" style="margin: 0 10px; color: #f59e0b; font-weight: 600;">Home</a>
@@ -139,34 +213,115 @@
           <a href="/#about" style="margin: 0 10px; color: #475569;">About &amp; Administration</a>
         </nav>
       </header>
-      <main style="max-width: 900px; margin: 0 auto; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <h1 style="font-size: 2.2rem; color: #0f172a; margin-bottom: 12px;">ByteCollege – B.Tech CS &amp; IT Academic Companion</h1>
-        <p style="font-size: 1.1rem; line-height: 1.6; color: #475569;">
-          ByteCollege is the unified academic companion for Hemvati Nandan Bahuguna Garhwal University (HNBGU) engineering students. Navigate semester curricula, download verified past exam papers, calculate target CGPA, track attendance metrics, and accelerate your engineering journey.
-        </p>
-        <section style="margin-top: 28px;">
-          <h2 style="font-size: 1.5rem; color: #1e293b;">B.Tech CSE &amp; IT Curriculum, Syllabus &amp; PYQs</h2>
-          <p style="color: #64748b; line-height: 1.6;">
-            Access authentic syllabus breakdowns across all 8 semesters, subject-wise marking schemes, recommended textbooks, and verified previous year question papers (PYQs) for HNBGU university examinations.
+
+      <main style="max-width: 960px; margin: 0 auto; padding: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+        <article itemscope itemtype="https://schema.org/Article">
+          <h1 itemprop="headline" style="font-size: 2.2rem; color: #0f172a; margin-bottom: 8px;">ByteCollege – B.Tech CS &amp; IT Academic Companion</h1>
+
+          <div style="font-size: 0.9rem; color: #64748b; margin-bottom: 20px;">
+            Published by <span itemprop="author" itemscope itemtype="https://schema.org/Organization"><span itemprop="name">ByteCollege Academic Board</span></span> on <time itemprop="datePublished" datetime="2024-08-15T09:00:00+05:30">August 15, 2024</time> (Last updated: <time itemprop="dateModified" datetime="2026-10-01T12:00:00+05:30">October 1, 2026</time>)
+          </div>
+
+          <p itemprop="description" style="font-size: 1.1rem; line-height: 1.6; color: #475569;">
+            ByteCollege is the unified academic companion for Hemvati Nandan Bahuguna Garhwal University (HNBGU) engineering students. Navigate semester curricula, download verified past exam papers, calculate target CGPA, track attendance metrics, and accelerate your engineering journey.
           </p>
-        </section>
-        <section style="margin-top: 24px;">
-          <h2 style="font-size: 1.5rem; color: #1e293b;">Smart Academic Tracking &amp; CGPA Simulator</h2>
-          <p style="color: #64748b; line-height: 1.6;">
-            Calculate current SGPA and cumulative CGPA, forecast required grades for graduation honours, and monitor lecture attendance with real-time percentage alerts.
+
+          <blockquote style="border-left: 4px solid #f59e0b; padding-left: 16px; margin: 24px 0; font-style: italic; color: #334155; background: #fffbeb; padding-top: 10px; padding-bottom: 10px; border-radius: 0 8px 8px 0;">
+            "ByteCollege empowers computer science and information technology engineering undergraduates with open academic syllabi, authentic previous year question papers, and algorithmic curriculum planning."
+          </blockquote>
+
+          <section id="syllabus" style="margin-top: 28px;">
+            <h2 style="font-size: 1.5rem; color: #1e293b;">B.Tech CSE &amp; IT Curriculum, Syllabus &amp; PYQs</h2>
+            <p style="color: #64748b; line-height: 1.6;">
+              Access authentic syllabus breakdowns across all 8 semesters, subject-wise marking schemes, recommended textbooks, and verified previous year question papers (PYQs) for HNBGU university examinations.
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">Semester-Wise Subject Breakdown &amp; Credit Schemas</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              Each semester outlines foundational math, computing principles, laboratory units, and elective specializations matching HNBGU central university credit criteria.
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">End-Semester Previous Year Question Papers (PYQs)</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              Download verified past exam papers spanning over 5 examination cycles to analyze question frequency, repeated concepts, and practical answer frameworks.
+            </p>
+          </section>
+
+          <section id="tracking" style="margin-top: 24px;">
+            <h2 style="font-size: 1.5rem; color: #1e293b;">Smart Academic Tracking &amp; CGPA Simulator</h2>
+            <p style="color: #64748b; line-height: 1.6;">
+              Calculate current SGPA and cumulative CGPA, forecast required grades for graduation honours, and monitor lecture attendance with real-time percentage alerts.
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">Weighted SGPA &amp; CGPA Calculation Formulas</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              ByteCollege implements HNBGU official credit formulas calculating exact weighted averages to simulate target scenarios for upcoming end-sem evaluations.
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">75% Attendance Compliance Monitoring</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              Keep attendance safely above the university-mandated 75% threshold with proactive class alerts and leave buffer forecasts.
+            </p>
+          </section>
+
+          <section id="gate-prep" style="margin-top: 24px;">
+            <h2 style="font-size: 1.5rem; color: #1e293b;">GATE Preparation &amp; Official University Resources</h2>
+            <p style="color: #64748b; line-height: 1.6;">
+              Explore curated GATE CS &amp; IT resources, exam patterns, top achiever benchmarks, and direct links to official educational portals:
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">Core Computer Science Fundamentals &amp; Syllabus Coverage</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              Structured study modules for Data Structures, Algorithms, Operating Systems, Computer Networks, and DBMS mapped directly to national engineering benchmark tests.
+            </p>
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">Official University Accreditation &amp; External Portals</h3>
+            <ul style="margin-top: 10px; padding-left: 20px; line-height: 1.8; color: #334155;">
+              <li><a href="https://www.hnbgu.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">HNBGU Official Central University Website</a></li>
+              <li><a href="https://gate2025.iitr.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">GATE Official Examination Portal</a></li>
+              <li><a href="https://github.com/codevdtanmay/ByteStudy" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">ByteCollege Open Source Community</a></li>
+              <li><a href="https://www.ugc.gov.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">University Grants Commission (UGC India)</a></li>
+              <li><a href="https://swayam.gov.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">SWAYAM &amp; NPTEL Engineering Repository</a></li>
+              <li><a href="https://www.aicte-india.org" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">AICTE All India Council for Technical Education</a></li>
+            </ul>
+          </section>
+
+          <section id="faq" style="margin-top: 28px;">
+            <h2 style="font-size: 1.5rem; color: #1e293b;">Frequently Asked Questions (AEO Q&amp;A Knowledge Base)</h2>
+            
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">What is ByteCollege and who is it designed for?</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              ByteCollege is a specialized academic companion engineered specifically for B.Tech Computer Science and Information Technology students enrolled at Hemvati Nandan Bahuguna Garhwal University (HNBGU). It provides verified course syllabi, past examination question papers (PYQs), real-time CGPA simulators, attendance monitors, and GATE preparation pathways.
+            </p>
+
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">How does ByteCollege calculate SGPA and CGPA for HNBGU engineering students?</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              ByteCollege implements HNBGU's official credit-weighted grading formula where Semester Grade Point Average (SGPA) is calculated as the sum of credit points multiplied by grade points earned, divided by total semester credits. The cumulative CGPA computes overall academic performance across all completed semesters.
+            </p>
+
+            <h3 style="font-size: 1.15rem; color: #334155; margin-top: 14px;">Where can HNBGU engineering students download verified Previous Year Question Papers (PYQs)?</h3>
+            <p style="color: #64748b; line-height: 1.6;">
+              HNBGU engineering students can access and download authentic, verified End-Semester Previous Year Question Papers (PYQs) directly within ByteCollege's Syllabus and PYQs module, organized semester-by-semester from semester 1 to semester 8.
+            </p>
+          </section>
+
+          <section id="references" style="margin-top: 28px; padding: 16px; background: #f8fafc; border-radius: 8px;">
+            <h3 style="font-size: 1.15rem; color: #1e293b; margin-top: 0;">Academic References &amp; External Citations</h3>
+            <p style="font-size: 0.9rem; color: #64748b;">Authoritative academic sources supporting curriculum standards and degree criteria:</p>
+            <ul style="font-size: 0.88rem; line-height: 1.7; color: #475569; padding-left: 20px; margin-bottom: 0;">
+              <li><cite>Hemvati Nandan Bahuguna Garhwal University (A Central University) B.Tech Ordinance &amp; Curriculum Guidelines</cite> – Official syllabus standards.</li>
+              <li><cite>National Programme on Technology Enhanced Learning (NPTEL) Engineering Curriculum</cite> – Supplementary video and lecture reference.</li>
+            </ul>
+          </section>
+        </article>
+
+        <aside style="margin-top: 32px; padding: 18px; background: #f1f5f9; border-radius: 12px; border: 1px solid #cbd5e1;">
+          <h3 style="font-size: 1.15rem; color: #1e293b; margin-top: 0;">Academic Advisory &amp; Campus Notice</h3>
+          <p style="font-size: 0.92rem; color: #475569; line-height: 1.6; margin-bottom: 0;">
+            Students are reminded to maintain a minimum 75% attendance compliance according to HNBGU academic regulations. Use the Attendance Records module to track theory and laboratory hours in real time.
           </p>
-        </section>
-        <section style="margin-top: 24px;">
-          <h2 style="font-size: 1.5rem; color: #1e293b;">GATE Preparation &amp; Official University Resources</h2>
-          <p style="color: #64748b; line-height: 1.6;">
-            Explore curated GATE CS &amp; IT resources, exam patterns, top achiever benchmarks, and direct links to official educational portals:
-          </p>
-          <ul style="margin-top: 10px; padding-left: 20px; line-height: 1.8; color: #334155;">
-            <li><a href="https://www.hnbgu.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">HNBGU Official University Website</a></li>
-            <li><a href="https://gate2025.iitr.ac.in" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">GATE Official Examination Portal</a></li>
-            <li><a href="https://github.com/bytepath" target="_blank" rel="noopener noreferrer" style="color: #2563eb;">ByteCollege Open Source Community</a></li>
-          </ul>
-        </section>
+        </aside>
+
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+          <address style="font-style: normal; margin-bottom: 8px; line-height: 1.6;">
+            ByteCollege Academic Collective · School of Engineering &amp; Technology, HNB Garhwal University, Srinagar Garhwal, Uttarakhand 246174 | Support: <a href="mailto:support@byte.college" style="color: #2563eb;">support@byte.college</a>
+          </address>
+          <p style="margin: 0;">© 2024–2026 ByteCollege. All rights reserved. Content published on <time datetime="2024-08-15">August 15, 2024</time> and revised on <time datetime="2026-10-01">October 1, 2026</time>.</p>
+        </footer>
       </main>
     </div>
 
