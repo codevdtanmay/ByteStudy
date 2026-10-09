@@ -4,5 +4,3 @@ target/
 .idea/
 *.iml
 *.log
-Dockerfile*
-.dockerignore

@@ -137,7 +137,7 @@ Render can run the Spring Boot backend as a Docker web service. Create a new Web
 - Runtime: Docker
 - Root Directory: leave blank
 - Dockerfile Path: `./backend/Dockerfile`
-- Docker Build Context Directory: leave blank (repository root). The Dockerfile copies the entrypoint from `backend/docker-entrypoint.sh`.
+- Docker Build Context Directory: leave blank (repository root). The Dockerfile copies backend sources from `backend/`.
 - Health Check Path: `/healthz`
 - Set the backend production variables from the section above in Render's environment settings. Do not upload `backend/.env`.
 
