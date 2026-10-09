@@ -168,7 +168,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiErrorResponse> handleServiceUnavailable(
             IllegalStateException ex, HttpServletRequest request) {
-        log.error("Service unavailable on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage());
+        // Keep the public response generic, but retain the stack trace in server logs so
+        // downstream failures (DNS, connect timeout, TLS, etc.) can be diagnosed safely.
+        log.error("Service unavailable on {} {}: {}", request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
         String message = ex.getMessage() == null ? "The service is temporarily unavailable." : ex.getMessage();
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body(ApiErrorResponse.of(HttpStatus.SERVICE_UNAVAILABLE, message, request.getRequestURI()));
