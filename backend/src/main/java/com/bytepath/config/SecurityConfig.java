@@ -54,6 +54,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .headers(headers -> headers.frameOptions(frame -> frame.deny()))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/healthz").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/promotions/active").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/achievers/**").permitAll()
