@@ -22,7 +22,7 @@ RUN apt-get update \
     && chown -R appuser:appuser /app /tmp/bytepath
 
 COPY --from=build --chown=appuser:appuser /workspace/target/bytepath-backend-1.0.0.jar /app/app.jar
-COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY --chmod=755 backend/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 ENV PORT=8081
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=25.0 -Djava.io.tmpdir=/tmp/bytepath -Dfile.encoding=UTF-8"

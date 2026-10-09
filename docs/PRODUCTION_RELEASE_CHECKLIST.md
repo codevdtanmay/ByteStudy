@@ -135,14 +135,15 @@ After Railway generates public domains, set `FRONTEND_URL` and `CORS_ALLOWED_ORI
 Render can run the Spring Boot backend as a Docker web service. Create a new Web Service connected to this repository and configure:
 
 - Runtime: Docker
+- Root Directory: leave blank
 - Dockerfile Path: `./backend/Dockerfile`
-- Docker Build Context Directory: `./backend`
+- Docker Build Context Directory: leave blank (repository root). The Dockerfile copies the entrypoint from `backend/docker-entrypoint.sh`.
 - Health Check Path: `/healthz`
 - Set the backend production variables from the section above in Render's environment settings. Do not upload `backend/.env`.
 
 Render supplies `PORT`; the Docker entrypoint validates it and passes it to Spring Boot. The runtime image runs as a non-root user and includes Tesseract for scanned-PDF OCR. Set `DB_URL`, credentials, `FRONTEND_URL`, `CORS_ALLOWED_ORIGINS`, and OAuth callback URLs to the Render service's public HTTPS domain as applicable. For GitHub OAuth, the callback must be `https://YOUR-RENDER-SERVICE.onrender.com/api/auth/github/callback`. Point the frontend's `VITE_AUTH_API_URL` to `https://YOUR-RENDER-SERVICE.onrender.com/api` and rebuild the frontend.
 
-To build locally from the repository root, run `docker build -t bytepath-backend:latest -f backend/Dockerfile backend`. The image intentionally does not copy an `.env` file; configure all production secrets as Render environment variables.
+To build locally from the repository root, run `docker build -t bytepath-backend:latest -f backend/Dockerfile .`. The image intentionally does not copy an `.env` file; configure all production secrets as Render environment variables.
 
 ### Vercel frontend alternative
 
