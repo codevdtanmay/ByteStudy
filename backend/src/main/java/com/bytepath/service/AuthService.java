@@ -18,6 +18,9 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Year;
 import java.util.Map;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HexFormat;
@@ -41,7 +44,7 @@ public class AuthService {
     private final String githubClientId;
     private final String githubClientSecret;
     private final String githubCallbackUrl;
-    private final String adminEmail;
+    private final Set<String> adminEmails;
 
     public AuthService(UserRepository userRepo,
                        JwtTokenProvider jwtProvider,
@@ -50,7 +53,7 @@ public class AuthService {
                        @Value("${github.client-id:}") String githubClientId,
                        @Value("${github.client-secret:}") String githubClientSecret,
                        @Value("${github.callback-url:}") String githubCallbackUrl,
-                       @Value("${admin.email:}") String adminEmail) {
+                       @Value("${admin.emails:}") String adminEmails) {
         this.userRepo        = userRepo;
         this.jwtProvider     = jwtProvider;
         this.refreshTokens = refreshTokens;
@@ -58,7 +61,10 @@ public class AuthService {
         this.githubClientId  = githubClientId;
         this.githubClientSecret = githubClientSecret;
         this.githubCallbackUrl = githubCallbackUrl;
-        this.adminEmail = normalizeEmail(adminEmail);
+        this.adminEmails = Arrays.stream(adminEmails == null ? new String[0] : adminEmails.split(","))
+            .map(this::normalizeEmail)
+            .filter(email -> !email.isBlank())
+            .collect(Collectors.toSet());
     }
 
     @Transactional
@@ -259,10 +265,8 @@ public class AuthService {
     }
 
     private void applyConfiguredRole(User user, String email) {
-        User.Role expectedRole = !adminEmail.isBlank() && adminEmail.equals(normalizeEmail(email))
-            ? User.Role.ADMIN : User.Role.STUDENT;
-        if (user.getRole() != expectedRole) {
-            user.setRole(expectedRole);
+        if (adminEmails.contains(normalizeEmail(email)) && user.getRole() != User.Role.ADMIN) {
+            user.setRole(User.Role.ADMIN);
             userRepo.save(user);
         }
     }

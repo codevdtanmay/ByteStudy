@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import com.bytepath.model.User;
 import com.bytepath.repository.UserRepository;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * BytePath Backend — Spring Boot Entry Point
@@ -25,33 +28,29 @@ public class BytePathApplication {
     @Bean
     CommandLineRunner seedAdmin(
             UserRepository userRepository,
-            @Value("${admin.email}") String adminEmail,
+            @Value("${admin.emails:}") String adminEmails,
             @Value("${admin.name}") String adminName) {
-        String configuredEmail = adminEmail == null ? "" : adminEmail.trim().toLowerCase();
-        if (configuredEmail.isBlank()) {
-            throw new IllegalStateException("ADMIN_EMAIL must be configured before starting the backend.");
+        Set<String> configuredEmails = Arrays.stream(adminEmails == null ? new String[0] : adminEmails.split(","))
+            .map(String::trim)
+            .map(String::toLowerCase)
+            .filter(email -> !email.isBlank())
+            .collect(Collectors.toSet());
+        if (configuredEmails.isEmpty()) {
+            throw new IllegalStateException("ADMIN_EMAILS (or ADMIN_EMAIL) must be configured before starting the backend.");
         }
         return args -> {
-            userRepository.findAll().forEach(user -> {
-                User.Role expectedRole = configuredEmail.equals(user.getEmail().trim().toLowerCase())
-                    ? User.Role.ADMIN : User.Role.STUDENT;
-                if (user.getRole() != expectedRole) {
-                    user.setRole(expectedRole);
-                    userRepository.save(user);
-                }
-            });
-            userRepository.findByEmail(configuredEmail).ifPresentOrElse(user -> {
+            configuredEmails.forEach(email -> userRepository.findByEmail(email).ifPresentOrElse(user -> {
                 if (user.getRole() != User.Role.ADMIN) {
                     user.setRole(User.Role.ADMIN);
                     userRepository.save(user);
                 }
             }, () -> userRepository.save(User.builder()
-                .loginId(configuredEmail)
+                .loginId(email)
                 .name(adminName)
-                .email(configuredEmail)
+                .email(email)
                 .emailVerified(true)
                 .role(User.Role.ADMIN)
-                .build()));
+                .build())));
         };
     }
 }
