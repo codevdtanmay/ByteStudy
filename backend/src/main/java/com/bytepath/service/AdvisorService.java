@@ -22,7 +22,7 @@ public class AdvisorService {
     private final ChatMessageRepository chatRepo;
     private final CgpaCalculatorService cgpaService;
     private final RagClient ragClient;
-    private final OpenRouterClient openRouterClient;
+    private final GeminiClient geminiClient;
     private final DocumentSearchService documentSearch;
     private final com.bytepath.repository.SemesterRecordRepository semesterRepo;
     private final com.bytepath.repository.AttendanceLogRepository attendanceRepo;
@@ -30,14 +30,14 @@ public class AdvisorService {
     public AdvisorService(ChatMessageRepository chatRepo,
                           CgpaCalculatorService cgpaService,
                           RagClient ragClient,
-                          OpenRouterClient openRouterClient,
+                          GeminiClient geminiClient,
                           DocumentSearchService documentSearch,
                           com.bytepath.repository.SemesterRecordRepository semesterRepo,
                           com.bytepath.repository.AttendanceLogRepository attendanceRepo) {
         this.chatRepo    = chatRepo;
         this.cgpaService = cgpaService;
         this.ragClient   = ragClient;
-        this.openRouterClient = openRouterClient;
+        this.geminiClient = geminiClient;
         this.documentSearch = documentSearch;
         this.semesterRepo = semesterRepo;
         this.attendanceRepo = attendanceRepo;
@@ -126,7 +126,7 @@ public class AdvisorService {
         if (!documentContext.isBlank()) {
             groundedContext += "\n\nRELEVANT UPLOADED DOCUMENT EXCERPTS:\n" + documentContext;
         }
-        String reply = openRouterClient.ask(aiSystem, groundedContext + "\n\nStudent question: " + userText.trim(), 1200)
+        String reply = geminiClient.ask(aiSystem, groundedContext + "\n\nStudent question: " + userText.trim(), 1200)
             .or(() -> ragClient.ask(userText.trim(), academicContext))
             .orElseGet(() -> generateReply(userText.toLowerCase(), currentSem, currentCgpa, targetCgpa, remaining, predictor, attendancePct, activeSubjects));
 

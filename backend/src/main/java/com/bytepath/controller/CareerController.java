@@ -2,7 +2,7 @@ package com.bytepath.controller;
 
 import com.bytepath.model.User;
 import com.bytepath.data.SyllabusData;
-import com.bytepath.service.OpenRouterClient;
+import com.bytepath.service.GeminiClient;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,9 +17,9 @@ import java.util.Map;
 @Tag(name = "Career AI", description = "AI-generated career roadmaps")
 @SecurityRequirement(name = "Bearer Authentication")
 public class CareerController {
-    private final OpenRouterClient openRouterClient;
+    private final GeminiClient geminiClient;
 
-    public CareerController(OpenRouterClient openRouterClient) { this.openRouterClient = openRouterClient; }
+    public CareerController(GeminiClient geminiClient) { this.geminiClient = geminiClient; }
 
     @Operation(summary = "Build a personalized career roadmap")
     @PostMapping("/roadmap")
@@ -32,7 +32,7 @@ public class CareerController {
         String name = user.getName() == null ? "student" : user.getName();
         String system = "You are BytePath's practical career mentor. Use the supplied BytePath syllabus as the source of truth for subjects and sequencing. Create realistic, India-aware career roadmaps for undergraduate CS students. Use Markdown, prioritize free or low-cost resources, and never promise a job. The requested duration is authoritative: do not expand or replace it with 90 days. Keep the response focused and measurable.";
         String prompt = String.format("Student: %s\nCurrent semester: %s\nCurrent phase: %s\nRequested goal: %s\nEXACT ROADMAP DURATION: %s days.\nBuild exactly a %s-day roadmap with an outcome, skill sequence, time-boxed milestones, two portfolio projects scaled to this duration, interview preparation, and the next 3 actions.\n\nFULL BYTEPATH SYLLABUS:\n%s", name, semester, phase, goal, duration, duration, SyllabusData.catalogSummary());
-        return openRouterClient.ask(system, prompt, 1400)
+        return geminiClient.ask(system, prompt, 1400)
             .map(answer -> ResponseEntity.ok(Map.of("roadmap", answer)))
             .orElseGet(() -> ResponseEntity.status(503).body(Map.of("message", "AI roadmap is not configured or temporarily unavailable.")));
     }
