@@ -252,11 +252,9 @@ export default function App() {
 
       {/* First-Time Login Onboarding Modal */}
       <OnboardingModal
-        isOpen={!!store.studentId && !store.isOnboarded}
+        isOpen={!!store.studentId && store.isNewUser && !store.isOnboarded}
         studentId={store.studentId}
         initialTargetCgpa={store.targetCgpa}
-        initialTheme={store.theme}
-        onThemePreview={store.setTheme}
         onComplete={store.saveOnboardingProfile}
       />
     </div>

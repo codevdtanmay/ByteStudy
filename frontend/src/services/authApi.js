@@ -17,8 +17,8 @@ const readJson = (key, fallback) => {
 
 const writeJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
 
-const sessionFromUser = ({ token = '', refreshToken = '', loginId, name, email, role, isOnboarded = false, targetCgpa = 8.50 }) => ({
-  token, refreshToken, loginId, name, email, role, isOnboarded, targetCgpa,
+const sessionFromUser = ({ token = '', refreshToken = '', loginId, name, email, role, isOnboarded = false, isNewUser = false, targetCgpa = 8.50 }) => ({
+  token, refreshToken, loginId, name, email, role, isOnboarded, isNewUser, targetCgpa,
 });
 
 const saveSession = (user) => writeJson(SESSION_KEY, sessionFromUser(user));
@@ -82,6 +82,7 @@ export const consumeOAuthSession = () => {
     name: params.get('name') || 'ByteCollege Scholar',
     email: params.get('email') || '',
     role: params.get('role') || 'STUDENT',
+    isNewUser: params.get('isNewUser') === 'true',
   });
   saveSession(session);
   window.history.replaceState({}, document.title, window.location.pathname);

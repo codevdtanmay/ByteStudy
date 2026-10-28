@@ -82,7 +82,9 @@ public class AuthService {
         String cleanEmail = email.trim().toLowerCase();
         String cleanName  = (name != null && !name.isBlank()) ? name.trim() : "Google Scholar";
 
-        User user = userRepo.findByEmail(cleanEmail).orElseGet(() -> {
+        User user = userRepo.findByEmail(cleanEmail).orElse(null);
+        boolean isNewUser = user == null;
+        if (isNewUser) {
             User newUser = User.builder()
                 .loginId(generateLoginId())
                 .name(cleanName)
@@ -92,12 +94,12 @@ public class AuthService {
                 .oauthProvider("GOOGLE")
                 .emailVerified(true)
                 .build();
-            return userRepo.save(newUser);
-        });
+            user = userRepo.save(newUser);
+        }
 
         applyConfiguredRole(user, cleanEmail);
 
-        return buildResponse(user);
+        return buildResponse(user, isNewUser);
     }
 
     @Transactional
@@ -229,11 +231,14 @@ public class AuthService {
 
         String name = profile == null ? "GitHub Scholar" : String.valueOf(profile.getOrDefault("name", profile.getOrDefault("login", "GitHub Scholar")));
         String cleanEmail = email.trim().toLowerCase();
-        User user = userRepo.findByEmail(cleanEmail).orElseGet(() -> userRepo.save(User.builder()
-            .loginId(generateLoginId()).name(name).email(cleanEmail)
-            .role(User.Role.STUDENT).oauthProvider("GITHUB").emailVerified(true).build()));
+        User user = userRepo.findByEmail(cleanEmail).orElse(null);
+        boolean isNewUser = user == null;
+        if (isNewUser) {
+            user = userRepo.save(User.builder().loginId(generateLoginId()).name(name).email(cleanEmail)
+                .role(User.Role.STUDENT).oauthProvider("GITHUB").emailVerified(true).build());
+        }
         applyConfiguredRole(user, cleanEmail);
-        return buildResponse(user);
+        return buildResponse(user, isNewUser);
     }
 
     private String encode(String value) { return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8); }
@@ -249,6 +254,10 @@ public class AuthService {
     // ── Private helpers ────────────────────────────────────────────────────────
 
     private AuthResponse buildResponse(User user) {
+        return buildResponse(user, false);
+    }
+
+    private AuthResponse buildResponse(User user, boolean isNewUser) {
         String token = jwtProvider.generateToken(user.getLoginId());
         String refresh = Base64.getUrlEncoder().withoutPadding().encodeToString(java.security.SecureRandom.getSeed(48));
         refreshTokens.save(RefreshToken.builder().user(user).tokenHash(hash(refresh)).expiresAt(Instant.now().plusSeconds(60L * 60 * 24 * 30)).revoked(false).build());
@@ -260,6 +269,7 @@ public class AuthService {
             .role(user.getRole().name())
             .refreshToken(refresh)
             .isOnboarded(user.isOnboarded())
+            .isNewUser(isNewUser)
             .targetCgpa(user.getTargetCgpa())
             .build();
     }

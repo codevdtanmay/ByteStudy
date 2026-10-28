@@ -85,7 +85,8 @@ public class AuthController {
                     + "&loginId=" + encode(session.getLoginId())
                     + "&name=" + encode(session.getName())
                     + "&email=" + encode(session.getEmail())
-                    + "&role=" + encode(session.getRole());
+                    + "&role=" + encode(session.getRole())
+                    + "&isNewUser=" + session.isNewUser();
             return redirect(fragment);
         } catch (RuntimeException ex) {
             log.error("GitHub sign-in failed during exchange: {}", ex.getMessage());

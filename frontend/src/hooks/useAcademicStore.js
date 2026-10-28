@@ -71,6 +71,7 @@ export function useAcademicStore() {
   const [isOnboarded, setIsOnboarded] = useState(() => {
     return Boolean(initialProfile?.isOnboarded);
   });
+  const [isNewUser, setIsNewUser] = useState(() => Boolean(persistedSession?.isNewUser));
 
   const [branch, setBranch] = useState(() => initialProfile?.branch || '');
   const [selectedSemester, setSelectedSemester] = useState(() => initialProfile?.semester || 1);
@@ -94,6 +95,7 @@ export function useAcademicStore() {
       setBranch(profile.branch);
       setTheme(profile.theme);
       setIsOnboarded(true);
+      setIsNewUser(false);
       // Persist the onboarding flag on the authenticated account as well as
       // localStorage, so it survives a new browser session or device.
       updateAcademicProfile({
@@ -299,6 +301,7 @@ export function useAcademicStore() {
       setBranch(profile?.branch || '');
       if (profile?.theme || account?.theme) setTheme(profile?.theme || account?.theme);
       setIsOnboarded(Boolean(profile?.isOnboarded || account?.isOnboarded));
+      setIsNewUser(Boolean(account?.isNewUser));
     }
   }, []);
 
@@ -572,6 +575,7 @@ export function useAcademicStore() {
     userRole,
     setStudentName,
     isOnboarded,
+    isNewUser,
     saveOnboardingProfile,
     handleLogin,
     handleLogout,

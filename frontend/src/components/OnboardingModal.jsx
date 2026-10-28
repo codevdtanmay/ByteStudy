@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { GraduationCap, Target, BookOpen, ArrowRight, Sparkles, Check, Sun, Moon, Info, X } from 'lucide-react';
+import { GraduationCap, Target, BookOpen, ArrowRight, Sparkles, Check, Info, X } from 'lucide-react';
 import { SYLLABUS } from '../data/syllabus';
 
 export default function OnboardingModal({
   isOpen,
   studentId,
   onComplete,
-  initialTargetCgpa = '8.50',
-  initialTheme = 'dark',
-  onThemePreview
+  initialTargetCgpa = '8.50'
 }) {
   const [name, setName] = useState('');
   const [target, setTarget] = useState(initialTargetCgpa);
@@ -16,7 +14,6 @@ export default function OnboardingModal({
   const [branch, setBranch] = useState('CSE');
   const [showBranchNotice, setShowBranchNotice] = useState(false);
   const [completedSems, setCompletedSems] = useState(1);
-  const [theme, setTheme] = useState(initialTheme);
   const [semSgpas, setSemSgpas] = useState({
     1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
   });
@@ -50,7 +47,7 @@ export default function OnboardingModal({
       pastSgpas: semSgpas,
       semester: currentSemester,
       branch,
-      theme
+      theme: 'dark'
     });
   };
 
@@ -81,22 +78,12 @@ export default function OnboardingModal({
         {/* Scrollable Form Body */}
         <form onSubmit={handleSubmit} className="overflow-y-auto scrollbar-none pr-1 space-y-5 flex-1">
           
-          {/* 1. Name & Target CGPA */}
+          {/* 1. Name & target CGPA */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                Full Name
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="e.g. Dhairya Pardhi"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="app-input text-sm font-semibold"
-              />
+              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
+              <input type="text" required placeholder="Enter your name" value={name} onChange={(e) => setName(e.target.value)} className="app-input text-sm font-semibold" />
             </div>
-
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5 flex items-center justify-between">
                 <span>Target CGPA Goal</span>
@@ -139,24 +126,7 @@ export default function OnboardingModal({
             </div>
           </div>
 
-          {/* 3. Theme preference */}
-          <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-2">Choose your appearance</label>
-            <div className="grid grid-cols-2 gap-3">
-              {[['light', 'Light mode', Sun], ['dark', 'Dark mode', Moon]].map(([value, label, Icon]) => (
-                <button
-                  key={value}
-                  type="button"
-                  onClick={() => { setTheme(value); onThemePreview?.(value); }}
-                  className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-bold transition-all ${theme === value ? 'border-indigo-500 bg-indigo-500/15 text-indigo-600 dark:text-indigo-300 ring-2 ring-indigo-500/20' : 'border-slate-200 bg-slate-50 text-slate-500 hover:border-indigo-300 dark:border-indigo-950/40 dark:bg-surface-700/40 dark:text-slate-300'}`}
-                >
-                  <Icon size={16} /> {label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* 4. Number of Completed Semesters */}
+          {/* 3. Number of Completed Semesters */}
           {showPastResults && <div className="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/20 border border-indigo-500/15 space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
